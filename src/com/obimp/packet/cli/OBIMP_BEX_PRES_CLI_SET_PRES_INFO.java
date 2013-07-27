@@ -29,13 +29,13 @@ public class OBIMP_BEX_PRES_CLI_SET_PRES_INFO extends Packet {
     private final byte subtype = 0x0003;
     private byte[] data;
 
-    public OBIMP_BEX_PRES_CLI_SET_PRES_INFO() {
-        data = new byte[71 + "Java OBIMP Lib".getBytes().length];
+    public OBIMP_BEX_PRES_CLI_SET_PRES_INFO(int seq) {
+        data = new byte[97 + "Java OBIMP Lib".getBytes().length + "Windows 7 x64".getBytes().length];
         data[0] = 0x23;
         data[1] = 0x00;
         data[2] = 0x00;
         data[3] = 0x00;
-        data[4] = 0x03;
+        data[4] = (byte) seq;
         data[5] = 0x00;
         data[6] = 0x03;
         data[7] = 0x00;
@@ -43,7 +43,7 @@ public class OBIMP_BEX_PRES_CLI_SET_PRES_INFO extends Packet {
         data[9] = 0x00;
         data[10] = 0x00;
         data[11] = 0x00;
-        data[12] = 0x03;
+        data[12] = (byte) seq;
         data[13] = 0x00;
         data[14] = 0x00;
         data[15] = 0x00;
@@ -55,28 +55,46 @@ public class OBIMP_BEX_PRES_CLI_SET_PRES_INFO extends Packet {
         data[21] = 0x00;
         data[22] = 0x00;
         data[23] = 0x00;
-        data[24] = (byte) 2;
+        data[24] = (byte) 20;
         data[25] = 0x00;
         data[26] = 0x01;
         data[27] = 0x00;
-        data[28] = 0x00;
+        data[28] = 0x02;
         data[29] = 0x00;
-        data[30] = 0x02;
+        data[30] = 0x03;
         data[31] = 0x00;
-        data[32] = 0x00;
+        data[32] = 0x04;
         data[33] = 0x00;
-        data[34] = (byte) 2;
+        data[34] = 0x05;
         data[35] = 0x00;
-        data[36] = 0x02;
+        data[36] = 0x06;
         data[37] = 0x00;
-        data[38] = 0x00;
+        data[38] = 0x07;
         data[39] = 0x00;
-        data[40] = 0x03;
+        data[40] = 0x08;
         data[41] = 0x00;
-        data[42] = 0x00;
+        data[42] = 0x09;
         data[43] = 0x00;
-        data[44] = (byte) "Java OBIMP Lib".getBytes().length;
-        int k = 45;
+        data[44] = 0x0A;
+        data[45] = 0x00;
+        data[46] = 0x00;
+        data[47] = 0x00;
+        data[48] = 0x02;
+        data[49] = 0x00;
+        data[50] = 0x00;
+        data[51] = 0x00;
+        data[52] = (byte) 2;
+        data[53] = 0x00;
+        data[54] = 0x02;
+        data[55] = 0x00;
+        data[56] = 0x00;
+        data[57] = 0x00;
+        data[58] = 0x03;
+        data[59] = 0x00;
+        data[60] = 0x00;
+        data[61] = 0x00;
+        data[62] = (byte) "Java OBIMP Lib".getBytes().length;
+        int k = 63;
         for(int i=0;i<"Java OBIMP Lib".getBytes().length;i++) {
             data[k] = "Java OBIMP Lib".getBytes()[i];
             k++;
@@ -97,21 +115,21 @@ public class OBIMP_BEX_PRES_CLI_SET_PRES_INFO extends Packet {
         k++;
         data[k] = (byte) 8;
         k++;
-        data[k] = (byte) 0;
+        data[k] = 0x00;
         k++;
-        data[k] = (byte) 1;
+        data[k] = 0x01;
         k++;
-        data[k] = (byte) 0;
+        data[k] = 0x00;
         k++;
-        data[k] = (byte) 0;
+        data[k] = 0x00;
         k++;
-        data[k] = (byte) 0;
+        data[k] = 0x00;
         k++;
-        data[k] = (byte) 0;
+        data[k] = 0x00;
         k++;
-        data[k] = (byte) 0;
+        data[k] = 0x00;
         k++;
-        data[k] = (byte) 0;
+        data[k] = 0x01;
         k++;
         data[k] = 0x00;
         k++;
@@ -131,8 +149,28 @@ public class OBIMP_BEX_PRES_CLI_SET_PRES_INFO extends Packet {
         k++;
         data[k] = 0x00;
         k++;
-        data[k] = (byte) 52;
+        data[k] = 0x52;
         k++;
+        data[k] = 0x00;
+        k++;
+        data[k] = 0x00;
+        k++;
+        data[k] = 0x00;
+        k++;
+        data[k] = 0x06;
+        k++;
+        data[k] = 0x00;
+        k++;
+        data[k] = 0x00;
+        k++;
+        data[k] = 0x00;
+        k++;
+        data[k] = (byte) "Windows 7 x64".getBytes().length;
+        k++;
+        for(int i=0;i<"Windows 7 x64".getBytes().length;i++) {
+            data[k] = "Windows 7 x64".getBytes()[i];
+            k++;
+        }
     }
     
     @Override

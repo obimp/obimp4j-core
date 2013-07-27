@@ -21,23 +21,23 @@ package com.obimp.packet.cli;
 import com.obimp.packet.Packet;
 
 /**
- * Пакет приветствия
+ * Запрос параметров и лимитов контакт-листа
  * @author alex_xpert
  */
-public class OBIMP_BEX_COM_CLI_HELLO extends Packet {
-    private final byte type = 0x0001;
+public class OBIMP_BEX_CL_CLI_PARAMS extends Packet {
+    private final byte type = 0x0002;
     private final byte subtype = 0x0001;
     private byte[] data;
 
-    public OBIMP_BEX_COM_CLI_HELLO(int seq, String username) {
-        data = new byte[25 + username.getBytes().length];
+    public OBIMP_BEX_CL_CLI_PARAMS(int seq) {
+        data = new byte[17];
         data[0] = 0x23;
         data[1] = 0x00;
         data[2] = 0x00;
         data[3] = 0x00;
         data[4] = (byte) seq;
         data[5] = 0x00;
-        data[6] = 0x01;
+        data[6] = 0x02;
         data[7] = 0x00;
         data[8] = 0x01;
         data[9] = 0x00;
@@ -47,22 +47,9 @@ public class OBIMP_BEX_COM_CLI_HELLO extends Packet {
         data[13] = 0x00;
         data[14] = 0x00;
         data[15] = 0x00;
-        data[16] = (byte) (data.length-17);
-        data[17] = 0x00;
-        data[18] = 0x00;
-        data[19] = 0x00;
-        data[20] = 0x01;
-        data[21] = 0x00;
-        data[22] = 0x00;
-        data[23] = 0x00;
-        data[24] = (byte) (username.getBytes().length);
-        int k = 25;
-        for(int i=0;i<username.getBytes().length;i++) {
-            data[k] = username.getBytes()[i];
-            k++;
-        }
+        data[16] = (byte) 17;
     }
-
+    
     @Override
     public int getType() {
         return type;
@@ -77,4 +64,5 @@ public class OBIMP_BEX_COM_CLI_HELLO extends Packet {
     public byte[] asByteArray() {
         return data;
     }
+
 }

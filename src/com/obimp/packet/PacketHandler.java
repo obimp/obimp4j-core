@@ -18,7 +18,6 @@
 
 package com.obimp.packet;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
@@ -130,21 +129,13 @@ public class PacketHandler {
     private static final int OBIMP_BEX_TP_SRV_SHOW_NOTIF = 0x0008;
     private static final int OBIMP_BEX_TP_SRV_OWN_AVATAR_HASH = 0x0009;
     
-    public static void parsePacket(byte[] packet, /*byte[] auth,*/ DataOutputStream out) throws IOException {
-        byte[] header = new byte[17]; // header is always 17 bytes length
-        for(int i=0;i<17;i++) {
-            header[i] = packet[i];
+    public static void parsePacket(byte[] packet) throws IOException {
+        System.out.println("Server response:");
+        System.out.print("[" + packet[0]);
+        for(int i=1; i<packet.length;i++) {
+            System.out.print(", " + packet[i]);
         }
-        int type = header[5] + header[6];
-        int subtype = header[7] + header[8];
-        System.out.println("Server say: " + type + " " + subtype);
-        if(type == OBIMP_BEX_COM) {
-            if(subtype == OBIMP_BEX_COM_SRV_HELLO) {
-                System.out.println("Server say \"HELLO\" =)");
-            } else if(subtype == OBIMP_BEX_COM_SRV_BYE) {
-                System.out.println("Server say \"BYE\" =(");
-            }
-        }
+        System.out.println("]");
     }
     
 }

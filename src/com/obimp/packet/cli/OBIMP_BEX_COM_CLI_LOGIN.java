@@ -32,7 +32,7 @@ public class OBIMP_BEX_COM_CLI_LOGIN extends Packet {
     private byte[] data;
     private final String OBIMPSALT = "OBIMPSALT";
 
-    public OBIMP_BEX_COM_CLI_LOGIN(String username, String password, byte[] srv_key) throws UnsupportedEncodingException {
+    public OBIMP_BEX_COM_CLI_LOGIN(int seq, String username, String password, byte[] srv_key) throws UnsupportedEncodingException {
         byte[] one = (username + OBIMPSALT + password).getBytes("UTF-8");
         byte[] one_hash = MD5(one);
         byte[] two = new byte[one_hash.length + srv_key.length];
@@ -52,7 +52,7 @@ public class OBIMP_BEX_COM_CLI_LOGIN extends Packet {
         data[1] = 0x00;
         data[2] = 0x00;
         data[3] = 0x00;
-        data[4] = 0x01;
+        data[4] = (byte) seq;
         data[5] = 0x00;
         data[6] = 0x01;
         data[7] = 0x00;
@@ -60,7 +60,7 @@ public class OBIMP_BEX_COM_CLI_LOGIN extends Packet {
         data[9] = 0x00;
         data[10] = 0x00;
         data[11] = 0x00;
-        data[12] = 0x01;
+        data[12] = (byte) seq;
         data[13] = 0x00;
         data[14] = 0x00;
         data[15] = 0x00;

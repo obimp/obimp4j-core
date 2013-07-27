@@ -29,13 +29,13 @@ public class OBIMP_BEX_PRES_CLI_ACTIVATE extends Packet {
     private final byte subtype = 0x0005;
     private byte[] data;
 
-    public OBIMP_BEX_PRES_CLI_ACTIVATE() {
+    public OBIMP_BEX_PRES_CLI_ACTIVATE(int seq) {
         data = new byte[17];
         data[0] = 0x23;
         data[1] = 0x00;
         data[2] = 0x00;
         data[3] = 0x00;
-        data[4] = 0x05;
+        data[4] = (byte) seq;
         data[5] = 0x00;
         data[6] = 0x03;
         data[7] = 0x00;
@@ -43,7 +43,7 @@ public class OBIMP_BEX_PRES_CLI_ACTIVATE extends Packet {
         data[9] = 0x00;
         data[10] = 0x00;
         data[11] = 0x00;
-        data[12] = 0x05;
+        data[12] = (byte) seq;
         data[13] = 0x00;
         data[14] = 0x00;
         data[15] = 0x00;
