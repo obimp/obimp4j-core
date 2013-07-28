@@ -18,11 +18,28 @@
 
 package com.obimp.data.type;
 
+import com.obimp.data.DataType;
+
 /**
  * Word - unsigned 2 bytes
  * @author alex_xpert
  */
-public class Word {
+public class Word extends DataType {
     private int length = 2;
+    private byte[] data = new byte[length];
     
+    public Word(int _data) {
+        data[0] = 0x00;
+        data[1] = (byte) _data;
+    }
+
+    @Override
+    public int getLenght() {
+        return this.length;
+    }
+
+    @Override
+    public byte[] getData() {
+        return this.data;
+    }
 }

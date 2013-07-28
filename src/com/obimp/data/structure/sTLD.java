@@ -16,24 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.obimp.data.type;
+package com.obimp.data.structure;
 
+import com.obimp.data.DataStructure;
 import com.obimp.data.DataType;
 
 /**
- * Byte - unsigned 1 byte
+ * sTLD Structure
  * @author alex_xpert
  */
-public class Byte extends DataType {
-    private int length = 1;
-    private byte[] data = new byte[length];
-
-    public Byte(byte b) {
-        this.data[0] = b;
-    }
+public class sTLD extends DataStructure {
+    private int type;
+    private int length;
+    private byte[] data;
     
+    public sTLD(int type, DataType dt) {
+        this.type = type;
+        this.length = dt.getLenght();
+        this.data = dt.getData();
+    }
+
     @Override
-    public int getLenght() {
+    public int getType() {
+        return this.type;
+    }
+
+    @Override
+    public int getLength() {
         return this.length;
     }
 

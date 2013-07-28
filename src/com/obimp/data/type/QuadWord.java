@@ -18,11 +18,30 @@
 
 package com.obimp.data.type;
 
+import com.obimp.data.DataType;
+
 /**
  * QuadWord – unsigned 8 bytes
  * @author alex_xpert
  */
-public class QuadWord {
+public class QuadWord extends DataType {
     private int length = 8;
+    private byte[] data = new byte[length];
+    
+    public QuadWord(int one, int two, int three, int four, int five, int six, int seven, int eight) {
+        int[] _data = {one, two, three, four, five, six, seven, eight};
+        for(int i=0;i<length;i++) {
+            this.data[i] = (byte) _data[i];
+        }
+    }
 
+    @Override
+    public int getLenght() {
+        return this.length;
+    }
+
+    @Override
+    public byte[] getData() {
+        return this.data;
+    }
 }

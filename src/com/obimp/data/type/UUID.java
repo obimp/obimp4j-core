@@ -18,11 +18,29 @@
 
 package com.obimp.data.type;
 
+import com.obimp.data.DataType;
+
 /**
  * UUID - unsigned 16 bytes, Universally Unique Identifier
  * @author alex_xpert
  */
-public class UUID {
+public class UUID extends DataType {
     private int length = 16;
+    private byte[] data = new byte[length];
+    
+    public UUID(byte[] uuid) {
+        for(int i=0;i<16;i++) {
+            this.data[i] = uuid[i];
+        }
+    }
 
+    @Override
+    public int getLenght() {
+        return this.length;
+    }
+
+    @Override
+    public byte[] getData() {
+        return this.data;
+    }
 }

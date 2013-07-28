@@ -18,9 +18,11 @@
 
 package com.obimp.packet.cli;
 
+import com.obimp.data.DataStructure;
+import com.obimp.data.structure.sTLD;
+import com.obimp.data.structure.wTLD;
 import com.obimp.packet.Packet;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
+import java.util.HashMap;
 
 /**
  * Пакет авторизации
@@ -29,75 +31,28 @@ import java.security.MessageDigest;
 public class OBIMP_BEX_COM_CLI_LOGIN extends Packet {
     private final byte type = 0x0001;
     private final byte subtype = 0x0003;
-    private byte[] data;
-    private final String OBIMPSALT = "OBIMPSALT";
+    private HashMap data = new HashMap<Integer, Byte>();
+    private int c = 0;
 
-    public OBIMP_BEX_COM_CLI_LOGIN(int seq, String username, String password, byte[] srv_key) throws UnsupportedEncodingException {
-        byte[] one = (username + OBIMPSALT + password).getBytes("UTF-8");
-        byte[] one_hash = MD5(one);
-        byte[] two = new byte[one_hash.length + srv_key.length];
-        int k = 0;
-        for(int i=0;i<one_hash.length;i++) {
-            two[k] = one_hash[i];
-            k++;
-        }
-        for(int i=0;i<srv_key.length;i++) {
-            two[k] = srv_key[i];
-            k++;
-        }
-        byte[] hash = MD5(two);
-
-        data = new byte[33 + username.getBytes().length + hash.length];
-        data[0] = 0x23;
-        data[1] = 0x00;
-        data[2] = 0x00;
-        data[3] = 0x00;
-        data[4] = (byte) seq;
-        data[5] = 0x00;
-        data[6] = 0x01;
-        data[7] = 0x00;
-        data[8] = 0x03;
-        data[9] = 0x00;
-        data[10] = 0x00;
-        data[11] = 0x00;
-        data[12] = (byte) seq;
-        data[13] = 0x00;
-        data[14] = 0x00;
-        data[15] = 0x00;
-        data[16] = (byte) (data.length-17);
-        data[17] = 0x00;
-        data[18] = 0x00;
-        data[19] = 0x00;
-        data[20] = 0x01;
-        data[21] = 0x00;
-        data[22] = 0x00;
-        data[23] = 0x00;
-        data[24] = (byte) (username.getBytes().length);
-        k = 25;
-        for(int i=0;i<username.getBytes().length;i++) {
-            data[k] = username.getBytes()[i];
-            k++;
-        }
-        data[k] = 0x00;
-        k++;
-        data[k] = 0x00;
-        k++;
-        data[k] = 0x00;
-        k++;
-        data[k] = 0x02;
-        k++;
-        data[k] = 0x00;
-        k++;
-        data[k] = 0x00;
-        k++;
-        data[k] = 0x00;
-        k++;
-        data[k] = (byte) (hash.length);
-        k++;
-        for(int i=0;i<hash.length;i++) {
-            data[k] = hash[i];
-            k++;
-        }
+    public OBIMP_BEX_COM_CLI_LOGIN() {
+        data.put(0, 0x23);
+        data.put(1, 0x00);
+        data.put(2, 0x00);
+        data.put(3, 0x00);
+        data.put(4, 0x00);
+        data.put(5, 0x00);
+        data.put(6, 0x01);
+        data.put(7, 0x00);
+        data.put(8, 0x03);
+        data.put(9, 0x00);
+        data.put(10, 0x00);
+        data.put(11, 0x00);
+        data.put(12, 0x00);
+        data.put(13, 0x00);
+        data.put(14, 0x00);
+        data.put(15, 0x00);
+        data.put(16, 0x00);
+        c = 17;
     }
     
     @Override
@@ -111,19 +66,33 @@ public class OBIMP_BEX_COM_CLI_LOGIN extends Packet {
     }
 
     @Override
-    public byte[] asByteArray() {
-        return data;
+    public byte[] asByteArray(int seq) {
+        data.put(4, seq);
+        data.put(12, seq);
+        data.put(16, data.size() - 17);
+        byte[] p = new byte[data.size()];
+        for(int i=0;i<p.length;i++) {
+            p[i] = Byte.valueOf(String.valueOf(data.get(i)));
+        }
+        return p;
     }
     
-    public static byte[] MD5(byte[] b) {
-        byte hash[] = null;
-        try{
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(b);
-            hash = md.digest();
-        }catch(Exception ex){
-            System.out.println("Error:" + ex);
+    @Override
+    public void append(DataStructure ds) {
+        byte[] d = null;
+        if(ds instanceof wTLD) {
+            d = new byte[] {0x00, 0x00, 0x00, (byte) ds.getType(), 0x00, 0x00, 0x00, (byte) ds.getLength()};
+        } else if(ds instanceof sTLD) {
+            d = new byte[] {0x00, (byte) ds.getType(), 0x00, (byte) ds.getLength()};
         }
-        return hash;
+        for(int i = 0;i<d.length;i++) {
+            data.put(c, d[i]);
+            c++;
+        }
+        for(int i = 0;i<ds.getData().length;i++) {
+            data.put(c, ds.getData()[i]);
+            c++;
+        }
     }
+    
 }

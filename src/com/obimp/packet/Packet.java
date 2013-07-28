@@ -18,13 +18,19 @@
 
 package com.obimp.packet;
 
+import com.obimp.data.DataStructure;
+
 /**
  * Абстрактное представление пакета
  * @author alex_xpert
  */
 public abstract class Packet {
+    private byte type;
+    private byte subtype;  
     
     public abstract int getType();
     public abstract int getSubType();
-    public abstract byte[] asByteArray();
+    public abstract void append(DataStructure ds);
+    public abstract byte[] asByteArray(int seq);
+
 }

@@ -16,29 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.obimp.data.type;
-
-import com.obimp.data.DataType;
+package com.obimp.data;
 
 /**
- * Byte - unsigned 1 byte
+ * Абстрактное представление структуры данных
  * @author alex_xpert
  */
-public class Byte extends DataType {
-    private int length = 1;
-    private byte[] data = new byte[length];
+public abstract class DataStructure {
 
-    public Byte(byte b) {
-        this.data[0] = b;
-    }
+    public abstract int getType();
+    public abstract int getLength();
+    public abstract byte[] getData();
     
-    @Override
-    public int getLenght() {
-        return this.length;
-    }
-
-    @Override
-    public byte[] getData() {
-        return this.data;
-    }
 }

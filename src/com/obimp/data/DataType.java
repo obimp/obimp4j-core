@@ -24,4 +24,6 @@ package com.obimp.data;
  */
 public abstract class DataType {
     
+    public abstract int getLenght();
+    public abstract byte[] getData();
 }

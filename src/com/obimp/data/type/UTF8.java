@@ -18,11 +18,32 @@
 
 package com.obimp.data.type;
 
+import com.obimp.data.DataType;
+
 /**
  * UTF8 - UTF-8 encoded string, variable length
  * @author alex_xpert
  */
-public class UTF8 {
+public class UTF8 extends DataType {
+    private int length;
+    private byte[] data;
     
+    public UTF8(String utf8) {
+        length = utf8.getBytes().length;
+        data = new byte[length];
+        for(int i=0;i<data.length;i++) {
+            this.data[i] = utf8.getBytes()[i];
+        }
+    }
+
+    @Override
+    public int getLenght() {
+        return this.length;
+    }
+
+    @Override
+    public byte[] getData() {
+        return this.data;
+    }
 
 }

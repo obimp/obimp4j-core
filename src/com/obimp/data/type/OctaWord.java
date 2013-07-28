@@ -18,11 +18,39 @@
 
 package com.obimp.data.type;
 
+import com.obimp.data.DataType;
+
 /**
  * OctaWord – unsigned 16 bytes
  * @author alex_xpert
  */
-public class OctaWord {
+public class OctaWord extends DataType {
     private int length = 16;
+    private byte[] data = new byte[length];
+
+    public OctaWord(int _data) {
+        String d = String.valueOf(_data).replace("0x", "");
+        String[] b = {d.substring(0, 2), d.substring(2, 4), d.substring(4, 6), d.substring(6, 8),
+            d.substring(8, 10), d.substring(10, 12), d.substring(12, 14), d.substring(14, 16),
+            d.substring(16, 18), d.substring(18, 20), d.substring(20, 22), d.substring(22, 24),
+            d.substring(24, 26), d.substring(26, 28), d.substring(28, 30), d.substring(30)};
+        for(int i=0;i<length;i++) {
+            this.data[i] = java.lang.Byte.valueOf(b[i]);
+        }
+    }
+    
+    public OctaWord(byte[] _data) {
+        this.data = _data;
+    }
+    
+    @Override
+    public int getLenght() {
+        return this.length;
+    }
+
+    @Override
+    public byte[] getData() {
+        return this.data;
+    }
 
 }

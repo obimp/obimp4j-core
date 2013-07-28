@@ -18,10 +18,28 @@
 
 package com.obimp.data.type;
 
+import com.obimp.data.DataType;
+
 /**
  * BLK - bytes array, variable length
  * @author alex_xpert
  */
-public class BLK {
+public class BLK extends DataType {
+    private int length;
+    private byte[] data;
 
+    public BLK(byte[] blk) {
+        length = blk.length;
+        data = blk;
+    }
+
+    @Override
+    public int getLenght() {
+        return this.length;
+    }
+
+    @Override
+    public byte[] getData() {
+        return this.data;
+    }
 }

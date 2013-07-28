@@ -18,11 +18,33 @@
 
 package com.obimp.data.type;
 
+import com.obimp.data.DataType;
+
 /**
  * DateTime - signed 8 bytes, 64-bit unix date time
  * @author alex_xpert
  */
-public class DateTime {
+public class DateTime extends DataType {
     private int length = 8;
+    private byte[] data = new byte[length];
 
+    public DateTime(long datetime) {
+        String d = String.valueOf(datetime);
+        String[] b = {d.substring(0, 2), d.substring(2, 4), d.substring(4, 6), d.substring(6, 8),
+            d.substring(8, 10), d.substring(10, 12), d.substring(12, 14), d.substring(14)};
+        for(int i=0;i<length;i++) {
+            this.data[i] = java.lang.Byte.valueOf(b[i]);
+        }
+    }
+    
+    @Override
+    public int getLenght() {
+        return this.length;
+    }
+
+    @Override
+    public byte[] getData() {
+        return this.data;
+    }
+    
 }

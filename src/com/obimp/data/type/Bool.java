@@ -18,11 +18,27 @@
 
 package com.obimp.data.type;
 
+import com.obimp.data.DataType;
+
 /**
  * Bool - unsigned 1 byte
  * @author alex_xpert
  */
-public class Bool {
+public class Bool extends DataType {
     private int length = 1;
+    private byte[] data = new byte[length];
+
+    public Bool(boolean b) {
+        this.data[0] = (byte) (b ? 0x01 : 0x00);
+    }
     
+    @Override
+    public int getLenght() {
+        return this.length;
+    }
+
+    @Override
+    public byte[] getData() {
+        return this.data;
+    }
 }

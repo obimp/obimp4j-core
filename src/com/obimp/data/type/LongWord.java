@@ -18,11 +18,30 @@
 
 package com.obimp.data.type;
 
+import com.obimp.data.DataType;
+
 /**
  * LongWord – unsigned 4 bytes
  * @author alex_xpert
  */
-public class LongWord {
-    private int length = 4;
+public class LongWord extends DataType {
+    public int length = 4;
+    private byte[] data = new byte[length];
+
+    public LongWord(int one, int two, int three, int four) {
+        int[] _data = {one, two, three, four};
+        for(int i=0;i<length;i++) {
+            this.data[i] = (byte) _data[i];
+        }
+    }
     
+    @Override
+    public int getLenght() {
+        return this.length;
+    }
+
+    @Override
+    public byte[] getData() {
+        return this.data;
+    }
 }
