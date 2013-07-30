@@ -19,18 +19,80 @@
 package com.obimp.packet;
 
 import com.obimp.data.DataStructure;
+import com.obimp.data.structure.sTLD;
+import com.obimp.data.structure.wTLD;
+import java.util.HashMap;
 
 /**
- * Абстрактное представление пакета
+ * Пакет
  * @author alex_xpert
  */
-public abstract class Packet {
+public class Packet {
     private byte type;
-    private byte subtype;  
+    private byte subtype;
+    private HashMap data = new HashMap<Integer, Byte>();
+    private int c = 0; 
     
-    public abstract int getType();
-    public abstract int getSubType();
-    public abstract void append(DataStructure ds);
-    public abstract byte[] asByteArray(int seq);
+    public Packet(int type, int subtype) {
+        this.type = (byte) type;
+        this.subtype = (byte) subtype;
+        
+        data.put(0, 0x23);
+        data.put(1, 0x00);
+        data.put(2, 0x00);
+        data.put(3, 0x00);
+        data.put(4, 0x00);
+        data.put(5, 0x00);
+        data.put(6, this.type);
+        data.put(7, 0x00);
+        data.put(8, this.subtype);
+        data.put(9, 0x00);
+        data.put(10, 0x00);
+        data.put(11, 0x00);
+        data.put(12, 0x00);
+        data.put(13, 0x00);
+        data.put(14, 0x00);
+        data.put(15, 0x00);
+        data.put(16, 0x00);
+        c = 17;
+    }
+    
+    public int getType() {
+        return type;
+    }
+
+    public int getSubType() {
+        return subtype;
+    }
+
+    public byte[] asByteArray(int seq) {     
+        data.put(4, seq);
+        data.put(12, seq);
+        
+        data.put(16, (byte) data.size() - 17);
+        
+        byte[] p = new byte[data.size()];
+        for(int i=0;i<p.length;i++) {
+            p[i] = (byte) ((int) Integer.valueOf(String.valueOf(data.get(i))));
+        }
+        return p;
+    }
+    
+    public void append(DataStructure ds) {
+        byte[] d = null;
+        if(ds instanceof wTLD) {
+            d = new byte[] {0x00, 0x00, 0x00, (byte) ds.getType(), 0x00, 0x00, 0x00, (byte) ds.getLength()};
+        } else if(ds instanceof sTLD) {
+            d = new byte[] {0x00, (byte) ds.getType(), 0x00, (byte) ds.getLength()};
+        }
+        for(int i = 0;i<d.length;i++) {
+            data.put(c, d[i]);
+            c++;
+        }
+        for(int i = 0;i<ds.getData().length;i++) {
+            data.put(c, ds.getData()[i]);
+            c++;
+        }
+    }
 
 }

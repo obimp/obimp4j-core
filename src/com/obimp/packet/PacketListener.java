@@ -37,21 +37,36 @@ public class PacketListener implements Runnable {
     @Override
     public void run() {
         Vector<Byte> data = new Vector<>();
-        int k = -1;
+        int k = 0;
         while(OBIMPConnection.connected) {
             try {
-                int i = in.read();
-                if(i == -1 && k == -1) continue;
-                if(i == -1 || (i == 35 && data.size() > 0)) {
+                if(k == 13) {
+                    int l;
+                    byte one = in.readByte(), two = in.readByte(), three = in.readByte(), four = in.readByte();
+                    l  = (((int) one) << 24) & 0xFF000000;
+                    l |= (((int) two) << 16) & 0x00FF0000;
+                    l |= (((int) three) << 8) & 0x0000FF00;
+                    l |= (((int) four)) & 0x000000FF;
+                    byte[] body = new byte[l];
+                    in.readFully(body);
+                    data.add(one);
+                    data.add(two);
+                    data.add(three);
+                    data.add(four);
+                    for(int i=0;i<body.length;i++) {
+                        data.add(body[i]);
+                    }
                     byte[] packet = new byte[data.size()];
                     for(int j=0;j<packet.length;j++) {
                         packet[j] = data.get(j);
                     }
                     PacketHandler.parsePacket(packet);
                     data = new Vector<>();
+                    k = 0;
                 }
+                int i = in.read();
                 data.add((byte) i);
-                k = i;
+                k++;
             } catch(Exception ex) {
                 ex.printStackTrace();
             }

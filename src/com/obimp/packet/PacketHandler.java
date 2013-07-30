@@ -25,6 +25,8 @@ import java.io.IOException;
  * @author alex_xpert
  */
 public class PacketHandler {
+    public static boolean ping = false;
+    
     private static final int OBIMP_BEX_COM = 0x0001; // Common
     private static final int OBIMP_BEX_CL = 0x0002; // Contact list
     private static final int OBIMP_BEX_PRES = 0x0003; // Presence
@@ -130,12 +132,53 @@ public class PacketHandler {
     private static final int OBIMP_BEX_TP_SRV_OWN_AVATAR_HASH = 0x0009;
     
     public static void parsePacket(byte[] packet) throws IOException {
-        System.out.println("Server response:");
-        System.out.print("[" + packet[0]);
-        for(int i=1; i<packet.length;i++) {
-            System.out.print(", " + packet[i]);
+        int type = packet[6];
+        int subtype = packet[8];
+        String s = "";
+        if(type == 1) {
+            if(subtype == 2) {
+                s = "Server say HELLO";
+            } else if(subtype == 4) {
+                s = "Server say LOGIN";
+            } else if(subtype == 5) {
+                s = "Server say BYE\n[" + packet[0];
+                for(int i=1;i<packet.length;i++) {
+                    s += ", " + packet[i];
+                }
+                s += "]";
+            } else if(subtype == 6) {
+                s = "Server say PING";
+                ping = true;
+            } else {
+                s = "Server say " + type + " " + subtype;
+            }
+        } else if(type == 4) {
+            if(subtype == 7) {
+                StringBuilder id = new StringBuilder();
+                for(int i=25;i<25+packet[24];i++) {
+                    id.append((char) packet[i]);
+                }
+                int i = 24 + packet[24] +8;
+                i = i + packet[i]; // skip 2 wtld
+                i = i + 8;
+                i = i + packet[i]; // skip 3 wtld
+                i = i + 8;
+                int j = i;
+                byte[] text = new byte[packet[j] + 1];
+                int k = 0;
+                for(i=i+1;i<j+packet[j]+1;i++) {
+                    text[k] = packet[i];
+                    k++;
+                }
+                s = "New message from " + id.toString() + ": " + new String(text);
+            }
         }
-        System.out.println("]");
+//        s = "Server say " + type + " " + subtype + "\nBytes:\n[" + packet[0];
+//        for(int i=1;i<packet.length;i++) {
+//            s += ", " + packet[i];
+//        }
+//        s += "]";
+        System.out.println(s);
     }
     
 }

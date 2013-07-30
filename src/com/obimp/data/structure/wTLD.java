@@ -36,6 +36,22 @@ public class wTLD extends DataStructure {
         this.data = dt.getData();
     }
 
+    public wTLD(int type, DataType[] dt) {
+        this.type = type;
+        this.length = 0;
+        for(DataType dttp : dt) {
+            this.length += dttp.getLenght();  
+        }
+        this.data = new byte[length];
+        int i = 0;
+        for(DataType dttp : dt) {
+            for(byte b : dttp.getData()) {
+                this.data[i] = b;
+                i++;
+            }
+        }
+    }
+    
     @Override
     public int getType() {
         return this.type;
