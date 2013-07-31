@@ -80,7 +80,7 @@ public class OBIMPConnection {
                     if(c == -1) break;
                     res.add((byte) c);
                 } while(in.available() > 0);
-                System.out.println("Server response:\n" + res.toString());
+                //System.out.println("Server response:\n" + res.toString());
                 byte[] srv_key = new byte[32];
                 int k = 25;
                 for(int i=0;i<srv_key.length;i++) {

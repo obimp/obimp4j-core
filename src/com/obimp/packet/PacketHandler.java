@@ -148,13 +148,26 @@ public class PacketHandler {
                         break;
                     case 5:
                         s = "Server say BYE";
-                        for(byte b : packet.asByteArray(OBIMP_BEX_CL)) {
-                            s += b + " ";
-                        }
+                        //for(byte b : packet.asByteArray(OBIMP_BEX_CL)) {
+                        //    s += b + " ";
+                        //}
                         break;
                     case 6:
                         s = "Server say PING";
                         oc.sendPong();
+                        break;
+                }
+                break;
+            case OBIMP_BEX_PRES:
+                switch(packet.getSubType()) {
+                    case OBIMP_BEX_PRES_SRV_PARAMS_REPLY:
+                        //s = "Server say PRES PARAMS";
+                        break;
+                    case OBIMP_BEX_PRES_SRV_CONTACT_ONLINE:
+                        String name = new String(tlds.get(0x0001).getData());
+                        String status_n = new String(tlds.get(0x0003).getData());
+                        String client_n = new String(tlds.get(0x0008).getData());
+                        s = "Contact online "+name+": "+status_n+" ("+client_n+")";
                         break;
                 }
                 break;
@@ -169,9 +182,9 @@ public class PacketHandler {
                 }
                 break;
             default:
-                for(byte b : packet.asByteArray(OBIMP_BEX_CL)) {
-                    s += b + " ";
-                }
+                //for(byte b : packet.asByteArray(OBIMP_BEX_CL)) {
+                //    s += b + " ";
+                //}
         }
         if(!s.equals("")) {
             System.out.println(s);
