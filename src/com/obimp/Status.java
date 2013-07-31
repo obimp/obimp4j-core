@@ -16,32 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.obimp.data.type;
-
-import com.obimp.data.DataType;
+package com.obimp;
 
 /**
- * UUID - unsigned 16 bytes, Universally Unique Identifier
+ * Статусы
  * @author alex_xpert
  */
-public class UUID extends DataType {
-    private int length = 16;
-    private byte[] data = new byte[length];
+public class Status {
+
+    public static final byte PRES_STATUS_ONLINE = 0x00;
+    public static final byte PRES_STATUS_INVISIBLE = 0x01;
+    public static final byte PRES_STATUS_INVISIBLE_FOR_ALL = 0x02;
+    public static final byte PRES_STATUS_FREE_FOR_CHAT = 0x03;
+    public static final byte PRES_STATUS_AT_HOME = 0x04;
+    public static final byte PRES_STATUS_AT_WORK = 0x05;
+    public static final byte PRES_STATUS_LUNCH = 0x06;
+    public static final byte PRES_STATUS_AWAY = 0x07;
+    public static final byte PRES_STATUS_NOT_AVAILABLE = 0x08;
+    public static final byte PRES_STATUS_OCCUPIED = 0x09;
+    public static final byte PRES_STATUS_DO_NOT_DISTURB = 0x0A;
     
-    public UUID(int type, byte uuid) {
-        switch(type) {
-            case 1: // X-Status
-                data = new byte[] {0x10, 0x79, 0x00, 0x01, 0x3A, (byte) 0xE3, 0x47, 0x79, 0x00, 0x34, 0x34, 0x00, 0x00, 0x00, 0x00, uuid};
-        }
-    }
-
-    @Override
-    public int getLenght() {
-        return this.length;
-    }
-
-    @Override
-    public byte[] getData() {
-        return this.data;
-    }
 }

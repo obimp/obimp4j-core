@@ -63,7 +63,7 @@ public class OBIMPConnection {
             con = new Socket(server, 7023);
             in = new DataInputStream(con.getInputStream());
             out = new DataOutputStream(con.getOutputStream());
-            listener = new PacketListener(con, in);
+            listener = new PacketListener(con, in, this);
             
             try {
                 Thread t = new Thread(listener);
@@ -157,14 +157,10 @@ public class OBIMPConnection {
                 out.flush();
                 seq++;
                 Packet set_status = new Packet(0x0003, 0x0004); // OBIMP_BEX_PRES_CLI_SET_STATUS
-                set_status.append(new wTLD(0x00000001, new LongWord(0, 0, 0, 0)));
+                set_status.append(new wTLD(0x00000001, new LongWord(0, 0, 0, Status.PRES_STATUS_FREE_FOR_CHAT)));
                 set_status.append(new wTLD(0x00000002, new UTF8("Работает!")));
                 set_status.append(new wTLD(0x00000004, new UTF8("Моя библиотека работает!")));
-                String s = "107900013AE347790034340000000033";
-                byte[] b = new byte[16];
-                b = new byte[] {0x10, 0x79, 0x00, 0x01, 0x3A, (byte) 0xE3, 0x47, 0x79, 0x00, 0x34, 0x34, 0x00, 0x00, 0x00,
-                    0x00, (byte) 0x33};
-                set_status.append(new wTLD(0x00000005, new UUID(b)));
+                set_status.append(new wTLD(0x00000005, new UUID(1, XStatus.COFFEE)));
                 out.write(set_status.asByteArray(seq));
                 out.flush();
                 seq++;
@@ -181,16 +177,10 @@ public class OBIMPConnection {
                 out.write(req_offline_msgs.asByteArray(seq));
                 out.flush();
                 seq++;
-                Thread.sleep(2500);
                 Packet del_offline_msgs = new Packet(0x0004, 0x0005); // OBIMP_BEX_IM_CLI_DEL_OFFLINE
                 out.write(del_offline_msgs.asByteArray(seq));
                 out.flush();
                 seq++;
-                Thread.sleep(2500);
-                PingPong pp = new PingPong(out);
-                Thread th = new Thread(pp);
-                th.setDaemon(true);
-                th.start();
             } catch(Exception ex) {
                 System.out.println("Error:\n");
                 ex.printStackTrace();
@@ -201,28 +191,13 @@ public class OBIMPConnection {
         }
     }
     
-    public class PingPong implements Runnable {
-        DataOutputStream out;
-        
-        public PingPong(DataOutputStream out) {
-            this.out = out;
-        }
-
-        @Override
-        public void run() {
-            while(connected) {
-                if(PacketHandler.ping) {
-                    try {
-                        Packet pong = new Packet(0x0001, 0x0007); // OBIMP_BEX_COM_CLI_SRV_KEEPALIVE_PONG
-                        out.write(pong.asByteArray(seq));
-                        seq++;
-                        PacketHandler.ping = false;
-                        Thread.sleep(1000);
-                    } catch(Exception ex){
-                        System.out.println("Error:" + ex);
-                    }
-                }
-            }
+    public void sendPong() {
+        try {
+            Packet pong = new Packet(0x0001, 0x0007); // OBIMP_BEX_COM_CLI_SRV_KEEPALIVE_PONG
+            out.write(pong.asByteArray(seq));
+            seq++;
+        } catch(Exception ex){
+            System.out.println("Error:" + ex);
         }
     }
     

@@ -30,6 +30,9 @@ public class DateTime extends DataType {
 
     public DateTime(long datetime) {
         String d = String.valueOf(datetime);
+        while(d.length() < 16) {
+            d = "0" + d;
+        }
         String[] b = {d.substring(0, 2), d.substring(2, 4), d.substring(4, 6), d.substring(6, 8),
             d.substring(8, 10), d.substring(10, 12), d.substring(12, 14), d.substring(14)};
         for(int i=0;i<length;i++) {

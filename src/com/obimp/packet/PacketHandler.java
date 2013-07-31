@@ -18,7 +18,11 @@
 
 package com.obimp.packet;
 
+import com.obimp.OBIMP;
+import com.obimp.OBIMPConnection;
+import com.obimp.data.type.BLK;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Обработчик пакетов
@@ -131,54 +135,47 @@ public class PacketHandler {
     private static final int OBIMP_BEX_TP_SRV_SHOW_NOTIF = 0x0008;
     private static final int OBIMP_BEX_TP_SRV_OWN_AVATAR_HASH = 0x0009;
     
-    public static void parsePacket(byte[] packet) throws IOException {
-        int type = packet[6];
-        int subtype = packet[8];
+    public static void parsePacket(Packet packet, HashMap<Integer, BLK> tlds, OBIMPConnection oc) throws IOException {
         String s = "";
-        if(type == 1) {
-            if(subtype == 2) {
-                s = "Server say HELLO";
-            } else if(subtype == 4) {
-                s = "Server say LOGIN";
-            } else if(subtype == 5) {
-                s = "Server say BYE\n[" + packet[0];
-                for(int i=1;i<packet.length;i++) {
-                    s += ", " + packet[i];
+        switch(packet.getType()) {
+            case 1:
+                switch(packet.getSubType()) {
+                    case 2:
+                        s = "Server say HELLO";
+                        break;
+                    case 4:
+                        s = "Server say LOGIN";
+                        break;
+                    case 5:
+                        s = "Server say BYE";
+                        for(byte b : packet.asByteArray(OBIMP_BEX_CL)) {
+                            s += b + " ";
+                        }
+                        break;
+                    case 6:
+                        s = "Server say PING";
+                        oc.sendPong();
+                        break;
                 }
-                s += "]";
-            } else if(subtype == 6) {
-                s = "Server say PING";
-                ping = true;
-            } else {
-                s = "Server say " + type + " " + subtype;
-            }
-        } else if(type == 4) {
-            if(subtype == 7) {
-                StringBuilder id = new StringBuilder();
-                for(int i=25;i<25+packet[24];i++) {
-                    id.append((char) packet[i]);
+                break;
+            case 4:
+                switch(packet.getSubType()) {
+                    case 7:
+                        String id = new String(tlds.get(0x0001).getData());
+                        String text = new String(tlds.get(0x0004).getData());
+                        s = "New message from " + id + ": " + text;
+                        OBIMP.set_upd_info(oc, "jimbot");
+                        break;
                 }
-                int i = 24 + packet[24] +8;
-                i = i + packet[i]; // skip 2 wtld
-                i = i + 8;
-                i = i + packet[i]; // skip 3 wtld
-                i = i + 8;
-                int j = i;
-                byte[] text = new byte[packet[j] + 1];
-                int k = 0;
-                for(i=i+1;i<j+packet[j]+1;i++) {
-                    text[k] = packet[i];
-                    k++;
+                break;
+            default:
+                for(byte b : packet.asByteArray(OBIMP_BEX_CL)) {
+                    s += b + " ";
                 }
-                s = "New message from " + id.toString() + ": " + new String(text);
-            }
         }
-//        s = "Server say " + type + " " + subtype + "\nBytes:\n[" + packet[0];
-//        for(int i=1;i<packet.length;i++) {
-//            s += ", " + packet[i];
-//        }
-//        s += "]";
-        System.out.println(s);
+        if(!s.equals("")) {
+            System.out.println(s);
+        }
     }
     
 }
