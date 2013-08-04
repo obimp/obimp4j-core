@@ -24,6 +24,8 @@ package com.obimp;
  */
 public class XStatus {
 
+    public static final byte NO = 0x00; // No X-Status
+    
     public static final byte SMILE = 0x01; // smile
     public static final byte BEACH = 0x02; // beach
     public static final byte COCKTAIL = 0x03; // cocktail

@@ -32,11 +32,15 @@ public class PacketListener implements Runnable {
     private Socket s;
     private DataInputStream in;
     private OBIMPConnection oc;
+    private String username;
+    private String password;
 
-    public PacketListener(Socket s, DataInputStream in, OBIMPConnection oc) {
+    public PacketListener(Socket s, DataInputStream in, OBIMPConnection oc, String _username, String _password) {
         this.s = s;
         this.in = in;
         this.oc = oc;
+        this.username = _username;
+        this.password = _password;
     }
 
     @Override
@@ -56,7 +60,7 @@ public class PacketListener implements Runnable {
                     for(int i=0;i<tlds.size();i++) {
                         p.append(new wTLD((int) tlds.keySet().toArray()[i], (BLK) tlds.values().toArray()[i]));
                     }
-                    PacketHandler.parsePacket(p, tlds, oc);
+                    PacketHandler.parsePacket(p, tlds, oc, username, password, s);
                     data = new Vector<>();
                     k = 0;
                 }
@@ -69,7 +73,7 @@ public class PacketListener implements Runnable {
         }
     }
 
-    private int getLength(byte one, byte two, byte three, byte four) {
+    public static int getLength(byte one, byte two, byte three, byte four) {
         int l;
         l  = (((int) one) << 24) & 0xFF000000;
         l |= (((int) two) << 16) & 0x00FF0000;

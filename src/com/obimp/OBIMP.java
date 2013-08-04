@@ -22,6 +22,7 @@ import com.obimp.data.structure.wTLD;
 import com.obimp.data.type.BLK;
 import com.obimp.data.type.LongWord;
 import com.obimp.data.type.UTF8;
+import com.obimp.data.type.UUID;
 import com.obimp.data.type.Word;
 import com.obimp.packet.Packet;
 
@@ -30,12 +31,41 @@ import com.obimp.packet.Packet;
  * @author alex_xpert
  */
 public class OBIMP {    
-    public static final String VERSION = "Java OBIMP Lib (OBIMP4J) 1.0.2.2";
+    public static final String VERSION = "Java OBIMP Lib (OBIMP4J) 1.0.3.7";
     
-    private static int msg_id;
+    private static volatile int msg_id = 0;
     
     public String getVersion() {
         return VERSION;
+    }
+    
+    private static synchronized int getMsgID() {
+        msg_id++;
+        return msg_id;
+    }
+    
+    /**
+     * Установка/Смена статуса
+     * @author alex_xpert
+     * @param con
+     * @param id
+     * @param text 
+     */
+    public static void setStatus(OBIMPConnection con, byte stat, byte xstat, String st, String desc) {
+        if(con != null) {
+            try {
+                Packet set_status = new Packet(0x0003, 0x0004); // OBIMP_BEX_PRES_CLI_SET_STATUS
+                set_status.append(new wTLD(0x00000001, new LongWord(0, 0, 0, stat)));
+                set_status.append(new wTLD(0x00000002, new UTF8(st)));
+                set_status.append(new wTLD(0x00000004, new UTF8(desc)));
+                set_status.append(new wTLD(0x00000005, new UUID(1, xstat)));
+                con.out.write(set_status.asByteArray(con.getSeq()));
+                con.out.flush();
+            } catch(Exception ex) {
+                System.out.println("Error:\n");
+                ex.printStackTrace();
+            }
+        }
     }
     
     /**
@@ -45,17 +75,17 @@ public class OBIMP {
      * @param id
      * @param text 
      */
-    public static void sendMsg(OBIMPConnection con, String id, String text) {
+    public static synchronized void sendMsg(OBIMPConnection con, String id, String text) {
         if(con != null) {
             try {
                 Packet message = new Packet(0x0004, 0x0006); // OBIMP_BEX_IM_CLI_MESSAGE
                 message.append(new wTLD(0x00000001, new UTF8(id)));
-                message.append(new wTLD(0x00000002, new LongWord(0, 0, 0, msg_id)));
+                message.append(new wTLD(0x00000002, new LongWord(0, 0, 0, getMsgID())));
                 message.append(new wTLD(0x00000003, new LongWord(0, 0, 0, 1)));
                 message.append(new wTLD(0x00000004, new BLK(text.getBytes())));
-                con.out.write(message.asByteArray(con.seq));
+                con.out.write(message.asByteArray(con.getSeq()));
                 con.out.flush();
-                msg_id++;
+                Thread.sleep(500);
             } catch(Exception ex) {
                 System.out.println("Error:\n");
                 ex.printStackTrace();
@@ -104,9 +134,8 @@ public class OBIMP {
                 //upd_inf.append(new wTLD(0x001A, new UTF8("position"))); // должность
                 //upd_inf.append(new wTLD(0x00001001, new LongWord(0, 0, 0, 0)));
                
-                con.out.write(upd_inf.asByteArray(con.seq));
+                con.out.write(upd_inf.asByteArray(con.getSeq()));
                 con.out.flush();
-                con.seq++;
             } catch(Exception ex) {
                 System.out.println("Error:\n");
                 ex.printStackTrace();
@@ -131,7 +160,7 @@ public class OBIMP {
                 add_group.append(new wTLD(0x00000002, new LongWord(0,0,0,id)));
                 //add_group.append(new wTLD(0x00000003, new BLK(packGroupInfo(name))));
                 add_group.append(new wTLD(0x00000003, new UTF8(name)));
-                con.out.write(add_group.asByteArray(con.seq));
+                con.out.write(add_group.asByteArray(con.getSeq()));
                 con.out.flush();
             } catch(Exception ex) {
                 System.out.println("Error:\n");
@@ -157,7 +186,7 @@ public class OBIMP {
                 upd_group.append(new wTLD(0x00000002, new LongWord(0,0,0,0)));
                 //upd_group.append(new wTLD(0x00000003, new BLK(packGroupInfo(name))));
                 upd_group.append(new wTLD(0x00000003, new UTF8(name)));
-                con.out.write(upd_group.asByteArray(con.seq));
+                con.out.write(upd_group.asByteArray(con.getSeq()));
                 con.out.flush();
             } catch(Exception ex) {
                 System.out.println("Error:\n");
@@ -181,7 +210,7 @@ public class OBIMP {
                 Packet auth_reply = new Packet(0x0002, 0x000E); // Пакет авторизации (авторизовать/отклонить)
                 auth_reply.append(new wTLD(0x00000001, new UTF8(userId)));
                 auth_reply.append(new wTLD(0x00000002, new Word(auth ? 0x0001 : 0x0002)));
-                con.out.write(auth_reply.asByteArray(con.seq));
+                con.out.write(auth_reply.asByteArray(con.getSeq()));
                 con.out.flush();
             } catch(Exception ex) {
                 System.out.println("Error:\n");
@@ -204,7 +233,7 @@ public class OBIMP {
                 Packet auth_request = new Packet(0x0002, 0x000D); // Пакет запроса авторизации
                 auth_request.append(new wTLD(0x00000001, new UTF8(userId)));
                 auth_request.append(new wTLD(0x00000002, new UTF8("Разрешите добавить Вас в мой список контактов.")));
-                con.out.write(auth_request.asByteArray(con.seq));
+                con.out.write(auth_request.asByteArray(con.getSeq()));
                 con.out.flush();
             } catch(Exception ex) {
                 System.out.println("Error:\n");
