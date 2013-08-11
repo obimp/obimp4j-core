@@ -18,13 +18,17 @@
 
 package com.obimp.listener;
 
+import com.obimp.cl.Contact;
+
 /**
- * UserStatusListener
+ * ContactListListener
  * @author alex_xpert
  */
-public interface UserStatusListener {
-    
-    public void onUserOnline(String id, String status_name, String status_text, String client_name, String client_version, String os_name);
-    public void onUserOffline(String id);
+public interface ContactListListener {
 
+    public void onAuthRequest(String userid, String reason);
+    public void onAuthReply(String userid, boolean reply);
+    public void onAuthRevoke(String userid, String reason);
+    public void onLoadContactList(Contact[] cl);
+    
 }

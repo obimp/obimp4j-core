@@ -25,6 +25,7 @@ import com.obimp.data.type.QuadWord;
 import com.obimp.data.type.UTF8;
 import com.obimp.data.type.Word;
 import com.obimp.listener.ConnectionListener;
+import com.obimp.listener.ContactListListener;
 import com.obimp.listener.MessageListener;
 import com.obimp.listener.MetaInfoListener;
 import com.obimp.listener.UserStatusListener;
@@ -57,6 +58,7 @@ public class OBIMPConnection {
     public Vector<MessageListener> msg_list = new Vector<MessageListener>();
     public Vector<UserStatusListener> stat_list = new Vector<UserStatusListener>();
     public Vector<MetaInfoListener> user_info = new Vector<MetaInfoListener>();
+    public Vector<ContactListListener> cl_list = new Vector<ContactListListener>();
     
     public static boolean connected = false;
     
@@ -85,6 +87,10 @@ public class OBIMPConnection {
     public void addMetaInfoListener(MetaInfoListener ui) {
     	System.out.println("MetaInfoListener " + ui.getClass().getName() + " has been added");
         user_info.add(ui);
+    }
+    
+    public void addContactListListener(ContactListListener cll) {
+        cl_list.add(cll);
     }
     
     public boolean removeMetaInfoListener(MetaInfoListener ui) {

@@ -16,15 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.obimp.listener;
+package com.obimp.cl;
 
 /**
- * UserStatusListener
+ * Контакт
  * @author alex_xpert
  */
-public interface UserStatusListener {
+public class Contact {
+    public String name;
+    public int item_id;
+    public int group_id;
     
-    public void onUserOnline(String id, String status_name, String status_text, String client_name, String client_version, String os_name);
-    public void onUserOffline(String id);
-
+    public Contact(String _name, int _item_id, int _group_id) {
+        this.name = _name;
+        this.item_id = _item_id;
+        this.group_id = _group_id;
+    }
 }

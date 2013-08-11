@@ -19,11 +19,14 @@
 package com.obimp.packet;
 
 import com.obimp.OBIMPConnection;
+import com.obimp.XStatus;
+import com.obimp.cl.Contact;
 import com.obimp.data.structure.wTLD;
 import com.obimp.data.type.BLK;
 import com.obimp.data.type.OctaWord;
 import com.obimp.data.type.UTF8;
 import com.obimp.listener.ConnectionListener;
+import com.obimp.listener.ContactListListener;
 import com.obimp.listener.MessageListener;
 import com.obimp.listener.MetaInfoListener;
 import com.obimp.listener.UserStatusListener;
@@ -32,11 +35,11 @@ import java.io.IOException;
 import java.net.Socket;
 import java.security.MessageDigest;
 import java.util.HashMap;
-import java.util.Vector;
 
 /**
  * Обработчик пакетов
  * @author alex_xpert
+ * @author Warik777
  */
 public class PacketHandler {
     public static volatile boolean logged = false;
@@ -333,6 +336,8 @@ public class PacketHandler {
                             byte[] data = tlds.get(0x0001).getData();
                             int cl_length = PacketListener.getLength(data[0], data[1], data[2], data[3]);
                             s += "\nYour CL (" + cl_length + " items):";
+                            Contact[] clist = new Contact[cl_length];
+                            int clist_cursor = 0;
                             byte[] cl = new byte[data.length - 4];
                             int j = 4;
                             for(int i=0;i<cl.length;i++) {
@@ -370,6 +375,8 @@ public class PacketHandler {
                                 }
                                 s += "Name = " + new String(name) + " ";
                                 s += "Item ID = " + item_id + ", Group ID = " + group_id;
+                                clist[clist_cursor] = new Contact(new String(name), item_id, group_id);
+                                clist_cursor++;
                                 byte[] next = new byte[cl.length - (length + 14)];
                                 j = length + 13;
                                 for(int i=0;i<next.length;i++) {
@@ -378,6 +385,9 @@ public class PacketHandler {
                                 }
                                 cl = next;
                             }
+                           for(ContactListListener cll : oc.cl_list) {
+                               cll.onLoadContactList(clist);
+                           }
                             break;
                         case OBIMP_BEX_CL_SRV_VERIFY_REPLY:
                             s = "Server say CL VERIFY";
@@ -472,6 +482,27 @@ public class PacketHandler {
                         }
                         }else s += " - NO ERROR";
                             break;
+                        case OBIMP_BEX_CL_CLI_SRV_AUTH_REQUEST:
+                            String userid = new String(tlds.get(0x0001).getData());
+                            String reason = new String(tlds.get(0x0002).getData());
+                            for(ContactListListener cll : oc.cl_list) {
+                                cll.onAuthRequest(userid, reason);
+                            }
+                            break;
+                        case OBIMP_BEX_CL_CLI_SRV_AUTH_REPLY:
+                            String us_id = new String(tlds.get(0x0001).getData());
+                            boolean reply = (int) tlds.get(0x0002).getData()[1] == 0x01 ? true : false;
+                            for(ContactListListener cll : oc.cl_list) {
+                                cll.onAuthReply(us_id, reply);
+                            }
+                            break;
+                        case OBIMP_BEX_CL_CLI_SRV_AUTH_REVOKE:
+                            String uid = new String(tlds.get(0x0001).getData());
+                            String rsn = new String(tlds.get(0x0002).getData());
+                            for(ContactListListener cll : oc.cl_list) {
+                                cll.onAuthRevoke(uid, rsn);
+                            }
+                            break;
                         case OBIMP_BEX_CL_SRV_DONE_OFFAUTH:
                             s = "Server say CL DONE OFFAUTH";
                             break;
@@ -509,12 +540,37 @@ public class PacketHandler {
                         String s_n = new String(tlds.get(0x0003).getData());
                         String c_n = new String(tlds.get(0x0008).getData());
                         byte[] v = tlds.get(0x0009).getData();
-                     
+                        
                         String c_v = ((int) v[0] + (int) v[1]) + "." + ((int) v[2] + (int) v[3]) + "." + ((int) v[4] + (int) v[5]) + "." + ((int) v[6] + (int) v[7]);
                         String os_n = new String(tlds.get(0x000F).getData());
-                        s = "Contact online " + n + ": " + s_n + " (" + c_n + "  " + c_v + " | " + os_n +" )";
+                        
+                        String s_t = "";
+                        if(tlds.get(0x0005) != null){
+                            if(tlds.get(0x0005).getData().length >0) s_t = "Title="+XStatus.X_Status[tlds.get(0x0004).getData()[3]]+" Desc="+new String(tlds.get(0x0005).getData());
+                        } else s_t = "х-статус пуст";
+                        
+                        String caps = "Характеристики клиента:\n";
+                        
+                        for(int i=0; i<tlds.get(0x0006).getData().length;i++){
+                            if( tlds.get(0x0006).getData()[i]>0 ) {
+                                switch(tlds.get(0x0006).getData()[i]){
+                                    case 1: caps += "[UTF-8 сообщения]\n"; break;
+                                    case 2: caps += "[RTF сообщения]\n"; break;
+                                    case 3: caps += "[HTML сообщения]\n"; break;
+                                    case 4: caps += "[Шифрование сообщений]\n"; break;
+                                    case 5: caps += "[Оповещение о наборе текста]\n"; break;
+                                    case 6: caps += "[Аватары]\n"; break;
+                                    case 7: caps += "[Передача файлов]\n"; break;
+                                    case 8: caps += "[Транспорты]\n"; break;
+                                    case 9: caps += "[Оповещения будильника]\n"; break;
+                                    case 10: caps += "[Оповещения почты]\n"; break;
+                                }
+                            }
+                        }
+                        
+                        s = "Contact online " + n + ": " + s_n + ", " + s_t + " (" + c_n + "  " + c_v + " | " + os_n +" ) " + caps;
                         for(UserStatusListener usl : oc.stat_list) {
-                            usl.onUserOnline(n, s_n, c_n, c_v, os_n);
+                            usl.onUserOnline(n, s_n, s_t, c_n, c_v, os_n);
                         }
                         break;
                     case OBIMP_BEX_PRES_SRV_CONTACT_OFFLINE:

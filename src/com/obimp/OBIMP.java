@@ -24,6 +24,7 @@ import com.obimp.data.type.LongWord;
 import com.obimp.data.type.UTF8;
 import com.obimp.data.type.UUID;
 import com.obimp.data.type.Word;
+import com.obimp.meta.UserInfo;
 import com.obimp.packet.Packet;
 import com.obimp.packet.PacketHandler;
 import java.io.ByteArrayOutputStream;
@@ -114,42 +115,67 @@ public class OBIMP {
     }
 
     @SuppressWarnings("CallToThreadDumpStack")
-    public static void set_upd_info(OBIMPConnection con, String userId) {
+    public static void set_upd_info(OBIMPConnection con, UserInfo info) {
         if(con != null) {
             try {
 //                System.out.println("set_upd_info: userId="+userId);
                 Packet upd_inf = new Packet(PacketHandler.OBIMP_BEX_UD, PacketHandler.OBIMP_BEX_UD_CLI_DETAILS_UPD); //OBIMP_BEX_UD_CLI_DETAILS_UPD
-
-                upd_inf.append(new wTLD(0x00000001, new UTF8(userId)));
-                upd_inf.append(new wTLD(0x00000002, new UTF8("Warik777"))); //good
-                upd_inf.append(new wTLD(0x00000003, new UTF8("Alexander"))); //good
-                upd_inf.append(new wTLD(0x00000004, new UTF8("Podunov"))); //good
-                upd_inf.append(new wTLD(0x0005, new Word(183))); //страна
-                upd_inf.append(new wTLD(0x00000006, new UTF8("Russian Federation"))); //регион/область/штат
-                upd_inf.append(new wTLD(0x00000007, new UTF8("Bryansk"))); //город
-                upd_inf.append(new wTLD(0x00000008, new UTF8("241902"))); //индекс
-                upd_inf.append(new wTLD(0x00000009, new UTF8("address"))); //адрес
-                upd_inf.append(new wTLD(0x000A, new Word(52))); //владение языками 1
-                upd_inf.append(new wTLD(0x000B, new Word(19))); //владение языками 2
-                upd_inf.append(new wTLD(0x0000000C, new com.obimp.data.type.Byte((byte)0x02))); //пол
-//                upd_inf.append(new wTLD(0x0000000D, new DateTime( Calendar.getInstance().getTime().getTime()/1000L ))); //дата рождения
-                upd_inf.append(new wTLD(0x0000000E, new UTF8("warik777.ru"))); //веб-сайт
-                upd_inf.append(new wTLD(0x0000000F, new UTF8("about"))); //о себе
-                upd_inf.append(new wTLD(0x00000010, new UTF8("interests: internet, gerl"))); //интересы
-//                upd_inf.append(new wTLD(0x00000011, new UTF8("admin@warik777.ru"))); //электронная почта 1
-//                upd_inf.append(new wTLD(0x00000012, new UTF8("san_pod@mail.ru"))); //электронная почта 2
-//                upd_inf.append(new wTLD(0x00000013, new UTF8("+79201001010"))); //домашний телефон
-//                upd_inf.append(new wTLD(0x00000014, new UTF8("+79201002020"))); //рабочий телефон
-//                upd_inf.append(new wTLD(0x00000015, new UTF8("+79201003030"))); //сотовый телефон
-//                upd_inf.append(new wTLD(0x00000016, new UTF8("+79201004040"))); //факс телефон
-//                upd_inf.append(new wTLD(0x00000017, new Bool(true))); //if True then online status will not be shown in users directory
-//                upd_inf.append(new wTLD(0x00000018, new UTF8("company: Warik777"))); //компания
-//                upd_inf.append(new wTLD(0x00000019, new UTF8("department"))); //подразделение/отдел
-                upd_inf.append(new wTLD(0x0000001A, new UTF8("position"))); //должность
+ 
+                upd_inf.append(new wTLD(0x00000001, new UTF8(info.getAccountName())));
+ 
+                if(info.getNickName()!= null) upd_inf.append(new wTLD(0x00000002, new UTF8(info.getNickName()))); //good
+ 
+                if(info.getFirstName()!= null) upd_inf.append(new wTLD(0x00000003, new UTF8(info.getFirstName()))); //good
+ 
+                if(info.getLastName()!= null) upd_inf.append(new wTLD(0x00000004, new UTF8(info.getLastName()))); //good
+ 
+                if(info.getCountryCode() != -1) upd_inf.append(new wTLD(0x0005, new Word(info.getCountryCode()))); //страна
+ 
+                if(info.getRegionState()!= null) upd_inf.append(new wTLD(0x00000006, new UTF8(info.getRegionState()))); //регион/область/штат
+ 
+                if(info.getCity()!= null) upd_inf.append(new wTLD(0x00000007, new UTF8(info.getCity()))); //город
+ 
+                if(info.getZipCode()!= null) upd_inf.append(new wTLD(0x00000008, new UTF8(info.getZipCode()))); //индекс
+ 
+                if(info.getAddress()!= null) upd_inf.append(new wTLD(0x00000009, new UTF8(info.getAddress()))); //адрес
+ 
+                if(info.getLanguageCode() != -1) upd_inf.append(new wTLD(0x000A, new Word(info.getLanguageCode()))); //владение языками 1
+ 
+                if(info.getAditionalLanguageCode() != -1) upd_inf.append(new wTLD(0x000B, new Word(info.getAditionalLanguageCode()))); //владение языками 2
+ 
+                if(info.getGender() != -1){
+                upd_inf.append(new wTLD(0x0000000C, new com.obimp.data.type.Byte( ((info.getGender() != 0x01) && (info.getGender() != 0x02)) ? 0x00 : info.getGender() ))); //пол
+                }
+//                upd_inf.append(new wTLD(0x0000000D, new DateTime( info.getBirthday() ))); //дата рождения
+ 
+                if(info.getHomepage()!= null) upd_inf.append(new wTLD(0x0000000E, new UTF8(info.getHomepage()))); //веб-сайт
+ 
+                if(info.getAbout()!= null) upd_inf.append(new wTLD(0x0000000F, new UTF8(info.getAbout()))); //о себе
+ 
+                if(info.getInterests()!= null) upd_inf.append(new wTLD(0x00000010, new UTF8(info.getInterests()))); //интересы
+ 
+//                if(info.getEmail()!= null) upd_inf.append(new wTLD(0x00000011, new UTF8(info.getEmail()))); //электронная почта 1
+ 
+//                if(info.getAdditionalEmail()!= null) upd_inf.append(new wTLD(0x00000012, new UTF8(info.getAdditionalEmail()))); //электронная почта 2
+ 
+//                if(info.getHomePhone()!= null) upd_inf.append(new wTLD(0x00000013, new UTF8(info.getHomePhone()))); //домашний телефон
+ 
+//                if(info.getWorkPhone()!= null) upd_inf.append(new wTLD(0x00000014, new UTF8(info.getWorkPhone()))); //рабочий телефон
+ 
+//                if(info.getCellularPhone()!= null) upd_inf.append(new wTLD(0x00000015, new UTF8(info.getCellularPhone()))); //сотовый телефон
+ 
+//                if(info.getFaxNumber()!= null) upd_inf.append(new wTLD(0x00000016, new UTF8(info.getFaxNumber()))); //факс телефон
+ 
+//                upd_inf.append(new wTLD(0x00000017, new Bool(info.getOnlineStatus()))); //if True then online status will not be shown in users directory
+ 
+//                if(homeAddress!= null)upd_inf.append(new wTLD(0x00000018, new UTF8(info.getCompany()))); //компания
+ 
+//                if(info.getDivisionDepartment()!= null) upd_inf.append(new wTLD(0x00000019, new UTF8(info.getDivisionDepartment()))); //подразделение/отдел
+ 
+                if(info.getPosition()!= null) upd_inf.append(new wTLD(0x0000001A, new UTF8(info.getPosition()))); //должность
+ 
 //                upd_inf.append(new wTLD(0x00001001, new LongWord(0, 0, 0, 0)));
-
-                con.out.write(upd_inf.asByteArray(con.getSeq()));
-                con.out.flush();
+                con.send(upd_inf);
             } catch(Exception ex) {
                 System.out.println("Error:\n");
                 ex.printStackTrace();
