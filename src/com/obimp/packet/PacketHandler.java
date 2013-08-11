@@ -25,6 +25,7 @@ import com.obimp.data.type.OctaWord;
 import com.obimp.data.type.UTF8;
 import com.obimp.listener.ConnectionListener;
 import com.obimp.listener.MessageListener;
+import com.obimp.listener.MetaInfoListener;
 import com.obimp.listener.UserStatusListener;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import java.io.IOException;
@@ -585,27 +586,57 @@ public class PacketHandler {
                                 break;
                         }
                         }else s += " - NO ERROR";
-//                        if(tlds.get(0x0002).getData().length>0)s += "\naccount name: "+new String(tlds.get(0x0002).getData());
-//                        if(tlds.get(0x0003).getData().length>0)s += "\nsecure email: "+new String(tlds.get(0x0003).getData());
-//                        if(tlds.get(0x0004).getData().length>0)s += "\nnick name: "+new String(tlds.get(0x0004).getData());
-//                        if(tlds.get(0x0005).getData().length>0)s += "\nfirst name: "+new String(tlds.get(0x0005).getData());
-//                        if(tlds.get(0x0006).getData().length>0)s += "\nlast name: "+new String(tlds.get(0x0006).getData());
-//                        if(tlds.get(0x0008).getData().length>0)s += "\nregion/state: "+new String(tlds.get(0x0008).getData());
-//                        if(tlds.get(0x0009).getData().length>0)s += "\ncity: "+new String(tlds.get(0x0009).getData());
-//                        if(tlds.get(0x000A).getData().length>0)s += "\nzip code: "+new String(tlds.get(0x000A).getData());
-//                        if(tlds.get(0x000B).getData().length>0)s += "\naddress: "+new String(tlds.get(0x000B).getData());
-//                        if(tlds.get(0x0010).getData().length>0)s += "\nhomepage: "+new String(tlds.get(0x0010).getData());
-//                        if(tlds.get(0x0011).getData().length>0)s += "\nabout: "+new String(tlds.get(0x0011).getData());
-//                        if(tlds.get(0x0012).getData().length>0)s += "\ninterests: "+new String(tlds.get(0x0012).getData());
-//                        if(tlds.get(0x0013).getData().length>0)s += "\nemail: "+new String(tlds.get(0x0013).getData());
-//                        if(tlds.get(0x0014).getData().length>0)s += "\nadditional email: "+new String(tlds.get(0x0014).getData());
-//                        if(tlds.get(0x0015).getData().length>0)s += "\nhome phone: "+new String(tlds.get(0x0015).getData());
-//                        if(tlds.get(0x0016).getData().length>0)s += "\nwork phone: "+new String(tlds.get(0x0016).getData());
-//                        if(tlds.get(0x0017).getData().length>0)s += "\ncellular phone: "+new String(tlds.get(0x0017).getData());
-//                        if(tlds.get(0x0018).getData().length>0)s += "\nfax number: "+new String(tlds.get(0x0018).getData());
-//                        if(tlds.get(0x001A).getData().length>0)s += "\ncompany: "+new String(tlds.get(0x001A).getData());
-//                        if(tlds.get(0x001B).getData().length>0)s += "\ndivision/department: "+new String(tlds.get(0x001B).getData());
-//                        if(tlds.get(0x001C).getData().length>0)s += "\nposition: "+new String(tlds.get(0x001C).getData());
+
+                        String out_inf = "Информация о пользователе:";
+                        if( new String(tlds.get(0x0002).getData()).equals(username) ){
+//                            System.out.println(acc+"-------------------------------------------");
+                        }else {
+                        if(tlds.get(0x0002) !=null)
+                        if(tlds.get(0x0002).getData().length>0) out_inf += "\naccount name: "+new String(tlds.get(0x0002).getData());
+                        if(tlds.get(0x0003) !=null) 
+                        if(tlds.get(0x0003).getData().length>0) out_inf += "\nsecure email: "+new String(tlds.get(0x0003).getData());
+                        if(tlds.get(0x0004) !=null)
+                        if(tlds.get(0x0004).getData().length>0) out_inf += "\nnick name: "+new String(tlds.get(0x0004).getData());
+                        if(tlds.get(0x0005) !=null)
+                        if(tlds.get(0x0005).getData().length>0) out_inf += "\nfirst name: "+new String(tlds.get(0x0005).getData());
+                        if(tlds.get(0x0006) !=null)
+                        if(tlds.get(0x0006).getData().length>0) out_inf += "\nlast name: "+new String(tlds.get(0x0006).getData());
+                        if(tlds.get(0x0008) !=null)
+                        if(tlds.get(0x0008).getData().length>0) out_inf += "\nregion/state: "+new String(tlds.get(0x0008).getData());
+                        if(tlds.get(0x0009) !=null)
+                        if(tlds.get(0x0009).getData().length>0) out_inf += "\ncity: "+new String(tlds.get(0x0009).getData());
+                        if(tlds.get(0x000A) !=null)
+                        if(tlds.get(0x000A).getData().length>0) out_inf += "\nzip code: "+new String(tlds.get(0x000A).getData());
+                        if(tlds.get(0x000B) !=null)
+                        if(tlds.get(0x000B).getData().length>0) out_inf += "\naddress: "+new String(tlds.get(0x000B).getData());
+                        if(tlds.get(0x0010) !=null)
+                        if(tlds.get(0x0010).getData().length>0) out_inf += "\nhomepage: "+new String(tlds.get(0x0010).getData());
+                        if(tlds.get(0x0011) !=null)
+                        if(tlds.get(0x0011).getData().length>0) out_inf += "\nabout: "+new String(tlds.get(0x0011).getData());
+                        if(tlds.get(0x0012) !=null)
+                        if(tlds.get(0x0012).getData().length>0) out_inf += "\ninterests: "+new String(tlds.get(0x0012).getData());
+                        if(tlds.get(0x0013) !=null)
+                        if(tlds.get(0x0013).getData().length>0) out_inf += "\nemail: "+new String(tlds.get(0x0013).getData());
+                        if(tlds.get(0x0014) !=null)
+                        if(tlds.get(0x0014).getData().length>0) out_inf += "\nadditional email: "+new String(tlds.get(0x0014).getData());
+                        if(tlds.get(0x0015) !=null)
+                        if(tlds.get(0x0015).getData().length>0) out_inf += "\nhome phone: "+new String(tlds.get(0x0015).getData());
+                        if(tlds.get(0x0016) !=null)
+                        if(tlds.get(0x0016).getData().length>0) out_inf += "\nwork phone: "+new String(tlds.get(0x0016).getData());
+                        if(tlds.get(0x0017) !=null)
+                        if(tlds.get(0x0017).getData().length>0) out_inf += "\ncellular phone: "+new String(tlds.get(0x0017).getData());
+                        if(tlds.get(0x0018) !=null)
+                        if(tlds.get(0x0018).getData().length>0) out_inf += "\nfax number: "+new String(tlds.get(0x0018).getData());
+                        if(tlds.get(0x001A) !=null)
+                        if(tlds.get(0x001A).getData().length>0) out_inf += "\ncompany: "+new String(tlds.get(0x001A).getData());
+                        if(tlds.get(0x001B) !=null)
+                        if(tlds.get(0x001B).getData().length>0) out_inf += "\ndivision/department: "+new String(tlds.get(0x001B).getData());
+                        if(tlds.get(0x001C) !=null)
+                        if(tlds.get(0x001C).getData().length>0) out_inf += "\nposition: "+new String(tlds.get(0x001C).getData());
+                            for(MetaInfoListener ml : oc.user_info) {
+                                ml.onUserInfo(out_inf);
+                            }
+                        }
                         break;
                     case OBIMP_BEX_UD_SRV_DETAILS_UPD_REPLY:
                         s = "Server say UD DETAILS UPD";
@@ -647,28 +678,41 @@ public class PacketHandler {
                                 break;
                         }
                         }else s += " - NO ERROR";
-                        if(tlds.get(0x0002).getData().length>0) s += "\naccount name: "+new String(tlds.get(0x0002).getData());
-//                        if(tlds.get(0x0003).getData().length>0) s += "\nnick name: "+new String(tlds.get(0x0003).getData());
-//                        if(tlds.get(0x0004).getData().length>0) s += "\nfirst name: "+new String(tlds.get(0x0004).getData());
-//                        if(tlds.get(0x0005).getData().length>0) s += "\nlast name: "+new String(tlds.get(0x0005).getData());
+                            
+                        String out_search = "Результат поиска:";
+                        if(tlds.get(0x0002) != null)
+                        if(tlds.get(0x0002).getData().length>0) out_search += "\naccount name: "+new String(tlds.get(0x0002).getData());
+                        if(tlds.get(0x0003) != null)
+                        if(tlds.get(0x0003).getData().length>0) out_search += "\nnick name: "+new String(tlds.get(0x0003).getData());
+                        if(tlds.get(0x0004) != null)
+                        if(tlds.get(0x0004).getData().length>0) out_search += "\nfirst name: "+new String(tlds.get(0x0004).getData());
+                        if(tlds.get(0x0005) != null)
+                        if(tlds.get(0x0005).getData().length>0) out_search += "\nlast name: "+new String(tlds.get(0x0005).getData());
+                        if(tlds.get(0x0006) != null)
                         if(tlds.get(0x0006).getData().length>0){
                             switch(tlds.get(0x0006).getData()[0]){
                                 case 0x00:
-                                    s += "\ngender: not specified";
+                                    out_search += "\ngender: not specified";
                                     break;
                                 case 0x01:
-                                    s += "\ngender: female";
+                                    out_search += "\ngender: female";
                                     break;
                                 case 0x02:
-                                    s += "\ngender: male";
+                                    out_search += "\ngender: male";
                                     break;
                             }
                         }
-//                        if(tlds.get(0x0007).getData().length>1)s += "\nage: "+new String(tlds.get(0x0007).getData());
+                        if(tlds.get(0x0007) != null)
+                        if(tlds.get(0x0007).getData()[0]>13)
+                            out_search += "\nage: "+Integer.toString( tlds.get(0x0007).getData()[0] );
                         if(tlds.get(0x0008) != null){
                         if(new String(tlds.get(0x0008).getData()).isEmpty())
-                            s += "\nuser: online";
-                        } else s += "\nuser: offline";
+                            out_search += "\nuser: online";
+                        } else out_search += "\nuser: offline";
+                        
+                            for(MetaInfoListener ml : oc.user_info) {
+                                ml.onSearch(out_search);
+                            }
                         break;
                     case OBIMP_BEX_UD_SRV_SECURE_UPD_REPLY:
                         s = "Server say UD SECURE UPD";
@@ -844,7 +888,7 @@ public class PacketHandler {
                     s += b + " ";
                 }
         }
-        boolean debug = false;
+        boolean debug = true;
         if(!s.equals("") && debug) {
             System.out.println(s);
         }

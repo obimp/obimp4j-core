@@ -26,6 +26,7 @@ import com.obimp.data.type.UTF8;
 import com.obimp.data.type.Word;
 import com.obimp.listener.ConnectionListener;
 import com.obimp.listener.MessageListener;
+import com.obimp.listener.MetaInfoListener;
 import com.obimp.listener.UserStatusListener;
 import com.obimp.packet.Packet;
 import com.obimp.packet.PacketHandler;
@@ -36,7 +37,7 @@ import java.net.Socket;
 import java.util.Vector;
 
 /**
- * Подключение к OBIMP (Bimoid) серверу
+ * Соединение к OBIMP (Bimoid) серверу
  * @author alex_xpert
  */
 public class OBIMPConnection {
@@ -55,6 +56,7 @@ public class OBIMPConnection {
     public Vector<ConnectionListener> con_list = new Vector<ConnectionListener>();
     public Vector<MessageListener> msg_list = new Vector<MessageListener>();
     public Vector<UserStatusListener> stat_list = new Vector<UserStatusListener>();
+    public Vector<MetaInfoListener> user_info = new Vector<MetaInfoListener>();
     
     public static boolean connected = false;
     
@@ -80,6 +82,16 @@ public class OBIMPConnection {
         stat_list.add(usl);
     }
     
+    public void addMetaInfoListener(MetaInfoListener ui) {
+    	System.out.println("MetaInfoListener " + ui.getClass().getName() + " has been added");
+        user_info.add(ui);
+    }
+    
+    public boolean removeMetaInfoListener(MetaInfoListener ui) {
+    	System.out.println("MetaInfoListener " + ui.getClass().getName() + " has been removed");
+        return user_info.remove(ui);
+    }
+    
     public void connect() {
         try {
             connected = true;
@@ -95,8 +107,7 @@ public class OBIMPConnection {
                 
                 Packet hello = new Packet(0x0001, 0x0001); // OBIMP_BEX_COM_CLI_HELLO
                 hello.append(new wTLD(0x00000001, new UTF8(username)));
-                out.write(hello.asByteArray(getSeq()));
-                out.flush();
+                send(hello);
                 while(!PacketHandler.logged) {
                     Thread.sleep(100);
                 }
@@ -105,36 +116,16 @@ public class OBIMPConnection {
 //                login.append(new wTLD(0x00000002, new OctaWord(hash)));
 //                out.write(login.asByteArray(getSeq()));
 //                out.flush();
-                Packet cl_params = new Packet(0x0002, 0x0001); // OBIMP_BEX_CL_CLI_PARAMS
-                out.write(cl_params.asByteArray(getSeq()));
-                out.flush();
-                Packet pres_params = new Packet(0x0003, 0x0001); // OBIMP_BEX_PRES_CLI_PARAMS
-                out.write(pres_params.asByteArray(getSeq()));
-                out.flush();
-                Packet im_params = new Packet(0x0004, 0x0001); // OBIMP_BEX_IM_CLI_PARAMS
-                out.write(im_params.asByteArray(getSeq()));
-                out.flush();
-                Packet ud_params = new Packet(0x0005, 0x0001); // OBIMP_BEX_UD_CLI_PARAMS
-                out.write(ud_params.asByteArray(getSeq()));
-                out.flush();
-                Packet ua_params = new Packet(0x0006, 0x0001); // OBIMP_BEX_UA_CLI_PARAMS
-                out.write(ua_params.asByteArray(getSeq()));
-                out.flush();
-                Packet ft_params = new Packet(0x0007, 0x0001); // OBIMP_BEX_FT_CLI_PARAMS
-                out.write(ft_params.asByteArray(getSeq()));
-                out.flush();
-                Packet tp_params = new Packet(0x0008, 0x0001); // OBIMP_BEX_TP_CLI_PARAMS
-                out.write(tp_params.asByteArray(getSeq()));
-                out.flush();
-                Packet req_pres_info = new Packet(0x0003, 0x0008); // OBIMP_BEX_PRES_CLI_REQ_PRES_INFO
-                out.write(req_pres_info.asByteArray(getSeq()));
-                out.flush();
-                Packet cl_req = new Packet(0x0002, 0x0003); // OBIMP_BEX_CL_CLI_REQUEST
-                out.write(cl_req.asByteArray(getSeq()));
-                out.flush();
-                Packet verify = new Packet(0x0002, 0x0005); // OBIMP_BEX_CL_CLI_VERIFY
-                out.write(verify.asByteArray(getSeq()));
-                out.flush();
+                send(new Packet(0x0002, 0x0001)); // OBIMP_BEX_CL_CLI_PARAMS
+                send(new Packet(0x0003, 0x0001)); // OBIMP_BEX_PRES_CLI_PARAMS
+                send(new Packet(0x0004, 0x0001)); // OBIMP_BEX_IM_CLI_PARAMS
+                send(new Packet(0x0005, 0x0001)); // OBIMP_BEX_UD_CLI_PARAMS
+                send(new Packet(0x0006, 0x0001)); // OBIMP_BEX_UA_CLI_PARAMS
+                send(new Packet(0x0007, 0x0001)); // OBIMP_BEX_FT_CLI_PARAMS
+                send(new Packet(0x0008, 0x0001)); // OBIMP_BEX_TP_CLI_PARAMS
+                send(new Packet(0x0003, 0x0008)); // OBIMP_BEX_PRES_CLI_REQ_PRES_INFO
+                send(new Packet(0x0002, 0x0003)); // OBIMP_BEX_CL_CLI_REQUEST
+                send(new Packet(0x0002, 0x0005)); // OBIMP_BEX_CL_CLI_VERIFY
                 Packet pres_info = new Packet(0x0003, 0x0003); // OBIMP_BEX_PRES_CLI_SET_PRES_INFO
                 pres_info.append(new wTLD(0x00000001, new DataType[] {new Word(0x0001), new Word(0x0002)}));
                 pres_info.append(new wTLD(0x00000002, new Word(0x0002)));
@@ -143,28 +134,19 @@ public class OBIMPConnection {
                 pres_info.append(new wTLD(0x00000005, new Word(0x0052)));
                 pres_info.append(new wTLD(0x00000006, new UTF8(System.getProperty("os.name") + " " +
                         (System.getProperty("os.arch").contains("64") ? "x64" : "x86")))); //операционная система
-                out.write(pres_info.asByteArray(getSeq()));
-                out.flush();
+                send(pres_info);
                 Packet set_status = new Packet(0x0003, 0x0004); // OBIMP_BEX_PRES_CLI_SET_STATUS
                 set_status.append(new wTLD(0x00000001, new LongWord(0, 0, 0, Status.PRES_STATUS_ONLINE)));
                 //set_status.append(new wTLD(0x00000002, new UTF8("Работает!")));
                 //set_status.append(new wTLD(0x00000004, new UTF8("Моя библиотека работает!")));
                 //set_status.append(new wTLD(0x00000005, new UUID(1, XStatus.COFFEE)));
-                out.write(set_status.asByteArray(getSeq()));
-                out.flush();
-                Packet activate = new Packet(0x0003, 0x0005); // OBIMP_BEX_PRES_CLI_ACTIVATE
-                out.write(activate.asByteArray(getSeq()));
-                out.flush();
+                send(set_status);
+                send(new Packet(0x0003, 0x0005)); // OBIMP_BEX_PRES_CLI_ACTIVATE
                 Packet ud_details = new Packet(0x0005, 0x0003); // OBIMP_BEX_UD_CLI_DETAILS_REQ
                 ud_details.append(new wTLD(0x0001, new UTF8(username)));
-                out.write(ud_details.asByteArray(getSeq()));
-                out.flush();
-                Packet req_offline_msgs = new Packet(0x0004, 0x0003); // OBIMP_BEX_IM_CLI_REQ_OFFLINE
-                out.write(req_offline_msgs.asByteArray(getSeq()));
-                out.flush();
-                Packet del_offline_msgs = new Packet(0x0004, 0x0005); // OBIMP_BEX_IM_CLI_DEL_OFFLINE
-                out.write(del_offline_msgs.asByteArray(getSeq()));
-                out.flush();
+                send(ud_details);
+                send(new Packet(0x0004, 0x0003)); // OBIMP_BEX_IM_CLI_REQ_OFFLINE
+                send(new Packet(0x0004, 0x0005)); // OBIMP_BEX_IM_CLI_DEL_OFFLINE
             } catch(Exception ex) {
                 System.out.println("Error:\n");
                 ex.printStackTrace();
@@ -172,6 +154,14 @@ public class OBIMPConnection {
         } catch(Exception ex) {
             System.out.println("Error:\n");
             ex.printStackTrace();
+        }
+    }
+    
+    public void send(Packet packet) {
+        try {
+            out.write(packet.asByteArray(getSeq()));
+        } catch(Exception ex){
+            System.out.println("Error:" + ex);
         }
     }
     
