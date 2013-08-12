@@ -21,6 +21,9 @@ package com.obimp.packet;
 import com.obimp.OBIMPConnection;
 import com.obimp.XStatus;
 import com.obimp.cl.Contact;
+import com.obimp.cl.ContactListItem;
+import com.obimp.cl.Group;
+import com.obimp.data.structure.sTLD;
 import com.obimp.data.structure.wTLD;
 import com.obimp.data.type.BLK;
 import com.obimp.data.type.OctaWord;
@@ -336,58 +339,29 @@ public class PacketHandler {
                             byte[] data = tlds.get(0x0001).getData();
                             int cl_length = PacketListener.getLength(data[0], data[1], data[2], data[3]);
                             s += "\nYour CL (" + cl_length + " items):";
-                            Contact[] clist = new Contact[cl_length];
-                            int clist_cursor = 0;
                             byte[] cl = new byte[data.length - 4];
                             int j = 4;
                             for(int i=0;i<cl.length;i++) {
                                 cl[i] = data[j];
                                 j++;
                             }
-                            //Vector items = new Vector<String>();
-                            while(cl.length > 0) {
-                                int type = PacketListener.getLength((byte) 0, (byte) 0, cl[0], cl[1]);
-                                int item_id = PacketListener.getLength(cl[2], cl[3], cl[4], cl[5]);
-                                int group_id = PacketListener.getLength(cl[6], cl[7], cl[8], cl[9]);
-                                int length = PacketListener.getLength(cl[10], cl[11], cl[12], cl[13]);
-                                s += "\n";
-                                switch(type) {
-                                    case 1:
-                                        s += "[Group] ";
-                                        break;
-                                    case 2:
-                                        s += "[Contact] ";
-                                        break;
-                                    case 3:
-                                        s += "[Transport] ";
-                                        break;
-                                    case 4:
-                                        s += "[Note] ";
-                                        break;
+                            ContactListItem[] clist = new ContactListItem[cl_length];
+                            HashMap items = parseByteToCLItems(cl_length, cl);
+                            for(int i=0;i<items.size();i++) {
+                                ContactListItem item = (ContactListItem) items.keySet().toArray()[i];
+                                HashMap props = parseByteArrayTosTLDArray((byte[]) items.values().toArray()[i]);
+                                if(item instanceof Contact) {
+                                    ((Contact) item).account_name = new String(((sTLD)props.get(0x0002)).getData());
+                                    ((Contact) item).contact_name = new String(((sTLD)props.get(0x0003)).getData());
+                                    ((Contact) item).privacy_type = (int)((sTLD)props.get(0x0004)).getData()[0];
+                                } else { // Group
+                                    ((Group) item).name = new String(((sTLD) props.get(0x0001)).getData());
                                 }
-                                int st =  17 + PacketListener.getLength((byte) 0, (byte) 0, cl[16], cl[17]) + 5;
-                                int l = PacketListener.getLength((byte) 0, (byte) 0, cl[st - 2], cl[st - 1]);
-                                byte[] name = new byte[l];
-                                j = st;
-                                for(int i=0;i<name.length;i++) {
-                                    name[i] = cl[j];
-                                    j++;
-                                }
-                                s += "Name = " + new String(name) + " ";
-                                s += "Item ID = " + item_id + ", Group ID = " + group_id;
-                                clist[clist_cursor] = new Contact(new String(name), item_id, group_id);
-                                clist_cursor++;
-                                byte[] next = new byte[cl.length - (length + 14)];
-                                j = length + 13;
-                                for(int i=0;i<next.length;i++) {
-                                    next[i] = cl[j];
-                                    j++;
-                                }
-                                cl = next;
+                                clist[i] = item;
+                            } 
+                            for(ContactListListener cll : oc.cl_list) {
+                                cll.onLoadContactList(clist);
                             }
-                           for(ContactListListener cll : oc.cl_list) {
-                               cll.onLoadContactList(clist);
-                           }
                             break;
                         case OBIMP_BEX_CL_SRV_VERIFY_REPLY:
                             s = "Server say CL VERIFY";
@@ -960,6 +934,48 @@ public class PacketHandler {
             System.out.println("Error:" + ex);
         }
         return hash;
+    }
+    
+    private static HashMap parseByteArrayTosTLDArray(byte[] data) {
+        HashMap<Integer, sTLD> result = new HashMap<Integer, sTLD>();
+        while(data.length > 0) {
+            int type = (int) data[0] + (int) data[1];
+            int length = (int) data[2] + (int) data[3];
+            byte[] value = new byte[length];
+            for(int i=4;i<length+4;i++) {
+                value[i-4] = data[i];
+            }
+            result.put(type, new sTLD(type, new BLK(value)));
+            byte[] next = new byte[data.length-4-length];
+            for(int i=4+length;i<data.length;i++) {
+                next[i-4-length] = data[i];
+            }
+            data = next;
+        }
+        return result;
+    }
+    
+    private static HashMap parseByteToCLItems(int count, byte[] data) {
+        HashMap<ContactListItem, byte[]> result = new HashMap<>();
+        int c = 0;
+        while(data.length > 0) {
+            int type = PacketListener.getLength((byte) 0, (byte) 0, data[0], data[1]);
+            int item_id = PacketListener.getLength(data[2], data[3], data[4], data[5]);
+            int group_id = PacketListener.getLength(data[6], data[7], data[8], data[9]);
+            int length = PacketListener.getLength(data[10], data[11], data[12], data[13]);
+            byte[] value = new byte[length];
+            for(int i=14;i<length+14;i++) {
+                value[i-14] = data[i];
+            }
+            result.put(type == 2 ? new Contact(item_id, group_id, "", "", 0) : new Group(item_id, group_id, ""), value);
+            byte[] next = new byte[data.length-14-length];
+            for(int i=14+length;i<data.length;i++) {
+                next[i-14-length] = data[i];
+            }
+            data = next;
+            c++;
+        }
+        return result;
     }
     
 }

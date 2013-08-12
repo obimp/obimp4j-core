@@ -16,19 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.obimp.listener;
-
-import com.obimp.cl.ContactListItem;
+package com.obimp.cl;
 
 /**
- * ContactListListener
+ * Abstract Contact List Item
  * @author alex_xpert
  */
-public interface ContactListListener {
+public abstract class ContactListItem {
+    public int type;
+    public int item_id;
+    public int group_id;
 
-    public void onAuthRequest(String userid, String reason);
-    public void onAuthReply(String userid, boolean reply);
-    public void onAuthRevoke(String userid, String reason);
-    public void onLoadContactList(ContactListItem[] cl);
-    
 }

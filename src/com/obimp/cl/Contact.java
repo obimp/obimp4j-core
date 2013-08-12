@@ -22,14 +22,16 @@ package com.obimp.cl;
  * Контакт
  * @author alex_xpert
  */
-public class Contact {
-    public String name;
-    public int item_id;
-    public int group_id;
+public class Contact extends ContactListItem {
+    public String account_name;
+    public String contact_name;
+    public int privacy_type;
     
-    public Contact(String _name, int _item_id, int _group_id) {
-        this.name = _name;
+    public Contact(int _item_id, int _group_id, String _account_name, String _contact_name, int _privacy_type) {
         this.item_id = _item_id;
         this.group_id = _group_id;
+        this.account_name = _account_name;
+        this.contact_name = _contact_name;
+        this.privacy_type = _privacy_type;
     }
 }

@@ -23,6 +23,9 @@ package com.obimp;
  * @author alex_xpert
  */
 public class Status {
+    public static final String[] Status = new String[]{
+    "Онлайн","Невидимый","Невидимый для всех","Готов поболтать","Дома","На работе","Кушаю","Отошел","Недоступен",
+    "Занят","Не беспокоить"};
 
     public static final byte PRES_STATUS_ONLINE = 0x00;
     public static final byte PRES_STATUS_INVISIBLE = 0x01;
