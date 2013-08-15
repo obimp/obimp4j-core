@@ -19,21 +19,16 @@
 package com.obimp.cl;
 
 /**
- * Контакт
+ * Transport
  * @author alex_xpert
  */
-public class Contact extends ContactListItem {
+public class Transport extends ContactListItem {
     public String account_name;
-    public String contact_name;
-    public int privacy_type;
-    public String authorization;
+    public String friendly_name;
     
-    public Contact(int _item_id, int _group_id, String _account_name, String _contact_name, int _privacy_type, String _auth) {
-        this.item_id = _item_id;
-        this.group_id = _group_id;
+    public Transport(String _account_name, String _friendly_name) {
         this.account_name = _account_name;
-        this.contact_name = _contact_name;
-        this.privacy_type = _privacy_type;
-        this.authorization = _auth;
+        this.friendly_name = _friendly_name;
     }
+    
 }

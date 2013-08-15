@@ -51,6 +51,7 @@ public class OBIMPConnection {
     protected DataOutputStream out;
     
     private PacketListener listener;
+    private Thread t;
     
     public int seq = 0;
     
@@ -61,6 +62,8 @@ public class OBIMPConnection {
     public Vector<ContactListListener> cl_list = new Vector<ContactListListener>();
     
     public static boolean connected = false;
+    
+    public static boolean debug = false;
     
     public OBIMPConnection(String server, String username, String password) {
         this.server = server;
@@ -107,7 +110,7 @@ public class OBIMPConnection {
             listener = new PacketListener(con, in, this, username, password);
             
             try {
-                Thread t = new Thread(listener);
+                t = new Thread(listener);
                 //t.setDaemon(true);
                 t.start();
                 
@@ -182,6 +185,7 @@ public class OBIMPConnection {
     
     public void disconnect() {
         try {
+            if(listener != null && t.isAlive()) t.interrupt();
             if(con.isConnected()) con.close();
             seq = 0;
             connected = false;
@@ -191,6 +195,14 @@ public class OBIMPConnection {
         } catch(Exception ex){
             System.out.println("Error:" + ex);
         }
+    }
+
+    public void setDebug(boolean _debug) {
+        debug = _debug;
+    }
+    
+    public boolean getDebug() {
+        return debug;
     }
 
 }

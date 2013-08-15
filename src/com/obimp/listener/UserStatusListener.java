@@ -18,13 +18,15 @@
 
 package com.obimp.listener;
 
+import java.util.HashMap;
+
 /**
  * UserStatusListener
  * @author alex_xpert
  */
 public interface UserStatusListener {
     
-    public void onUserOnline(String id, String status_name, String status_text, String client_name, String client_version, String os_name);
+    public void onUserOnline(HashMap user);
     public void onUserOffline(String id);
 
 }

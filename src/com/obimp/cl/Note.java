@@ -19,21 +19,18 @@
 package com.obimp.cl;
 
 /**
- * Контакт
+ * Note
  * @author alex_xpert
  */
-public class Contact extends ContactListItem {
-    public String account_name;
-    public String contact_name;
-    public int privacy_type;
-    public String authorization;
+public class Note extends ContactListItem {
+    public String note_name;
+    public int note_type;
+    public String note_text;
     
-    public Contact(int _item_id, int _group_id, String _account_name, String _contact_name, int _privacy_type, String _auth) {
-        this.item_id = _item_id;
-        this.group_id = _group_id;
-        this.account_name = _account_name;
-        this.contact_name = _contact_name;
-        this.privacy_type = _privacy_type;
-        this.authorization = _auth;
+    public Note(String _note_name, int _note_type, String _note_text) {
+        this.note_name = _note_name;
+        this.note_type = _note_type;
+        this.note_text = _note_text;
     }
+    
 }
