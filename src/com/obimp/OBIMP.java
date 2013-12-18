@@ -36,15 +36,14 @@ import java.io.ByteArrayOutputStream;
 public class OBIMP {    
     public static final String VERSION = "Java OBIMP Lib (OBIMP4J) 1.0.3.7";
     
-    private static volatile int msg_id = 0;
+    private static volatile int msg_id = 1;
     
     public String getVersion() {
         return VERSION;
     }
     
     private static synchronized int getMsgID() {
-        msg_id++;
-        return msg_id;
+        return msg_id++;
     }
     
     /**
@@ -87,10 +86,10 @@ public class OBIMP {
                 message.append(new wTLD(0x00000001, new UTF8(id)));
                 message.append(new wTLD(0x00000002, new LongWord(0, 0, 0, getMsgID())));
                 message.append(new wTLD(0x00000003, new LongWord(0, 0, 0, 1)));
-                message.append(new wTLD(0x00000004, new BLK(text.getBytes())));
-                con.out.write(message.asByteArray(con.getSeq()));
-                con.out.flush();
-                Thread.sleep(500);
+                message.append(new wTLD(0x00000004, new BLK(stringToByteArrayUtf8(text))));
+                //con.out.write(message.asByteArray(con.getSeq()));
+                //con.out.flush();
+                con.send(message);
             } catch(Exception ex) {
                 System.out.println("Error:\n");
                 ex.printStackTrace();

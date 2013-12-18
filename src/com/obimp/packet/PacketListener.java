@@ -42,25 +42,27 @@ public class PacketListener implements Runnable {
         this.username = _username;
         this.password = _password;
     }
-
+    
     @Override
     public void run() {
         Vector<Byte> data = new Vector<>();
         int k = 0;
-        while(OBIMPConnection.connected) {
+        while(oc.connected) {
             try {
                 if(k == 17) {
                     int type = getTypeOrSubtype(data.get(5), data.get(6));
                     int subtype = getTypeOrSubtype(data.get(7), data.get(8));
                     int l = getLength(data.get(13), data.get(14), data.get(15), data.get(16));
-                    byte[] body = new byte[l];
-                    in.readFully(body);
-                    HashMap<Integer, BLK> tlds = parseData(body);
-                    Packet p = new Packet(type, subtype);
-                    for(int i=0;i<tlds.size();i++) {
-                        p.append(new wTLD((int) tlds.keySet().toArray()[i], (BLK) tlds.values().toArray()[i]));
+                    byte[] body = l > 0 ? new byte[l] : null;
+                    if(body != null)  {
+                        in.readFully(body);
+                        HashMap<Integer, BLK> tlds = parseData(body);
+                        Packet p = new Packet(type, subtype);
+                        for(int i=0;i<tlds.size();i++) {
+                            p.append(new wTLD((int) tlds.keySet().toArray()[i], (BLK) tlds.values().toArray()[i]));
+                        }
+                        PacketHandler.parsePacket(p, tlds, oc, username, password, s);
                     }
-                    PacketHandler.parsePacket(p, tlds, oc, username, password, s);
                     data = new Vector<>();
                     k = 0;
                 }

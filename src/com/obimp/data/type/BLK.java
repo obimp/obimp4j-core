@@ -29,8 +29,8 @@ public class BLK extends DataType {
     private byte[] data;
 
     public BLK(byte[] blk) {
-        length = blk.length;
-        data = blk;
+        this.length = blk.length;
+        this.data = blk;
     }
 
     @Override

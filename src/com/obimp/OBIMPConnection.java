@@ -38,7 +38,7 @@ import java.net.Socket;
 import java.util.Vector;
 
 /**
- * Соединение к OBIMP (Bimoid) серверу
+ * Соединение с OBIMP (Bimoid) сервером
  * @author alex_xpert
  */
 public class OBIMPConnection {
@@ -61,7 +61,7 @@ public class OBIMPConnection {
     public Vector<MetaInfoListener> user_info = new Vector<MetaInfoListener>();
     public Vector<ContactListListener> cl_list = new Vector<ContactListListener>();
     
-    public static boolean connected = false;
+    public volatile boolean connected = false;
     
     public static boolean debug = false;
     
@@ -96,22 +96,41 @@ public class OBIMPConnection {
         cl_list.add(cll);
     }
     
+    public boolean removeConnectionListener(ConnectionListener cl) {
+    	System.out.println("ConnectionListener " + cl.getClass().getName() + " has been removed");
+        return user_info.remove(cl);
+    }
+    
+    public boolean removeMessageListener(MessageListener ml) {
+    	System.out.println("MessageListener " + ml.getClass().getName() + " has been removed");
+        return user_info.remove(ml);
+    }
+    
+    public boolean removeUserStatusListener(UserStatusListener usl) {
+    	System.out.println("UserStatusListener " + usl.getClass().getName() + " has been removed");
+        return user_info.remove(usl);
+    }
+    
     public boolean removeMetaInfoListener(MetaInfoListener ui) {
     	System.out.println("MetaInfoListener " + ui.getClass().getName() + " has been removed");
         return user_info.remove(ui);
     }
     
+    public boolean removeContactListListener(ContactListListener cll) {
+    	System.out.println("ContactListListener " + cll.getClass().getName() + " has been removed");
+        return user_info.remove(cll);
+    }
+    
     public void connect() {
         try {
-            connected = true;
+            this.connected = true;
             con = new Socket(server, 7023);
             in = new DataInputStream(con.getInputStream());
             out = new DataOutputStream(con.getOutputStream());
             listener = new PacketListener(con, in, this, username, password);
+            t = new Thread(listener);
             
             try {
-                t = new Thread(listener);
-                //t.setDaemon(true);
                 t.start();
                 
                 Packet hello = new Packet(0x0001, 0x0001); // OBIMP_BEX_COM_CLI_HELLO
@@ -137,7 +156,7 @@ public class OBIMPConnection {
                 send(new Packet(0x0002, 0x0005)); // OBIMP_BEX_CL_CLI_VERIFY
                 Packet pres_info = new Packet(0x0003, 0x0003); // OBIMP_BEX_PRES_CLI_SET_PRES_INFO
                 pres_info.append(new wTLD(0x00000001, new DataType[] {new Word(0x0001), new Word(0x0002)}));
-                pres_info.append(new wTLD(0x00000002, new Word(0x0002)));
+                pres_info.append(new wTLD(0x00000002, new Word(0x0001)));
                 pres_info.append(new wTLD(0x00000003, new UTF8("Java OBIMP Lib (OBIMP4J)")));
                 pres_info.append(new wTLD(0x00000004, new QuadWord(0, 1, 0, 0, 0, 3, 0, 7)));
                 pres_info.append(new wTLD(0x00000005, new Word(0x0052)));
@@ -168,6 +187,8 @@ public class OBIMPConnection {
     
     public void send(Packet packet) {
         try {
+            for(byte b : packet.asByteArray(0)) System.out.print(b + " ");
+            System.out.println();
             out.write(packet.asByteArray(getSeq()));
         } catch(Exception ex){
             System.out.println("Error:" + ex);
@@ -185,13 +206,17 @@ public class OBIMPConnection {
     
     public void disconnect() {
         try {
-            if(listener != null && t.isAlive()) t.interrupt();
-            if(con.isConnected()) con.close();
+            this.connected = false;
+            con.close();
             seq = 0;
-            connected = false;
             for(ConnectionListener cl : con_list) {
                 cl.onLogout("USER_DISCONNECTED");
             }
+            con = null;
+            in = null;
+            out = null;
+            listener = null;
+            t = null;
         } catch(Exception ex){
             System.out.println("Error:" + ex);
         }

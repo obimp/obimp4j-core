@@ -66,24 +66,35 @@ public class Packet {
     }
 
     public byte[] asByteArray(int seq) {     
-        data.put(4, seq);
-        data.put(12, seq);
-        
-        data.put(16, (byte) data.size() - 17);
-        
+        byte[] bseq = getBytes(seq);
+        data.put(1, bseq[3]);
+        data.put(2, bseq[2]);
+        data.put(3, bseq[1]);
+        data.put(4, bseq[0]);
+        data.put(9, bseq[3]);
+        data.put(10, bseq[2]);
+        data.put(11, bseq[1]);
+        data.put(12, bseq[0]);
+        byte[] size = getBytes(data.size() - 17);
+        data.put(13, size[3]);
+        data.put(14, size[2]);
+        data.put(15, size[1]);
+        data.put(16, size[0]);
         byte[] p = new byte[data.size()];
         for(int i=0;i<p.length;i++) {
-            p[i] = (byte) ((int) Integer.valueOf(String.valueOf(data.get(i))));
+            p[i] = Byte.parseByte(String.valueOf(data.get(i)));
         }
+        
         return p;
     }
     
     public void append(DataStructure ds) {
         byte[] d = null;
+        byte[] l = getBytes(ds.getLength());
         if(ds instanceof wTLD) {
-            d = new byte[] {0x00, 0x00, 0x00, (byte) ds.getType(), 0x00, 0x00, 0x00, (byte) ds.getLength()};
+            d = new byte[] {0x00, 0x00, 0x00, (byte) ds.getType(), l[3], l[2], l[1], l[0]};
         } else if(ds instanceof sTLD) {
-            d = new byte[] {0x00, (byte) ds.getType(), 0x00, (byte) ds.getLength()};
+            d = new byte[] {0x00, (byte) ds.getType(), l[1], l[0]};
         }
         for(int i = 0;i<d.length;i++) {
             data.put(c, d[i]);
@@ -94,5 +105,13 @@ public class Packet {
             c++;
         }
     }
-
+    
+    private byte[] getBytes(int x) {
+        byte[] bytes = new byte[4];
+        for (int i = 0; i < bytes.length; i++) {
+           bytes[i] = (byte)(x >> (i * 8));
+        }
+        return bytes;
+    }
+    
 }

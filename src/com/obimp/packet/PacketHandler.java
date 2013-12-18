@@ -297,8 +297,8 @@ public class PacketHandler {
                         break;
                     case OBIMP_BEX_COM_CLI_SRV_KEEPALIVE_PING:
                         s = "Server say PING";
-//                        oc.sendPong();
-                        oc.send(new Packet(OBIMP_BEX_COM, OBIMP_BEX_COM_CLI_SRV_KEEPALIVE_PONG));
+                        oc.sendPong();
+                        //oc.send(new Packet(OBIMP_BEX_COM, OBIMP_BEX_COM_CLI_SRV_KEEPALIVE_PONG));
                         break;
                     case OBIMP_BEX_COM_CLI_SRV_KEEPALIVE_PONG:
                         s = "Server say PONG";
@@ -618,7 +618,7 @@ public class PacketHandler {
                             }
                         } else user.put( "XDesc", XStatus.X_Status[0] );
                         user.put( "User", new String(tlds.get(0x0001).getData()) );
-                        user.put( "Status", new String(tlds.get(0x0003).getData()) );
+                        if(tlds.get(0x0003) != null) user.put( "Status", new String(tlds.get(0x0003).getData()) );
                         user.put( "Client", new String(tlds.get(0x0008).getData()) );
                         user.put( "Os", new String(tlds.get(0x000F).getData()) );
                         if(tlds.get(0x0012) !=null){
