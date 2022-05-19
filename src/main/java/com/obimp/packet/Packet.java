@@ -1,6 +1,6 @@
 /*
  * OBIMP4J - Java OBIMP Lib
- * Copyright (C) 2013 alex_xpert
+ * Copyright (C) 2013—2022 Alexander Krysin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@ import com.obimp.data.structure.wTLD;
 import java.util.HashMap;
 
 /**
- * Пакет
- * @author alex_xpert
+ * Packet
+ * @author Alexander Krysin
  */
 public class Packet {
     private byte type;

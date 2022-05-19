@@ -1,6 +1,6 @@
 /*
  * OBIMP4J - Java OBIMP Lib
- * Copyright (C) 2013 alex_xpert
+ * Copyright (C) 2013—2022 Alexander Krysin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,8 +38,8 @@ import java.net.Socket;
 import java.util.Vector;
 
 /**
- * Соединение с OBIMP (Bimoid) сервером
- * @author alex_xpert
+ * OBIMP connection
+ * @author Alexander Krysin
  */
 public class OBIMPConnection {
     private String server = "";
@@ -158,7 +158,7 @@ public class OBIMPConnection {
                 pres_info.append(new wTLD(0x00000001, new DataType[] {new Word(0x0001), new Word(0x0002)}));
                 pres_info.append(new wTLD(0x00000002, new Word(0x0001)));
                 pres_info.append(new wTLD(0x00000003, new UTF8("Java OBIMP Lib (OBIMP4J)")));
-                pres_info.append(new wTLD(0x00000004, new QuadWord(0, 1, 0, 0, 0, 3, 0, 7)));
+                pres_info.append(new wTLD(0x00000004, new QuadWord(0, 0, 0, 1, 0, 0, 0, 1)));
                 pres_info.append(new wTLD(0x00000005, new Word(0x0052)));
                 pres_info.append(new wTLD(0x00000006, new UTF8(System.getProperty("os.name") + " " +
                         (System.getProperty("os.arch").contains("64") ? "x64" : "x86")))); //операционная система

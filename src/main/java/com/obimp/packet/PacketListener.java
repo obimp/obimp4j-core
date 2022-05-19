@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2013 alex_xpert
+ * OBIMP4J - Java OBIMP Lib
+ * Copyright (C) 2013—2022 Alexander Krysin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +27,8 @@ import java.util.HashMap;
 import java.util.Vector;
 
 /**
- *
+ * Packet listener
+ * @author Alexander Krysin
  */
 public class PacketListener implements Runnable {
     private Socket s;

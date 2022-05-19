@@ -1,6 +1,6 @@
 /*
  * OBIMP4J - Java OBIMP Lib
- * Copyright (C) 2013 alex_xpert
+ * Copyright (C) 2013—2022 Alexander Krysin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,18 +19,18 @@
 package com.obimp;
 
 /**
- * X-Статусы
- * @author alex_xpert
+ * X-Status
+ * @author Alexander Krysin
  */
 public class XStatus {
     public static final String[] X_Status = new String[]{
-    "Нет","Улыбаюсь","На пляже","Коктейль","Спасательный круг","Уборка","Готовлю","Праздник","Думаю",
-    "Кушаю","Смотрю ТВ","Друзья","Пью кофе","Слушаю музыку","Бизнес","Смотрю фильм","Показываю язык","На телефоне",
-    "Играю","На учебе","В магазине","Катаюсь на машине","Болею","Сплю","В интернете","Работаю","Печатаю",
-    "На пикинике","Занимаюсь спортом","Мобильник","Плачу/Грустный","В туалете","Вопрос","Музыка","Сердце","На охоте",
-    "Поиск","Блокнот","Звезда","Краски","Водные процедуры","Ёлка","Идея/Лампочка","Деньги","Книга/Читаю",
-    "Химия","Солнце","Снег","Инструмент","Thumbs up/Палец вверх","В шоке","Планета","Пиво","Злой",
-    "Уставший","Курю/Перекур"};
+    "Not","Smile","Beach","Cocktail","Lifebuoy","Cleaning","Cooking","Party","Thinking",
+    "Lunch","TV","Friends","Coffee","Music","Business","Camera","Tongue","Phone",
+    "Gaming","Study","Shopping","Car","Ill","Sleeping","Browsing","Working","Writing",
+    "Picnic","Sport","Mobile","Sad","WC","Question","Sound","Heart","Hunting",
+    "Searching","Journal","Star","Painting","Shower","Nature","Idea","Money","Reading",
+    "Chemical","Sun","Snow","Fixing","Thumbs up","Shocked","Planet","Drink","Angry",
+    "Tired","Smoke"};
 
     public static final byte NO = 0x00; // No X-Status
     
@@ -82,7 +82,7 @@ public class XStatus {
     public static final byte SUN = 0x2E; // sun
     public static final byte SNOW = 0x2F; // snow
     public static final byte FIXING = 0x30; // fixing
-    public static final byte THIMBP_UP = 0x31; // thumbs up
+    public static final byte THUMBS_UP = 0x31; // thumbs up
     public static final byte SHOCKED = 0x32; // shocked
     public static final byte PLANET = 0x33; // planet
     public static final byte DRINK = 0x34; // drink

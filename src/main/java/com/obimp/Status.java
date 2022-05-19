@@ -1,6 +1,6 @@
 /*
  * OBIMP4J - Java OBIMP Lib
- * Copyright (C) 2013 alex_xpert
+ * Copyright (C) 2013—2022 Alexander Krysin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +19,13 @@
 package com.obimp;
 
 /**
- * Статусы
- * @author alex_xpert
+ * Status
+ * @author Alexander Krysin
  */
 public class Status {
     public static final String[] Status = new String[]{
-    "Онлайн","Невидимый","Невидимый для всех","Готов поболтать","Дома","На работе","Кушаю","Отошел","Недоступен",
-    "Занят","Не беспокоить"};
+    "Online","Invisible","Invisible for all","Free for chat","At home","At work","Lunch","Away","Not available",
+    "Occupied","Do not disturb"};
 
     public static final byte PRES_STATUS_ONLINE = 0x00;
     public static final byte PRES_STATUS_INVISIBLE = 0x01;

@@ -1,6 +1,6 @@
 /*
  * OBIMP4J - Java OBIMP Lib
- * Copyright (C) 2013 alex_xpert
+ * Copyright (C) 2013—2022 Alexander Krysin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@
 package com.obimp.cl;
 
 /**
- * Группа
- * @author alex_xpert
+ * Group
+ * @author Alexander Krysin
  */
 public class Group extends ContactListItem {
     public String name;

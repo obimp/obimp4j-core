@@ -1,6 +1,6 @@
 /*
  * OBIMP4J - Java OBIMP Lib
- * Copyright (C) 2013 alex_xpert
+ * Copyright (C) 2013—2022 Alexander Krysin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,18 +35,18 @@ import com.obimp.listener.ContactListListener;
 import com.obimp.listener.MessageListener;
 import com.obimp.listener.MetaInfoListener;
 import com.obimp.listener.UserStatusListener;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.security.MessageDigest;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 
 /**
- * Обработчик пакетов
- * @author alex_xpert
+ * Packet handler
+ * @author Alexander Krysin
  * @author Warik777
  */
 public class PacketHandler {
@@ -197,7 +197,7 @@ public class PacketHandler {
                             Packet login = new Packet(OBIMP_BEX_COM, OBIMP_BEX_COM_CLI_LOGIN);
                             login.append(new wTLD(0x0001, new UTF8(username)));
                             if (tlds.containsKey(0x0007)) { // server requires plain-text password authentication
-                                login.append(new wTLD(0x0003, new BLK(Base64.encode(password.getBytes()).getBytes())));
+                                login.append(new wTLD(0x0003, new BLK(Base64.getEncoder().encode(password.getBytes()))));
                             } else { // generate one-time MD5 password hash
                                 byte[] srv_key = tlds.get(0x0002).getData();
                                 byte[] pre_hash = MD5((username + "OBIMPSALT" + password).getBytes());

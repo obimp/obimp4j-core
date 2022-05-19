@@ -1,6 +1,6 @@
 /*
  * OBIMP4J - Java OBIMP Lib
- * Copyright (C) 2013 alex_xpert
+ * Copyright (C) 2013—2022 Alexander Krysin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ import com.obimp.data.DataType;
 
 /**
  * OctaWord – unsigned 16 bytes
- * @author alex_xpert
+ * @author Alexander Krysin
  */
 public class OctaWord extends DataType {
     private int length = 16;

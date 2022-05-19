@@ -1,6 +1,6 @@
 /*
  * OBIMP4J - Java OBIMP Lib
- * Copyright (C) 2013 alex_xpert
+ * Copyright (C) 2013—2022 Alexander Krysin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +30,8 @@ import com.obimp.packet.PacketHandler;
 import java.io.ByteArrayOutputStream;
 
 /**
- * Основной интерфейс
- * @author alex_xpert
+ * OBIMP API
+ * @author Alexander Krysin
  */
 public class OBIMP {    
     public static final String VERSION = "Java OBIMP Lib (OBIMP4J) 1.0.3.7";
@@ -47,8 +47,8 @@ public class OBIMP {
     }
     
     /**
-     * Установка/Смена статуса
-     * @author alex_xpert
+     * Set status
+     * @author Alexander Krysin
      * @param con
      * @param id
      * @param text 
@@ -72,8 +72,8 @@ public class OBIMP {
     }
     
     /**
-     * Отправка сообщения
-     * @author alex_xpert
+     * Send message
+     * @author Alexander Krysin
      * @param con
      * @param id
      * @param text 
