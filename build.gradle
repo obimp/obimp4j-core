@@ -28,8 +28,8 @@ publishing {
             name = 'GithubPackages'
             url = uri('https://maven.pkg.github.com/obimp/obimp4j')
             credentials {
-                username = project.findProperty('gpr.user')
-                password = project.findProperty('gpr.key')
+                username = project.findProperty('gpr.user') ?: System.getenv('USERNAME')
+                password = project.findProperty('gpr.key') ?: System.getenv('TOKEN')
             }
         }
     }
