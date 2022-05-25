@@ -32,7 +32,7 @@ public class sTLD extends DataStructure {
     
     public sTLD(int type, DataType dt) {
         this.type = type;
-        this.length = dt.getLenght();
+        this.length = dt.getLength();
         this.data = dt.getData();
     }
 

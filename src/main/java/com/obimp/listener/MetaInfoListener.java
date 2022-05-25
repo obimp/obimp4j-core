@@ -21,11 +21,9 @@ package com.obimp.listener;
 /**
  * MetaInfoListener
  * @author Warik777
+ * @author Alexander Krysin
  */
 public interface MetaInfoListener {
-
-    public void onUserInfo(String result);
-
-    public void onSearch(String result);
-
+    void onUserInfo(String result);
+    void onSearch(String result);
 }

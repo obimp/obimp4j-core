@@ -25,10 +25,9 @@ package com.obimp.cl;
 public class Group extends ContactListItem {
     public String name;
     
-    public Group(int _item_id, int _group_id, String _name) {
-        this.item_id = _item_id;
-        this.group_id = _group_id;
-        this.name = _name;
+    public Group(int itemId, int groupId, String name) {
+        this.itemId = itemId;
+        this.groupId = groupId;
+        this.name = name;
     }
-    
 }

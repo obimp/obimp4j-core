@@ -222,8 +222,8 @@ public class OBIMPConnection {
         }
     }
 
-    public void setDebug(boolean _debug) {
-        debug = _debug;
+    public void setDebug(boolean debug) {
+        OBIMPConnection.debug = debug;
     }
     
     public boolean getDebug() {

@@ -37,12 +37,12 @@ public class PacketListener implements Runnable {
     private String username;
     private String password;
 
-    public PacketListener(Socket s, DataInputStream in, OBIMPConnection oc, String _username, String _password) {
+    public PacketListener(Socket s, DataInputStream in, OBIMPConnection oc, String username, String password) {
         this.s = s;
         this.in = in;
         this.oc = oc;
-        this.username = _username;
-        this.password = _password;
+        this.username = username;
+        this.password = password;
     }
     
     @Override

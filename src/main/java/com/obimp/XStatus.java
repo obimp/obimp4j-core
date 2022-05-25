@@ -23,14 +23,14 @@ package com.obimp;
  * @author Alexander Krysin
  */
 public class XStatus {
-    public static final String[] X_Status = new String[]{
-    "Not","Smile","Beach","Cocktail","Lifebuoy","Cleaning","Cooking","Party","Thinking",
-    "Lunch","TV","Friends","Coffee","Music","Business","Camera","Tongue","Phone",
-    "Gaming","Study","Shopping","Car","Ill","Sleeping","Browsing","Working","Writing",
-    "Picnic","Sport","Mobile","Sad","WC","Question","Sound","Heart","Hunting",
-    "Searching","Journal","Star","Painting","Shower","Nature","Idea","Money","Reading",
-    "Chemical","Sun","Snow","Fixing","Thumbs up","Shocked","Planet","Drink","Angry",
-    "Tired","Smoke"};
+    public static final String[] X_Status = {
+            "Not", "Smile", "Beach", "Cocktail", "Lifebuoy", "Cleaning", "Cooking", "Party", "Thinking", "Lunch", "TV",
+            "Friends", "Coffee", "Music", "Business", "Camera", "Tongue", "Phone", "Gaming", "Study", "Shopping", "Car",
+            "Ill", "Sleeping", "Browsing", "Working", "Writing", "Picnic", "Sport", "Mobile", "Sad", "WC", "Question",
+            "Sound", "Heart", "Hunting", "Searching", "Journal", "Star", "Painting", "Shower", "Nature", "Idea",
+            "Money", "Reading", "Chemical", "Sun", "Snow", "Fixing", "Thumbs up", "Shocked", "Planet", "Drink", "Angry",
+            "Tired", "Smoke"
+    };
 
     public static final byte NO = 0x00; // No X-Status
     
@@ -89,5 +89,4 @@ public class XStatus {
     public static final byte ANGRY = 0x35; // angry
     public static final byte TIRED = 0x36; // tired
     public static final byte SMOKE = 0x37; // smoke
-    
 }

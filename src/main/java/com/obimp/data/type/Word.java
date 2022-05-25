@@ -34,7 +34,7 @@ public class Word extends DataType {
     }
 
     @Override
-    public int getLenght() {
+    public int getLength() {
         return this.length;
     }
 

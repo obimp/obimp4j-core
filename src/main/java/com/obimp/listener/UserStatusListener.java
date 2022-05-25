@@ -25,8 +25,6 @@ import java.util.HashMap;
  * @author Alexander Krysin
  */
 public interface UserStatusListener {
-    
-    public void onUserOnline(HashMap user);
-    public void onUserOffline(String id);
-
+    void onUserOnline(HashMap user);
+    void onUserOffline(String id);
 }

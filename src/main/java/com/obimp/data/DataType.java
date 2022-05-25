@@ -23,7 +23,6 @@ package com.obimp.data;
  * @author Alexander Krysin
  */
 public abstract class DataType {
-    
-    public abstract int getLenght();
+    public abstract int getLength();
     public abstract byte[] getData();
 }

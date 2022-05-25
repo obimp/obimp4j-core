@@ -25,10 +25,8 @@ import com.obimp.cl.ContactListItem;
  * @author Alexander Krysin
  */
 public interface ContactListListener {
-
-    public void onAuthRequest(String userid, String reason);
-    public void onAuthReply(String userid, boolean reply);
-    public void onAuthRevoke(String userid, String reason);
-    public void onLoadContactList(ContactListItem[] cl);
-    
+    void onAuthRequest(String userid, String reason);
+    void onAuthReply(String userid, boolean reply);
+    void onAuthRevoke(String userid, String reason);
+    void onLoadContactList(ContactListItem[] cl);
 }

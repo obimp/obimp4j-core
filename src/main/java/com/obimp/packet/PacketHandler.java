@@ -392,22 +392,22 @@ public class PacketHandler {
                                 ContactListItem item = (ContactListItem) items.keySet().toArray()[i];
                                 HashMap props = parseByteArrayTosTLDArray((byte[]) items.values().toArray()[i]);
                                 if(item instanceof Contact) { // Contact
-                                    ((Contact) item).account_name = new String(((sTLD)props.get(0x0002)).getData());
-                                    ((Contact) item).contact_name = new String(((sTLD)props.get(0x0003)).getData());
-                                    ((Contact) item).privacy_type = (int)((sTLD)props.get(0x0004)).getData()[0];
+                                    ((Contact) item).accountName = new String(((sTLD)props.get(0x0002)).getData());
+                                    ((Contact) item).contactName = new String(((sTLD)props.get(0x0003)).getData());
+                                    ((Contact) item).privacyType = (int)((sTLD)props.get(0x0004)).getData()[0];
                                 if( ((sTLD)props.get(0x0005)) != null )
                                     ((Contact) item).authorization = (((sTLD)props.get(0x0005)).getData().length == 0 ? "требуется авторизация" : "авторизован" );
                                 } else if(item instanceof Group) { // Group
                                     ((Group) item).name = new String(((sTLD) props.get(0x0001)).getData());
                                 } else if(item instanceof Transport) { // Transport
                                    //sTLD 0x1002: UUID, transport UUID
-                                    ((Transport) item).account_name = new String(((sTLD) props.get(0x1003)).getData());
-                                    ((Transport) item).friendly_name = new String(((sTLD) props.get(0x1004)).getData());
+                                    ((Transport) item).accountName = new String(((sTLD) props.get(0x1003)).getData());
+                                    ((Transport) item).friendlyName = new String(((sTLD) props.get(0x1004)).getData());
                                 } else if(item instanceof Note) { // Note
-                                    ((Note) item).note_name = new String( ((sTLD) props.get(0x2001)).getData() );
-                                    ((Note) item).note_type = ((sTLD) props.get(0x2002)).getData()[0];
+                                    ((Note) item).noteName = new String( ((sTLD) props.get(0x2001)).getData() );
+                                    ((Note) item).noteType = ((sTLD) props.get(0x2002)).getData()[0];
                                     if( ((sTLD) props.get(0x2003)) != null )
-                                    ((Note) item).note_text = new String( ((sTLD) props.get(0x2003)).getData() );
+                                    ((Note) item).noteText = new String( ((sTLD) props.get(0x2003)).getData() );
                                   //sTLD 0x2004: DateTime, note date (UTC)
                                   //sTLD 0x2005: OctaWord, note picture MD5 hash
                                 }

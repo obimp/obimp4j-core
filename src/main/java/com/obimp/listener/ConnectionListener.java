@@ -23,9 +23,7 @@ package com.obimp.listener;
  * @author Alexander Krysin
  */
 public interface ConnectionListener {
-
-    public void onLoginSuccess();
-    public void onLoginFailed(String reason);
-    public void onLogout(String reason);
-    
+    void onLoginSuccess();
+    void onLoginFailed(String reason);
+    void onLogout(String reason);
 }

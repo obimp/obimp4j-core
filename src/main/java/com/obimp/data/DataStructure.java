@@ -23,9 +23,7 @@ package com.obimp.data;
  * @author Alexander Krysin
  */
 public abstract class DataStructure {
-
     public abstract int getType();
     public abstract int getLength();
     public abstract byte[] getData();
-    
 }

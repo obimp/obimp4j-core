@@ -23,7 +23,5 @@ package com.obimp.listener;
  * @author Alexander Krysin
  */
 public interface MessageListener {
-    
-    public void onIncomingMessage(String id, String text);
-    
+    void onIncomingMessage(String id, String text);
 }

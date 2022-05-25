@@ -32,7 +32,7 @@ public class wTLD extends DataStructure {
     
     public wTLD(int type, DataType dt) {
         this.type = type;
-        this.length = dt.getLenght();
+        this.length = dt.getLength();
         this.data = dt.getData();
     }
 
@@ -40,7 +40,7 @@ public class wTLD extends DataStructure {
         this.type = type;
         this.length = 0;
         for(DataType dttp : dt) {
-            this.length += dttp.getLenght();  
+            this.length += dttp.getLength();
         }
         this.data = new byte[length];
         int i = 0;

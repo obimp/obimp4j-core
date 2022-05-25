@@ -23,14 +23,13 @@ package com.obimp.cl;
  * @author Alexander Krysin
  */
 public class Note extends ContactListItem {
-    public String note_name;
-    public int note_type;
-    public String note_text;
+    public String noteName;
+    public int noteType;
+    public String noteText;
     
-    public Note(String _note_name, int _note_type, String _note_text) {
-        this.note_name = _note_name;
-        this.note_type = _note_type;
-        this.note_text = _note_text;
+    public Note(String noteName, int noteType, String noteText) {
+        this.noteName = noteName;
+        this.noteType = noteType;
+        this.noteText = noteText;
     }
-    
 }

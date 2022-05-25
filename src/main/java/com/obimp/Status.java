@@ -23,9 +23,19 @@ package com.obimp;
  * @author Alexander Krysin
  */
 public class Status {
-    public static final String[] Status = new String[]{
-    "Online","Invisible","Invisible for all","Free for chat","At home","At work","Lunch","Away","Not available",
-    "Occupied","Do not disturb"};
+    public static final String[] STATUS = {
+            "Online",
+            "Invisible",
+            "Invisible for all",
+            "Free for chat",
+            "At home",
+            "At work",
+            "Lunch",
+            "Away",
+            "Not available",
+            "Occupied",
+            "Do not disturb"
+    };
 
     public static final byte PRES_STATUS_ONLINE = 0x00;
     public static final byte PRES_STATUS_INVISIBLE = 0x01;
@@ -38,5 +48,4 @@ public class Status {
     public static final byte PRES_STATUS_NOT_AVAILABLE = 0x08;
     public static final byte PRES_STATUS_OCCUPIED = 0x09;
     public static final byte PRES_STATUS_DO_NOT_DISTURB = 0x0A;
-    
 }

@@ -34,7 +34,7 @@ import java.io.ByteArrayOutputStream;
  * @author Alexander Krysin
  */
 public class OBIMP {    
-    public static final String VERSION = "Java OBIMP Lib (OBIMP4J) 1.0.3.7";
+    public static final String VERSION = "Java OBIMP Lib (OBIMP4J) 0.1.0";
     
     private static volatile int msg_id = 1;
     
@@ -49,9 +49,11 @@ public class OBIMP {
     /**
      * Set status
      * @author Alexander Krysin
-     * @param con
-     * @param id
-     * @param text 
+     * @param con Connection
+     * @param stat Status
+     * @param xstat X-Status
+     * @param st Status message
+     * @param desc X-Status message
      */
     @SuppressWarnings("CallToThreadDumpStack")
     public static void setStatus(OBIMPConnection con, byte stat, byte xstat, String st, String desc) {
@@ -74,9 +76,9 @@ public class OBIMP {
     /**
      * Send message
      * @author Alexander Krysin
-     * @param con
-     * @param id
-     * @param text 
+     * @param con Connection
+     * @param id Contact ID
+     * @param text Message text
      */
     @SuppressWarnings("CallToThreadDumpStack")
     public static synchronized void sendMsg(OBIMPConnection con, String id, String text) {
@@ -98,7 +100,7 @@ public class OBIMP {
     }
     
     @SuppressWarnings("CallToThreadDumpStack")
-    public static void get_cli_info(OBIMPConnection con, String userId) {
+    public static void getCliInfo(OBIMPConnection con, String userId) {
         if(con != null) {
             try {
 //                System.out.println("get_cli_info: userId="+userId);
@@ -114,7 +116,7 @@ public class OBIMP {
     }
 
     @SuppressWarnings("CallToThreadDumpStack")
-    public static void set_upd_info(OBIMPConnection con, UserInfo info) {
+    public static void setUpdInfo(OBIMPConnection con, UserInfo info) {
         if(con != null) {
             try {
 //                System.out.println("set_upd_info: userId="+userId);
@@ -122,7 +124,7 @@ public class OBIMP {
  
                 upd_inf.append(new wTLD(0x00000001, new UTF8(info.getAccountName())));
  
-                if(info.getNickName()!= null) upd_inf.append(new wTLD(0x00000002, new UTF8(info.getNickName()))); //good
+                if(info.getNickname()!= null) upd_inf.append(new wTLD(0x00000002, new UTF8(info.getNickname()))); //good
  
                 if(info.getFirstName()!= null) upd_inf.append(new wTLD(0x00000003, new UTF8(info.getFirstName()))); //good
  
@@ -140,7 +142,7 @@ public class OBIMP {
  
                 if(info.getLanguageCode() != -1) upd_inf.append(new wTLD(0x000A, new Word(info.getLanguageCode()))); //владение языками 1
  
-                if(info.getAditionalLanguageCode() != -1) upd_inf.append(new wTLD(0x000B, new Word(info.getAditionalLanguageCode()))); //владение языками 2
+                if(info.getAdditionalLanguageCode() != -1) upd_inf.append(new wTLD(0x000B, new Word(info.getAdditionalLanguageCode()))); //владение языками 2
  
                 if(info.getGender() != -1){
                 upd_inf.append(new wTLD(0x0000000C, new com.obimp.data.type.Byte( ((info.getGender() != 0x01) && (info.getGender() != 0x02)) ? 0x00 : info.getGender() ))); //пол

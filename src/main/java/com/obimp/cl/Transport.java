@@ -23,12 +23,11 @@ package com.obimp.cl;
  * @author Alexander Krysin
  */
 public class Transport extends ContactListItem {
-    public String account_name;
-    public String friendly_name;
+    public String accountName;
+    public String friendlyName;
     
-    public Transport(String _account_name, String _friendly_name) {
-        this.account_name = _account_name;
-        this.friendly_name = _friendly_name;
+    public Transport(String accountName, String friendlyName) {
+        this.accountName = accountName;
+        this.friendlyName = friendlyName;
     }
-    
 }

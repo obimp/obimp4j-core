@@ -23,17 +23,17 @@ package com.obimp.cl;
  * @author Alexander Krysin
  */
 public class Contact extends ContactListItem {
-    public String account_name;
-    public String contact_name;
-    public int privacy_type;
+    public String accountName;
+    public String contactName;
+    public int privacyType;
     public String authorization;
     
-    public Contact(int _item_id, int _group_id, String _account_name, String _contact_name, int _privacy_type, String _auth) {
-        this.item_id = _item_id;
-        this.group_id = _group_id;
-        this.account_name = _account_name;
-        this.contact_name = _contact_name;
-        this.privacy_type = _privacy_type;
-        this.authorization = _auth;
+    public Contact(int itemId, int groupId, String accountName, String contactName, int privacyType, String auth) {
+        this.itemId = itemId;
+        this.groupId = groupId;
+        this.accountName = accountName;
+        this.contactName = contactName;
+        this.privacyType = privacyType;
+        this.authorization = auth;
     }
 }

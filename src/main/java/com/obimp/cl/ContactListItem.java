@@ -24,7 +24,6 @@ package com.obimp.cl;
  */
 public abstract class ContactListItem {
     public int type;
-    public int item_id;
-    public int group_id;
-
+    public int itemId;
+    public int groupId;
 }
