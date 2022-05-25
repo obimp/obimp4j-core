@@ -2,8 +2,8 @@ plugins {
     id 'java'
 }
 
-group 'com.obimp'
-version '0.1.0'
+group 'com.bimoid.obimp'
+version '0.1.0-alpha'
 
 repositories {
     mavenCentral()
