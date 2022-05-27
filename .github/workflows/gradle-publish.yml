@@ -41,5 +41,8 @@ jobs:
       with:
         arguments: publish
       env:
-        USERNAME: ${{ github.actor }}
-        TOKEN: ${{ secrets.GH_TOKEN }}
+        GPR_USERNAME: ${{ github.actor }}
+        GPR_TOKEN: ${{ secrets.GH_TOKEN }}
+        OSSRH_USERNAME: ${{ secrets.OSSRH_USER }}
+        OSSRH_PASSWORD: ${{ secrets.OSSRH_KEY }}
+

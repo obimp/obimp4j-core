@@ -1,9 +1,10 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    //id 'signing'
 }
 
-group 'com.bimoid'
+group 'io.github.obimp'
 version '0.1.0-alpha'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -11,6 +12,11 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
 }
 
 dependencies {
@@ -25,17 +31,70 @@ test {
 publishing {
     repositories {
         maven {
-            name = 'GithubPackages'
-            url = uri('https://maven.pkg.github.com/obimp/obimp4j')
+            name = 'OSSRH'
+            def releaseRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            def snapshotRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+            url = version.endsWith('SNAPSHOT') ? snapshotRepoUrl : releaseRepoUrl
             credentials {
-                username = project.findProperty('gpr.user') ?: System.getenv('USERNAME')
-                password = project.findProperty('gpr.key') ?: System.getenv('TOKEN')
+                username = project.findProperty('ossrh.user') ?: System.getenv('OSSRH_USERNAME')
+                password = project.findProperty('ossrh.key') ?: System.getenv('OSSRH_PASSWORD')
+            }
+        }
+        maven {
+            name = 'GithubPackages'
+            url = 'https://maven.pkg.github.com/obimp/obimp4j'
+            credentials {
+                username = project.findProperty('gpr.user') ?: System.getenv('GPR_USERNAME')
+                password = project.findProperty('gpr.key') ?: System.getenv('GPR_TOKEN')
             }
         }
     }
     publications {
-        gpr(MavenPublication) {
+        mavenJava(MavenPublication) {
+            artifactId = 'obimp4j'
             from(components.java)
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'OBIMP4J'
+                description = 'Java OBIMP (Open Binary Instant Messaging Protocol) implementation.'
+                url = 'https://github.com/obimp/obimp4j'
+                licenses {
+                    license {
+                        name = 'The GNU General Public License v3.0'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'libalex'
+                        name = 'Alexander Krysin'
+                        email = 'alessandro56903@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/obimp/obimp4j.git'
+                    developerConnection = 'scm:git:ssh://github.com/obimp/obimp4j.git'
+                    url = 'https://github.com/obimp/obimp4j'
+                }
+            }
         }
+    }
+}
+
+/*signing {
+    useGpgCmd()
+    sign publishing.publications.mavenJava
+}*/
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
     }
 }
