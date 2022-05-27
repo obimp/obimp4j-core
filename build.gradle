@@ -1,7 +1,9 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 plugins {
     id 'java'
     id 'maven-publish'
-    //id 'signing'
+    id 'signing'
 }
 
 group 'io.github.obimp'
@@ -88,10 +90,16 @@ publishing {
     }
 }
 
-/*signing {
-    useGpgCmd()
+signing {
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        useGpgCmd()
+    } else {
+        def signingKey = findProperty('signingKey')
+        def signingPassword = findProperty('signingPassword')
+        useInMemoryPgpKeys(signingKey, signingPassword)
+    }
     sign publishing.publications.mavenJava
-}*/
+}
 
 javadoc {
     if (JavaVersion.current().isJava9Compatible()) {
