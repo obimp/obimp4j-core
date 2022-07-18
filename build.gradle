@@ -73,7 +73,8 @@ publishing {
                     fromResolutionOf('runtimeClasspath')
                 }
                 usage('java-runtime') {
-                    fromResolutionResult(null)
+                    //noinspection GroovyImplicitNullArgumentCall
+                    fromResolutionResult()
                 }
             }
             pom {
