@@ -22,9 +22,10 @@ package io.github.obimp.util
  * @author Alexander Krysin
  */
 object SystemInfoUtil {
+    var osName = System.getProperty("os.name").split(" ")[0]
+    var osVersion = System.getProperty("os.name").split(" ")[1]
+
     fun getOperatingSystemTitle(): String {
-        val name = System.getProperty("os.name")
-        val arch = if (System.getProperty("os.arch").contains("64")) "x64" else "x86"
-        return "$name $arch"
+        return "$osName $osVersion"
     }
 }
