@@ -26,8 +26,26 @@ import io.github.obimp.ud.UserInfo
  * @author Alexander Krysin
  */
 interface MetaInfoListener {
+    /**
+     * User info loaded callback
+     * @param userInfo User info
+     */
     fun onUserInfo(userInfo: UserInfo)
+
+    /**
+     * User details updated callback
+     * @param resultCode Result code
+     */
     fun onDetailsUpdated(resultCode: Int)
+
+    /**
+     * Search result loaded callback
+     * @param searchResult Search result
+     */
     fun onSearchResult(searchResult: SearchResult)
+
+    /**
+     * Secure updated callback
+     */
     fun onSecureUpdated()
 }

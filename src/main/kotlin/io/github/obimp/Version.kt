@@ -22,6 +22,10 @@ package io.github.obimp
  * @author Alexander Krysin
  */
 object Version {
-    const val NAME = "OBIMP4J"
-    const val VERSION = "0.1.0"
+    var name: String? = null
+    var version: String? = null
+    val NAME = "OBIMP4J"
+        get() = name ?: field
+    val VERSION = "0.1.3"
+        get() = version ?: field
 }

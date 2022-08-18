@@ -23,7 +23,20 @@ package io.github.obimp.listener
  * @author Alexander Krysin
  */
 interface ConnectionListener {
+    /**
+     * Success login callback
+     */
     fun onLoginSuccess()
+
+    /**
+     * Failed login callback
+     * @param errorCode Error code
+     */
     fun onLoginFailed(errorCode: Int)
+
+    /**
+     * Logout callback
+     * @param byeReasonCode Bye reason code
+     */
     fun onLogout(byeReasonCode: Int)
 }

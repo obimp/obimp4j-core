@@ -66,7 +66,7 @@ class OBIMP {
             setStatus.addWTLD(WTLD(0x0002, UTF8(statusMessage)))
             setStatus.addWTLD(WTLD(0x0003, LongWord(xStatus)))
             setStatus.addWTLD(WTLD(0x0004, UTF8(xStatusMessage)))
-            connection.send(setStatus)
+            connection.sendPacket(setStatus)
         }
 
         /**
@@ -81,13 +81,14 @@ class OBIMP {
             message.addWTLD(WTLD(0x0002, LongWord(messageId)))
             message.addWTLD(WTLD(0x0003, LongWord(1)))
             message.addWTLD(WTLD(0x0004, BLK(text.encodeToByteArray())))
-            connection.send(message)
+            message.addWTLD(WTLD(0x0005))
+            connection.sendPacket(message)
         }
 
         fun getUserInfo(connection: OBIMPConnection, accountName: String) {
             val inf = Packet(OBIMP_BEX_UD, OBIMP_BEX_UD_CLI_DETAILS_REQ)
             inf.addWTLD(WTLD(0x0001, UTF8(accountName)))
-            connection.send(inf)
+            connection.sendPacket(inf)
         }
 
         fun updateUserInfo(connection: OBIMPConnection, userInfo: UserInfo) {
@@ -129,7 +130,7 @@ class OBIMP {
             updInf.addWTLD(WTLD(0x0018, UTF8(userInfo.company)))
             updInf.addWTLD(WTLD(0x0019, UTF8(userInfo.divisionDepartment)))
             updInf.addWTLD(WTLD(0x001A, UTF8(userInfo.position)))
-            connection.send(updInf)
+            connection.sendPacket(updInf)
         }
 
         fun search(connection: OBIMPConnection, obj: Any, typeSearch: Int) {
@@ -154,7 +155,7 @@ class OBIMP {
                 10 -> search.addWTLD(WTLD(0x0008, Word(obj.toString().toInt())))
                 11 -> search.addWTLD(WTLD(0x000D, UTF8(obj.toString())))
             }
-            connection.send(search)
+            connection.sendPacket(search)
         }
 
         fun addGroup(connection: OBIMPConnection, groupName: String, parentGroupId: Int) {
@@ -162,7 +163,7 @@ class OBIMP {
             addGroup.addWTLD(WTLD(0x0001, Word(0x0001)))
             addGroup.addWTLD(WTLD(0x0002, LongWord(parentGroupId)))
             addGroup.addWTLD(WTLD(0x0003, STLD(0x0001, UTF8(groupName))))
-            connection.send(addGroup)
+            connection.sendPacket(addGroup)
         }
 
         fun updateGroup(connection: OBIMPConnection, groupName: String, groupID: Int) {
@@ -170,20 +171,20 @@ class OBIMP {
             updGroup.addWTLD(WTLD(0x0001, LongWord(groupID)))
             updGroup.addWTLD(WTLD(0x0002, LongWord(0)))
             updGroup.addWTLD(WTLD(0x0003, STLD(0x0001, UTF8(groupName))))
-            connection.send(updGroup)
+            connection.sendPacket(updGroup)
         }
 
         fun deleteGroup(connection: OBIMPConnection, groupID: Int) {
             val delGroup = Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_DEL_ITEM)
             delGroup.addWTLD(WTLD(0x0001, LongWord(groupID)))
-            connection.send(delGroup)
+            connection.sendPacket(delGroup)
         }
 
         fun authReply(connection: OBIMPConnection, accountName: String, auth: Boolean) {
             val authReply = Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_SRV_AUTH_REPLY)
             authReply.addWTLD(WTLD(0x0001, UTF8(accountName)))
             authReply.addWTLD(WTLD(0x0002, Word(if (auth) 0x0001 else 0x0002)))
-            connection.send(authReply)
+            connection.sendPacket(authReply)
         }
 
         fun authRequest(
@@ -194,14 +195,14 @@ class OBIMP {
             val authRequest = Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_SRV_AUTH_REQUEST)
             authRequest.addWTLD(WTLD(0x0001, UTF8(accountName)))
             authRequest.addWTLD(WTLD(0x0002, UTF8(reason)))
-            connection.send(authRequest)
+            connection.sendPacket(authRequest)
         }
 
         fun authRevoke(connection: OBIMPConnection, accountName: String, reason: String = "Авторизация отозвана.") {
             val authRequest = Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_SRV_AUTH_REVOKE)
             authRequest.addWTLD(WTLD(0x0001, UTF8(accountName)))
             authRequest.addWTLD(WTLD(0x0002, UTF8(reason)))
-            connection.send(authRequest)
+            connection.sendPacket(authRequest)
         }
     }
 }

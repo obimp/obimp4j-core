@@ -51,7 +51,7 @@ import java.time.LocalDateTime
 class ContactListPacketHandler {
     private var activated = false
 
-    fun parsePacket(packet: Packet, connection: OBIMPConnection, clientName: String, clientVersion: String) {
+    fun parsePacket(packet: Packet, connection: OBIMPConnection) {
         when (packet.subtype) {
             OBIMP_BEX_CL_SRV_PARAMS_REPLY -> {}
             OBIMP_BEX_CL_SRV_REPLY -> {
@@ -65,19 +65,19 @@ class ContactListPacketHandler {
                     activated = true
 
                     val presInfo = Packet(OBIMP_BEX_PRES, OBIMP_BEX_PRES_CLI_SET_PRES_INFO)
-                    presInfo.addWTLD(WTLD(0x0001, Word(0x0001)))
+                    presInfo.addWTLD(WTLD(0x0001, listOf(Word(0x0001), Word(0x0005), Word(0x0009))))
                     presInfo.addWTLD(WTLD(0x0002, Word(0x0001)))
-                    presInfo.addWTLD(WTLD(0x0003, UTF8(clientName)))
-                    presInfo.addWTLD(WTLD(0x0004, QuadWord(parseVersion(clientVersion))))
+                    presInfo.addWTLD(WTLD(0x0003, UTF8(Version.NAME)))
+                    presInfo.addWTLD(WTLD(0x0004, QuadWord(parseVersion(Version.VERSION))))
                     presInfo.addWTLD(WTLD(0x0005, Word(Status.PRES_STATUS_ONLINE)))
                     presInfo.addWTLD(WTLD(0x0006, UTF8(SystemInfoUtil.getOperatingSystemTitle())))
-                    connection.send(presInfo)
+                    connection.sendPacket(presInfo)
 
                     val setStatus = Packet(OBIMP_BEX_PRES, OBIMP_BEX_PRES_CLI_SET_STATUS)
                     setStatus.addWTLD(WTLD(0x0001, LongWord(0x0000)))
-                    connection.send(setStatus)
+                    connection.sendPacket(setStatus)
 
-                    connection.send(Packet(OBIMP_BEX_PRES, OBIMP_BEX_PRES_CLI_ACTIVATE))
+                    connection.sendPacket(Packet(OBIMP_BEX_PRES, OBIMP_BEX_PRES_CLI_ACTIVATE))
                 }
             }
             OBIMP_BEX_CL_SRV_VERIFY_REPLY -> {}
@@ -106,7 +106,7 @@ class ContactListPacketHandler {
                 }
             }
             OBIMP_BEX_CL_SRV_DONE_OFFAUTH -> {
-                connection.send(Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_DEL_OFFAUTH))
+                connection.sendPacket(Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_DEL_OFFAUTH))
             }
             OBIMP_BEX_CL_SRV_ITEM_OPER -> {}
             OBIMP_BEX_CL_SRV_BEGIN_UPDATE -> {}
@@ -204,7 +204,7 @@ class ContactListPacketHandler {
     private fun parseVersion(version: String): Long {
         var versions = version.split(".").map(String::toShort)
         while (versions.size < 4) {
-            versions = listOf(0.toShort()) + versions
+            versions = versions + 0
         }
         var bytes = byteArrayOf()
         for (ver in versions) {

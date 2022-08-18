@@ -16,23 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.obimp.listener
+package io.github.obimp.tls
+
+import org.bouncycastle.tls.DefaultTlsClient
+import org.bouncycastle.tls.crypto.impl.bc.BcTlsCrypto
+import java.security.SecureRandom
 
 /**
- * User status listener
  * @author Alexander Krysin
  */
-interface UserStatusListener {
-    /**
-     * User online callback
-     * @param accountName Account name
-     * @param status Status
-     */
-    fun onUserOnline(accountName: String, status: Int)
-
-    /**
-     * User offline callback
-     * @param accountName Account name
-     */
-    fun onUserOffline(accountName: String)
+class ObimpTlsClient(private val host: String) : DefaultTlsClient(BcTlsCrypto(SecureRandom())) {
+    override fun getAuthentication() = ObimpTlsAuthentication(host)
 }

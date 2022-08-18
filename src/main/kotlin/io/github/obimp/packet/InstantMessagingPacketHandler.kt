@@ -41,7 +41,7 @@ class InstantMessagingPacketHandler {
         when (packet.subtype) {
             OBIMP_BEX_IM_SRV_PARAMS_REPLY -> {}
             OBIMP_BEX_IM_SRV_DONE_OFFLINE -> {
-                connection.send(Packet(OBIMP_BEX_IM, OBIMP_BEX_IM_CLI_DEL_OFFLINE))
+                connection.sendPacket(Packet(OBIMP_BEX_IM, OBIMP_BEX_IM_CLI_DEL_OFFLINE))
             }
             OBIMP_BEX_IM_SRV_MESSAGE -> {
                 val accountName = packet.getWTLD().getDataType<UTF8>().value
@@ -60,7 +60,7 @@ class InstantMessagingPacketHandler {
                             val msgReport = Packet(OBIMP_BEX_IM, OBIMP_BEX_IM_CLI_SRV_MSG_REPORT)
                             msgReport.addWTLD(WTLD(0x0001, UTF8(username)))
                             msgReport.addWTLD(WTLD(0x0002, LongWord(messageId)))
-                            connection.send(msgReport)
+                            connection.sendPacket(msgReport)
                         }
                     }
                 }

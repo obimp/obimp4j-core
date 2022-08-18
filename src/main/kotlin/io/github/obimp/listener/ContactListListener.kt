@@ -25,8 +25,30 @@ import io.github.obimp.cl.ContactListItem
  * @author Alexander Krysin
  */
 interface ContactListListener {
+    /**
+     * Auth request callback
+     * @param accountName Account name
+     * @param reason Reason
+     */
     fun onAuthRequest(accountName: String, reason: String)
+
+    /**
+     * Auth reply callback
+     * @param accountName Account name
+     * @param replyCode Reply code
+     */
     fun onAuthReply(accountName: String, replyCode: Int)
+
+    /**
+     * Auth revoke callback
+     * @param accountName Account name
+     * @param reason Reason
+     */
     fun onAuthRevoke(accountName: String, reason: String)
+
+    /**
+     * Contact list loaded callback
+     * @param contactList Contact list
+     */
     fun onContactListLoad(contactList: List<ContactListItem>)
 }

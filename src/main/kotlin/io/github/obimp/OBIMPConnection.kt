@@ -20,95 +20,146 @@ package io.github.obimp
 
 import io.github.obimp.data.structure.WTLD
 import io.github.obimp.data.type.UTF8
-import io.github.obimp.listener.*
 import io.github.obimp.packet.Packet
 import io.github.obimp.packet.Packet.Companion.OBIMP_BEX_COM
 import io.github.obimp.packet.Packet.Companion.OBIMP_BEX_COM_CLI_HELLO
 import io.github.obimp.packet.PacketListener
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.net.Socket
+import io.github.obimp.tls.ObimpTlsClient
+import kotlinx.coroutines.*
+import org.bouncycastle.tls.TlsClientProtocol
+import java.net.InetSocketAddress
+import java.nio.ByteBuffer
+import java.nio.channels.SelectionKey
+import java.nio.channels.Selector
+import java.nio.channels.SocketChannel
+import kotlin.concurrent.thread
 
 /**
  * OBIMP Connection
  * @author Alexander Krysin
  */
 class OBIMPConnection(
-    private val server: String = "",
-    private val username: String = "",
-    private val password: String = "",
-    private val clientName: String = Version.NAME,
-    private val clientVersion: String = Version.VERSION
-) {
-    private lateinit var connection: Socket
-
-    private lateinit var input: DataInputStream
-    private lateinit var output: DataOutputStream
-
+    private val server: String = "bimoid.net",
+    private val port: Int = 7023,
+    private val secure: Boolean = false
+) : ListenerManager() {
+    private val connection = SocketChannel.open()
+    private val selectionKey: SelectionKey
+    private lateinit var tlsClientProtocol: TlsClientProtocol
     private lateinit var packetListener: PacketListener
+    private var sequence = 0
 
-    private var seq = 0
-        get() = field++
+    init {
+        connection.configureBlocking(false)
+        selectionKey = connection.register(selector, SelectionKey.OP_CONNECT or SelectionKey.OP_READ)
+        selectionKey.attach(
+            Runnable {
+                val bytes = mutableListOf<Byte>()
+                val buffer = ByteBuffer.allocate(1)
+                if (selectionKey.isConnectable) {
+                    connection.finishConnect()
+                    if (secure) {
+                        connectTls()
+                    }
+                }
+                if (selectionKey.isReadable) {
+                    while (connection.read(buffer) > 0) {
+                        bytes.add(buffer[0])
+                        buffer.clear()
+                    }
+                    if (bytes.size > 0) {
+                        if (secure) {
+                            tlsClientProtocol.offerInput(bytes.toByteArray())
+                        } else {
+                            packetListener.handlePacket(bytes)
+                        }
+                        bytes.clear()
+                    }
+                }
+            }
+        )
 
-    private var lastPacketSendTime = System.currentTimeMillis()
-
-    val connectionListeners = mutableListOf<ConnectionListener>()
-    val messageListeners = mutableListOf<MessageListener>()
-    val userStatusListeners = mutableListOf<UserStatusListener>()
-    val metaInfoListeners = mutableListOf<MetaInfoListener>()
-    val contactListListeners = mutableListOf<ContactListListener>()
-    val userAvatarsListeners = mutableListOf<UserAvatarsListener>()
-
-    var connected = false
-
-    fun addConnectionListener(cl: ConnectionListener) = connectionListeners.add(cl)
-
-    fun addMessageListener(ml: MessageListener) = messageListeners.add(ml)
-
-    fun addUserStatusListener(usl: UserStatusListener) = userStatusListeners.add(usl)
-
-    fun addMetaInfoListener(ui: MetaInfoListener) = metaInfoListeners.add(ui)
-
-    fun addContactListListener(cll: ContactListListener) = contactListListeners.add(cll)
-
-    fun addUserAvatarListener(ual: UserAvatarsListener) = userAvatarsListeners.add(ual)
-
-    fun removeConnectionListener(cl: ConnectionListener) = connectionListeners.remove(cl)
-
-    fun removeMessageListener(ml: MessageListener) = messageListeners.remove(ml)
-
-    fun removeUserStatusListener(usl: UserStatusListener) = userStatusListeners.remove(usl)
-
-    fun removeMetaInfoListener(ui: MetaInfoListener) = metaInfoListeners.remove(ui)
-
-    fun removeContactListListener(cll: ContactListListener) = contactListListeners.remove(cll)
-
-    fun removeUserAvatarsListener(ual: UserAvatarsListener) = userAvatarsListeners.remove(ual)
-
-    fun connect() {
-        connected = true
-        connection = Socket(server, 7023)
-        input = DataInputStream(connection.getInputStream())
-        output = DataOutputStream(connection.getOutputStream())
-        packetListener = PacketListener(input, this, username, password, clientName, clientVersion)
-        Thread(packetListener).start()
-        val hello = Packet(OBIMP_BEX_COM, OBIMP_BEX_COM_CLI_HELLO)
-        hello.addWTLD(WTLD(0x0001, UTF8(username)))
-        send(hello)
     }
 
-    fun send(packet: Packet) {
-        packet.setSequence(seq)
-        output.write(packet.toBytes())
-        lastPacketSendTime = System.currentTimeMillis()
+    private fun connectTls() {
+        tlsClientProtocol = TlsClientProtocol()
+        thread {
+            var available: Int
+            var buffer: ByteArray
+            while (connection.isConnected) {
+                available = tlsClientProtocol.availableInputBytes
+                if (available > 0) {
+                    buffer = ByteArray(available)
+                    tlsClientProtocol.readInput(buffer, 0, available)
+                    packetListener.handlePacket(buffer.toMutableList())
+                }
+                available = tlsClientProtocol.availableOutputBytes
+                if (available > 0) {
+                    buffer = ByteArray(available)
+                    tlsClientProtocol.readOutput(buffer, 0, available)
+                    connection.write(ByteBuffer.wrap(buffer))
+                }
+            }
+        }
+        tlsClientProtocol.connect(ObimpTlsClient(server))
+    }
+
+    fun connect() {
+        if (!selectorLoop.isAlive) {
+            selectorLoop.start()
+        }
+        connection.connect(InetSocketAddress(server, port))
+    }
+
+    fun login(username: String, password: String) {
+        if (secure) {
+            while (!this::tlsClientProtocol.isInitialized || !tlsClientProtocol.isConnected) {
+                Thread.sleep(50)
+            }
+        }
+        packetListener = PacketListener(this, username, password)
+        val hello = Packet(OBIMP_BEX_COM, OBIMP_BEX_COM_CLI_HELLO)
+        hello.addWTLD(WTLD(0x0001, UTF8(username)))
+        sendPacket(hello)
+    }
+
+    fun sendPacket(packet: Packet) {
+        while (!connection.isConnected) {
+            Thread.sleep(50)
+        }
+        packet.setSequence(sequence++)
+        val bytes = packet.toBytes()
+        if (secure) {
+            tlsClientProtocol.writeApplicationData(bytes, 0, bytes.size)
+        } else {
+            connection.write(ByteBuffer.wrap(bytes))
+        }
     }
 
     fun disconnect() {
+        selectionKey.cancel()
+        if (selector.keys().isEmpty()) {
+            selector.close()
+        }
+        if (secure) {
+            tlsClientProtocol.close()
+        }
         connection.close()
-        connected = false
-        seq = 0
-        for (cl in connectionListeners) {
-            cl.onLogout(0x0000)
+        sequence = 0
+        for (connectionListener in connectionListeners) {
+            connectionListener.onLogout(0x0000)
+        }
+    }
+
+    companion object {
+        private val selector = Selector.open()
+        private var selectorLoop = thread(start = false) {
+            while (selector.isOpen) {
+                selector.select()
+                for (selectionKey in selector.selectedKeys()) {
+                    (selectionKey.attachment() as Runnable).run()
+                }
+            }
         }
     }
 }

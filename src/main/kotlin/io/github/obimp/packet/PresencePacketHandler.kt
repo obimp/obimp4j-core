@@ -51,7 +51,7 @@ class PresencePacketHandler {
                 }
             }
             OBIMP_BEX_PRES_SRV_PRES_INFO -> {
-                connection.send(Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_REQUEST))
+                connection.sendPacket(Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_REQUEST))
             }
             OBIMP_BEX_PRES_SRV_MAIL_NOTIF -> {}
             OBIMP_BEX_PRES_SRV_OWN_MAIL_URL -> {}

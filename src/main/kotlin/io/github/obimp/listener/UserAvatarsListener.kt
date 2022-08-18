@@ -22,6 +22,15 @@ package io.github.obimp.listener
  * @author Alexander Krysin
  */
 interface UserAvatarsListener {
+    /**
+     * Avatar loaded callback
+     * @param avatarMD5 Avatar MD5 hash
+     * @param avatarFile Avatar binary data
+     */
     fun onAvatarLoaded(avatarMD5: String, avatarFile: ByteArray)
+
+    /**
+     * Avatar updated callback
+     */
     fun onAvatarUpdated()
 }

@@ -45,13 +45,11 @@ class PacketHandler {
         packet: Packet,
         connection: OBIMPConnection,
         username: String,
-        password: String,
-        clientName: String,
-        clientVersion: String
+        password: String
     ) {
         when (packet.type) {
             OBIMP_BEX_COM -> commonPacketHandler.parsePacket(packet, connection, username, password)
-            OBIMP_BEX_CL -> contactListPacketHandler.parsePacket(packet, connection, clientName, clientVersion)
+            OBIMP_BEX_CL -> contactListPacketHandler.parsePacket(packet, connection)
             OBIMP_BEX_PRES -> presencePacketHandler.parsePacket(packet, connection)
             OBIMP_BEX_IM -> instantMessagingPacketHandler.parsePacket(packet, connection, username)
             OBIMP_BEX_UD -> usersDirectoryPacketHandler.parsePacket(packet, connection)

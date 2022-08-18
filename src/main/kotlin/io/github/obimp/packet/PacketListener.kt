@@ -22,25 +22,23 @@ import io.github.obimp.OBIMPConnection
 import io.github.obimp.data.structure.WTLD
 import io.github.obimp.toInt
 import io.github.obimp.toShort
-import java.io.DataInputStream
 
 /**
  * @author Alexander Krysin
  */
 class PacketListener(
-    private val input: DataInputStream,
     private val connection: OBIMPConnection,
     private val username: String,
-    private val password: String,
-    private val clientName: String,
-    private val clientVersion: String
-) : Runnable {
+    private val password: String
+) {
     private val packetHandler = PacketHandler()
 
-    override fun run() {
+    fun handlePacket(byteList: MutableList<Byte>) {
+        var bytes = byteList
         var data = mutableListOf<Byte>()
         var k = 0
-        while (connection.connected) {
+        var packetWasHandle = false
+        while (!packetWasHandle) {
             if (k == 17) {
                 data = data.drop(1) as MutableList<Byte>
                 val sequence = data.take(4).toInt()
@@ -52,15 +50,19 @@ class PacketListener(
                 val packet = Packet(type, subtype)
                 packet.setSequence(sequence)
                 if (length != 0) {
-                    val body = ByteArray(length)
-                    input.readFully(body)
-                    packet.setData(parseData(body))
+                    val body = bytes.take(length)
+                    bytes = bytes.drop(length).toMutableList()
+                    packet.setData(parseData(body.toByteArray()))
                 }
-                packetHandler.parsePacket(packet, connection, username, password, clientName, clientVersion)
-                data.clear()
+                packetHandler.parsePacket(packet, connection, username, password)
+                data = mutableListOf()
                 k = 0
             }
-            data += input.read().toByte()
+            if (bytes.isEmpty()) {
+                packetWasHandle = true
+                continue
+            }
+            data += bytes.removeAt(0)
             k++
         }
     }
@@ -73,8 +75,10 @@ class PacketListener(
             data = data.drop(4).toByteArray()
             val length = data.take(4).toInt()
             data = data.drop(4).toByteArray()
-            payload.add(WTLD(type, data.take(length).toByteArray()))
-            data = data.drop(length).toByteArray()
+            if (length != 0) {
+                payload.add(WTLD(type, data.take(length).toByteArray()))
+                data = data.drop(length).toByteArray()
+            }
         }
         return payload
     }

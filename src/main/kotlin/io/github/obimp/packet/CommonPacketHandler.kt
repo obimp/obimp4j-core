@@ -71,13 +71,13 @@ class CommonPacketHandler {
                         val login = Packet(OBIMP_BEX_COM, OBIMP_BEX_COM_CLI_LOGIN)
                         login.addWTLD(WTLD(0x0001, UTF8(username)))
                         login.addWTLD(WTLD(0x0002, OctaWord(hash)))
-                        connection.send(login)
+                        connection.sendPacket(login)
                     }
                     0x0007 -> {
                         val login = Packet(OBIMP_BEX_COM, OBIMP_BEX_COM_CLI_LOGIN)
                         login.addWTLD(WTLD(0x0001, UTF8(username)))
                         login.addWTLD(WTLD(0x0003, BLK(base64(password))))
-                        connection.send(login)
+                        connection.sendPacket(login)
                     }
                 }
             }
@@ -103,16 +103,16 @@ class CommonPacketHandler {
                     }
                     for (bexType in serverSupportedBexs.keys) {
                         when (bexType) {
-                            OBIMP_BEX_CL -> connection.send(Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_PARAMS))
-                            OBIMP_BEX_PRES -> connection.send(Packet(OBIMP_BEX_PRES, OBIMP_BEX_PRES_CLI_PARAMS))
-                            OBIMP_BEX_IM -> connection.send(Packet(OBIMP_BEX_IM, OBIMP_BEX_IM_CLI_PARAMS))
-                            OBIMP_BEX_UD -> connection.send(Packet(OBIMP_BEX_UD, OBIMP_BEX_UD_CLI_PARAMS))
-                            OBIMP_BEX_UA -> connection.send(Packet(OBIMP_BEX_UA, OBIMP_BEX_UA_CLI_PARAMS))
-                            OBIMP_BEX_FT -> connection.send(Packet(OBIMP_BEX_FT, OBIMP_BEX_FT_CLI_PARAMS))
-                            OBIMP_BEX_TP -> connection.send(Packet(OBIMP_BEX_TP, OBIMP_BEX_TP_CLI_PARAMS))
+                            OBIMP_BEX_CL -> connection.sendPacket(Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_PARAMS))
+                            OBIMP_BEX_PRES -> connection.sendPacket(Packet(OBIMP_BEX_PRES, OBIMP_BEX_PRES_CLI_PARAMS))
+                            OBIMP_BEX_IM -> connection.sendPacket(Packet(OBIMP_BEX_IM, OBIMP_BEX_IM_CLI_PARAMS))
+                            OBIMP_BEX_UD -> connection.sendPacket(Packet(OBIMP_BEX_UD, OBIMP_BEX_UD_CLI_PARAMS))
+                            OBIMP_BEX_UA -> connection.sendPacket(Packet(OBIMP_BEX_UA, OBIMP_BEX_UA_CLI_PARAMS))
+                            OBIMP_BEX_FT -> connection.sendPacket(Packet(OBIMP_BEX_FT, OBIMP_BEX_FT_CLI_PARAMS))
+                            OBIMP_BEX_TP -> connection.sendPacket(Packet(OBIMP_BEX_TP, OBIMP_BEX_TP_CLI_PARAMS))
                         }
                     }
-                    connection.send(Packet(OBIMP_BEX_PRES, OBIMP_BEX_PRES_CLI_REQ_PRES_INFO))
+                    connection.sendPacket(Packet(OBIMP_BEX_PRES, OBIMP_BEX_PRES_CLI_REQ_PRES_INFO))
                 }
             }
             OBIMP_BEX_COM_SRV_BYE -> {
@@ -122,7 +122,7 @@ class CommonPacketHandler {
                 }
             }
             OBIMP_BEX_COM_CLI_SRV_KEEPALIVE_PING -> {
-                connection.send(Packet(OBIMP_BEX_COM, OBIMP_BEX_COM_CLI_SRV_KEEPALIVE_PONG))
+                connection.sendPacket(Packet(OBIMP_BEX_COM, OBIMP_BEX_COM_CLI_SRV_KEEPALIVE_PONG))
             }
             OBIMP_BEX_COM_CLI_SRV_KEEPALIVE_PONG -> {}
             OBIMP_BEX_COM_SRV_REGISTER_REPLY -> {}

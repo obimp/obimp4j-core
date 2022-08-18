@@ -23,7 +23,27 @@ package io.github.obimp.listener
  * @author Alexander Krysin
  */
 interface MessageListener {
+    /**
+     * Incoming message callback
+     * @param accountName Account name
+     * @param messageId Message ID
+     * @param messageType Message type
+     * @param messageData Message data
+     */
     fun onIncomingMessage(accountName: String, messageId: Int, messageType: Int, messageData: String)
+
+    /**
+     * Message delivered callback
+     * @param accountName Account name
+     * @param messageId Message ID
+     */
     fun onMessageDelivered(accountName: String, messageId: Int)
+
+    /**
+     * Notify callback
+     * @param accountName Account name
+     * @param notificationType Notification type
+     * @param notificationValue Notification value
+     */
     fun onNotify(accountName: String, notificationType: Int, notificationValue: Int)
 }
