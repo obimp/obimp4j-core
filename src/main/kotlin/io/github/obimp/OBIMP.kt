@@ -35,6 +35,8 @@ import io.github.obimp.packet.Packet.Companion.OBIMP_BEX_IM
 import io.github.obimp.packet.Packet.Companion.OBIMP_BEX_IM_CLI_MESSAGE
 import io.github.obimp.packet.Packet.Companion.OBIMP_BEX_PRES
 import io.github.obimp.packet.Packet.Companion.OBIMP_BEX_PRES_CLI_SET_STATUS
+import io.github.obimp.packet.Packet.Companion.OBIMP_BEX_UA
+import io.github.obimp.packet.Packet.Companion.OBIMP_BEX_UA_CLI_AVATAR_REQ
 import io.github.obimp.packet.Packet.Companion.OBIMP_BEX_UD
 import io.github.obimp.packet.Packet.Companion.OBIMP_BEX_UD_CLI_DETAILS_REQ
 import io.github.obimp.packet.Packet.Companion.OBIMP_BEX_UD_CLI_DETAILS_UPD
@@ -199,10 +201,16 @@ class OBIMP {
         }
 
         fun authRevoke(connection: OBIMPConnection, accountName: String, reason: String = "Авторизация отозвана.") {
-            val authRequest = Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_SRV_AUTH_REVOKE)
-            authRequest.addWTLD(WTLD(0x0001, UTF8(accountName)))
-            authRequest.addWTLD(WTLD(0x0002, UTF8(reason)))
-            connection.sendPacket(authRequest)
+            val authRevoke = Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_SRV_AUTH_REVOKE)
+            authRevoke.addWTLD(WTLD(0x0001, UTF8(accountName)))
+            authRevoke.addWTLD(WTLD(0x0002, UTF8(reason)))
+            connection.sendPacket(authRevoke)
+        }
+
+        fun requestAvatar(connection: OBIMPConnection, avatarMd5Hash: String) {
+            val requestAvatar = Packet(OBIMP_BEX_UA, OBIMP_BEX_UA_CLI_AVATAR_REQ)
+            requestAvatar.addWTLD(WTLD(0x0001, OctaWord(avatarMd5Hash.encodeToByteArray())))
+            connection.sendPacket(requestAvatar)
         }
     }
 }

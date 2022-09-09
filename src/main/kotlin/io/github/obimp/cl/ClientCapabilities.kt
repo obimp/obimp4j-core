@@ -16,24 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.obimp.listener
-
-import io.github.obimp.cl.OnlineContact
+package io.github.obimp.cl
 
 /**
- * User status listener
+ * Client capabilities
  * @author Alexander Krysin
  */
-interface UserStatusListener {
-    /**
-     * User online callback
-     * @param onlineContact Online contact
-     */
-    fun onUserOnline(onlineContact: OnlineContact)
-
-    /**
-     * User offline callback
-     * @param accountName Account name
-     */
-    fun onUserOffline(accountName: String)
-}
+data class ClientCapabilities(
+    var msgUtf8Support: Boolean = false,
+    var msgRtfSupport: Boolean = false,
+    var msgHtmlSupport: Boolean = false,
+    var msgEncryptSupport: Boolean = false,
+    var notifTypingSupport: Boolean = false,
+    var avatarsSupport: Boolean = false,
+    var fileTransferSupport: Boolean = false,
+    var transportsSupport: Boolean = false,
+    var notifAlarmSupport:Boolean = false,
+    var notifMailSupport: Boolean = false
+)

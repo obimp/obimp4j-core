@@ -32,7 +32,9 @@ import java.time.ZoneOffset
 class DateTime(private val dateTime: Long) : DataType(dateTime.toBytes()) {
     constructor(bytes: ByteArray) : this(bytes.toLong())
 
-    fun getDateTime(zoneOffset: ZoneOffset = ZoneOffset.UTC) = LocalDateTime.ofEpochSecond(dateTime, 0, zoneOffset)
+    fun getDateTime(zoneOffset: ZoneOffset = ZoneOffset.UTC): LocalDateTime {
+        return LocalDateTime.ofEpochSecond(dateTime, 0, zoneOffset)
+    }
 
     companion object {
         const val LENGTH = 8
