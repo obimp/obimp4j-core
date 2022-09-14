@@ -65,7 +65,23 @@ class ContactListPacketHandler {
                     activated = true
 
                     val presInfo = Packet(OBIMP_BEX_PRES, OBIMP_BEX_PRES_CLI_SET_PRES_INFO)
-                    presInfo.addWTLD(WTLD(0x0001, listOf(Word(0x0001), Word(0x0005), Word(0x0009))))
+                    presInfo.addWTLD(
+                        WTLD(
+                            0x0001,
+                            listOf(
+                                Word(CAP_MSGS_UTF8),
+                                Word(CAP_MSGS_RTF),
+                                Word(CAP_MSGS_HTML),
+                                Word(CAP_MSGS_ENCRYPT),
+                                Word(CAP_NOTIFS_TYPING),
+                                Word(CAP_AVATARS),
+                                Word(CAP_FILE_TRANSFER),
+                                Word(CAP_TRANSPORTS),
+                                Word(CAP_NOTIFS_ALARM),
+                                Word(CAP_NOTIFS_MAIL)
+                            )
+                        )
+                    )
                     presInfo.addWTLD(WTLD(0x0002, Word(0x0001)))
                     presInfo.addWTLD(WTLD(0x0003, UTF8(Version.NAME)))
                     presInfo.addWTLD(WTLD(0x0004, QuadWord(parseVersion(Version.VERSION))))
@@ -80,6 +96,7 @@ class ContactListPacketHandler {
                     connection.sendPacket(Packet(OBIMP_BEX_PRES, OBIMP_BEX_PRES_CLI_ACTIVATE))
                 }
             }
+
             OBIMP_BEX_CL_SRV_VERIFY_REPLY -> {}
             OBIMP_BEX_CL_SRV_ADD_ITEM_REPLY -> {}
             OBIMP_BEX_CL_SRV_DEL_ITEM_REPLY -> {}
@@ -91,6 +108,7 @@ class ContactListPacketHandler {
                     cll.onAuthRequest(accountName, reason)
                 }
             }
+
             OBIMP_BEX_CL_CLI_SRV_AUTH_REPLY -> {
                 val accountName = packet.getWTLD().getDataType<UTF8>().value
                 val replyCode = packet.getWTLD().getDataType<Word>().value
@@ -98,6 +116,7 @@ class ContactListPacketHandler {
                     cll.onAuthReply(accountName, replyCode)
                 }
             }
+
             OBIMP_BEX_CL_CLI_SRV_AUTH_REVOKE -> {
                 val accountName = packet.getWTLD().getDataType<UTF8>().value
                 val reason = packet.getWTLD().getDataType<UTF8>().value
@@ -105,9 +124,11 @@ class ContactListPacketHandler {
                     cll.onAuthRevoke(accountName, reason)
                 }
             }
+
             OBIMP_BEX_CL_SRV_DONE_OFFAUTH -> {
                 connection.sendPacket(Packet(OBIMP_BEX_CL, OBIMP_BEX_CL_CLI_DEL_OFFAUTH))
             }
+
             OBIMP_BEX_CL_SRV_ITEM_OPER -> {}
             OBIMP_BEX_CL_SRV_BEGIN_UPDATE -> {}
             OBIMP_BEX_CL_SRV_END_UPDATE -> {}
@@ -131,6 +152,7 @@ class ContactListPacketHandler {
                     val groupName = itemData.getSTLD().getDataType<UTF8>().value
                     contactList.add(Group(itemId, groupId, groupName))
                 }
+
                 CL_ITEM_TYPE_CONTACT -> {
                     val accountName = itemData.getSTLD().getDataType<UTF8>().value
                     val contactName = itemData.getSTLD().getDataType<UTF8>().value
@@ -162,6 +184,7 @@ class ContactListPacketHandler {
                         )
                     )
                 }
+
                 CL_ITEM_TYPE_TRANSPORT -> {
                     val transportUUID = itemData.getSTLD().getDataType<UUID>().value
                     val transportAccountName = itemData.getSTLD().getDataType<UTF8>().value
@@ -177,6 +200,7 @@ class ContactListPacketHandler {
                         )
                     )
                 }
+
                 CL_ITEM_TYPE_NOTE -> {
                     val noteName = itemData.getSTLD().getDataType<UTF8>().value
                     val noteType = itemData.getSTLD().getDataType<Byte>().value
@@ -214,6 +238,18 @@ class ContactListPacketHandler {
     }
 
     companion object {
+        // Available client capabilities:
+        const val CAP_MSGS_UTF8 = 0x0001 // UTF-8 encoding messages support (required for all clients)
+        const val CAP_MSGS_RTF = 0x0002 // RTF (Rich Text Format) messages support with UTF-8 encoding
+        const val CAP_MSGS_HTML = 0x0003 // HTML (HyperText Markup Language) messages support with UTF-8 encoding
+        const val CAP_MSGS_ENCRYPT = 0x0004 // Encryption support
+        const val CAP_NOTIFS_TYPING = 0x0005 // Typing notifications support
+        const val CAP_AVATARS = 0x0006 // Avatars support
+        const val CAP_FILE_TRANSFER = 0x0007 // File transfer support
+        const val CAP_TRANSPORTS = 0x0008 // Transports support
+        const val CAP_NOTIFS_ALARM = 0x0009 // Alarm notifications support
+        const val CAP_NOTIFS_MAIL = 0x000A // Mail notifications support
+
         const val CL_ITEM_TYPE_GROUP = 0x0001
         const val CL_ITEM_TYPE_CONTACT = 0x0002
         const val CL_ITEM_TYPE_TRANSPORT = 0x0003

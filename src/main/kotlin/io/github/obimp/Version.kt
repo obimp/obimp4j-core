@@ -26,6 +26,6 @@ object Version {
     var version: String? = null
     val NAME = "OBIMP4J"
         get() = name ?: field
-    val VERSION = "0.1.4"
+    val VERSION = "0.1.5"
         get() = version ?: field
 }
