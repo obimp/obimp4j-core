@@ -19,72 +19,64 @@
 package io.github.obimp.data.structure
 
 import io.github.obimp.data.Data
-import io.github.obimp.data.DataStructure
-import io.github.obimp.data.DataType
-import io.github.obimp.toInt
-import io.github.obimp.toShort
+import io.github.obimp.data.type.LongWord
+import io.github.obimp.data.type.Word
+import java.nio.ByteBuffer
 
 /**
  * Wide Type Length Data
  * @author Alexander Krysin
  */
-class WTLD(type: Int, data: ByteArray = byteArrayOf()) : DataStructure(type, data) {
-    override val length
-        get() = data.size
+class WTLD(override val type: LongWord) : DataStructure<LongWord> {
+    override val length: LongWord
+        get() = LongWord(if (::buffer.isInitialized) buffer.capacity() else data.sumOf(Data::size))
+    override var data = mutableListOf<Data>()
+    override lateinit var buffer: ByteBuffer
 
-    constructor(type: Int, data: DataType) : this(type, data.data)
+    override fun size() = Int.SIZE_BYTES * 2 + length.value
 
-    constructor(type: Int, data: DataStructure) : this(type, data.toBytes())
-
-    constructor(type: Int, data: List<Data>) : this(type, data.map(Data::toBytes).reduce(ByteArray::plus))
-
-    fun addDataType(dataType: DataType) {
-        data += dataType.data
+    override fun toBytes(): ByteBuffer {
+        val buffer = ByteBuffer.allocate(Int.SIZE_BYTES * 2 + length.value)
+        buffer.putInt(type.value)
+        buffer.putInt(length.value)
+        data.forEach { data -> buffer.put(data.toBytes()) }
+        buffer.rewind()
+        return buffer
     }
 
-    fun addDataStructure(dataStructure: DataStructure) {
-        data += dataStructure.toBytes()
+    fun readWTLD(): WTLD {
+        val type = buffer.int
+        val length = buffer.int
+        val data = ByteArray(length)
+        buffer.get(data)
+        val wtld = WTLD(LongWord(type))
+        wtld.buffer = ByteBuffer.wrap(data)
+        return wtld
     }
 
-    fun getSTLD(): STLD {
-        val type = takeShort()
-        val length = takeShort()
-        val data = takeBytes(length)
-        return STLD(type, data)
+    fun readSTLD(): STLD {
+        val type = buffer.short
+        val length = buffer.short
+        val data = ByteArray(length.toInt())
+        buffer.get(data)
+        val stld = STLD(Word(type))
+        stld.buffer = ByteBuffer.wrap(data)
+        return stld
     }
 
-    fun getWTLD(): WTLD {
-        val type = takeInt()
-        val length = takeInt()
-        val data = takeBytes(length)
-        return WTLD(type, data)
-    }
-
-    fun getListOfSTLD(): List<STLD> {
-        val stldList = mutableListOf<STLD>()
-        while (data.isNotEmpty()) {
-            stldList.add(getSTLD())
+    fun readWTLDList() : List<WTLD> {
+        val wtldSList= mutableListOf<WTLD>()
+        while (buffer.hasRemaining()) {
+            wtldSList.add(readWTLD())
         }
-        return stldList
+        return wtldSList
     }
 
-    fun getListOfWTLD(): List<WTLD> {
-        val wtldList = mutableListOf<WTLD>()
-        while (data.isNotEmpty()) {
-            wtldList.add(getWTLD())
+    fun readSTLDList() : List<STLD> {
+        val stldSList= mutableListOf<STLD>()
+        while (buffer.hasRemaining()) {
+            stldSList.add(readSTLD())
         }
-        return wtldList
-    }
-
-    private fun takeInt(): Int {
-        val int = data.take(Int.SIZE_BYTES).toInt()
-        data = data.drop(Int.SIZE_BYTES).toByteArray()
-        return int
-    }
-
-    private fun takeShort(): Short {
-        val short = data.take(Short.SIZE_BYTES).toShort()
-        data = data.drop(Short.SIZE_BYTES).toByteArray()
-        return short
+        return stldSList
     }
 }

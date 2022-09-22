@@ -22,11 +22,8 @@ package io.github.obimp.cl
  * Abstract contact list item
  * @author Alexander Krysin
  */
-abstract class ContactListItem(val type: Short, val itemId: Int, val groupId: Int) {
-    companion object {
-        const val CL_ITEM_TYPE_GROUP: Short = 0x0001
-        const val CL_ITEM_TYPE_CONTACT: Short = 0x0002
-        const val CL_ITEM_TYPE_TRANSPORT: Short = 0x0003
-        const val CL_ITEM_TYPE_NOTE: Short = 0x0004
-    }
+sealed interface ContactListItem {
+    val type: ContactListItemType
+    val id: Int
+    val groupID: Int
 }

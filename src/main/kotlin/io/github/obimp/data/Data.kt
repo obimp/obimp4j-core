@@ -18,9 +18,11 @@
 
 package io.github.obimp.data
 
+import io.github.obimp.util.BytesSerializable
+
 /**
  * @author Alexander Krysin
  */
-abstract class Data {
-    abstract fun toBytes(): ByteArray
+interface Data : BytesSerializable {
+    fun size(): Int
 }

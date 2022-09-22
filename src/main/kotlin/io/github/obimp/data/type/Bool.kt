@@ -18,12 +18,20 @@
 
 package io.github.obimp.data.type
 
-import io.github.obimp.data.DataType
+import java.nio.ByteBuffer
+import kotlin.Byte
 
 /**
  * Bool - unsigned 1 byte
  * @author Alexander Krysin
  */
-class Bool(val value: Boolean) : DataType(byteArrayOf(if (value) 0x01 else 0x00)) {
-    constructor(bytes: ByteArray) : this(bytes[0] == 0x01.toByte())
+class Bool(override var value: Boolean) : DataType<Boolean> {
+    override var length = Byte.SIZE_BYTES
+
+    override fun toBytes(): ByteBuffer {
+        val buffer = ByteBuffer.allocate(length)
+        buffer.put(if (value) 0x01 else 0x00)
+        buffer.rewind()
+        return buffer
+    }
 }

@@ -19,12 +19,15 @@
 package io.github.obimp.cl
 
 /**
+ * Transport
  * @author Alexander Krysin
  */
 class Transport(
-    itemId: Int,
-    groupId: Int,
-    val transportUUID: String,
+    override val id: Int,
+    override val groupID: Int,
+    val uuid: String,
     val transportAccountName: String,
     val transportFriendlyName: String
-) : ContactListItem(CL_ITEM_TYPE_TRANSPORT, itemId, groupId)
+) : ContactListItem {
+    override val type = ContactListItemType.TRANSPORT
+}

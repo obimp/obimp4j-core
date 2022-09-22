@@ -18,16 +18,14 @@
 
 package io.github.obimp.data.type
 
-import io.github.obimp.data.DataType
+import java.nio.ByteBuffer
 
 /**
  * UUID - unsigned 16 bytes, Universally Unique Identifier
  * @author Alexander Krysin
  */
-class UUID(val value: String) : DataType(value.encodeToByteArray()) {
-    constructor(bytes: ByteArray) : this(bytes.decodeToString())
+class UUID(override var value: String) : DataType<String> {
+    override var length = 16
 
-    companion object {
-        const val LENGTH = 16
-    }
+    override fun toBytes(): ByteBuffer = ByteBuffer.wrap(value.encodeToByteArray())
 }

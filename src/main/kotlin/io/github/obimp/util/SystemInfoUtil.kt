@@ -22,7 +22,7 @@ package io.github.obimp.util
  * @author Alexander Krysin
  */
 object SystemInfoUtil {
-    var osName = System.getProperty("os.name")
+    var osName: String = System.getProperty("os.name")
 
     fun getOperatingSystemTitle(): String {
         return osName

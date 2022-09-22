@@ -18,19 +18,27 @@
 
 package io.github.obimp.data.structure
 
-import io.github.obimp.data.DataStructure
-import io.github.obimp.data.DataType
-import io.github.obimp.toBytes
+import io.github.obimp.data.Data
+import io.github.obimp.data.type.Word
+import java.nio.ByteBuffer
 
 /**
  * Short Type Length Data
  * @author Alexander Krysin
  */
-class STLD(type: Short, data: ByteArray = byteArrayOf()) : DataStructure(type, data) {
-    override val length
-        get() = data.size.toShort()
+class STLD(override val type: Word) : DataStructure<Word> {
+    override val length: Word
+        get() = Word(if (::buffer.isInitialized) buffer.capacity().toShort() else data.sumOf(Data::size).toShort())
+    override var data = mutableListOf<Data>()
+    override lateinit var buffer: ByteBuffer
 
-    constructor(type: Short, data: DataType) : this(type, data.data)
+    override fun size() = Short.SIZE_BYTES * 2 + length.value.toInt()
 
-    constructor(type: Short, data: List<DataType>) : this(type, data.map(DataType::data).reduce(ByteArray::plus))
+    override fun toBytes(): ByteBuffer {
+        val buffer = ByteBuffer.allocate(Short.SIZE_BYTES * 2 + length.value.toInt())
+        buffer.putShort(type.value)
+        buffer.putShort(length.value)
+        data.forEach { data -> buffer.put(data.toBytes()) }
+        return buffer
+    }
 }

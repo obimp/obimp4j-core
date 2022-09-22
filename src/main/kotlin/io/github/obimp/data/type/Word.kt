@@ -18,21 +18,19 @@
 
 package io.github.obimp.data.type
 
-import io.github.obimp.data.DataType
-import io.github.obimp.toBytes
-import io.github.obimp.toShort
-import kotlin.Byte
+import java.nio.ByteBuffer
 
 /**
  * Word - unsigned 2 bytes
  * @author Alexander Krysin
  */
-class Word(val value: Int) : DataType(value.toShort().toBytes()) {
-    constructor(bytes: ByteArray) : this(bytes.toShort().toInt())
+class Word(override var value: Short) : DataType<Short> {
+    override var length = Short.SIZE_BYTES
 
-    constructor(value: Byte) : this(value.toInt())
-
-    companion object {
-        const val LENGTH = 2
+    override fun toBytes(): ByteBuffer {
+        val buffer = ByteBuffer.allocate(length)
+        buffer.putShort(value)
+        buffer.rewind()
+        return buffer
     }
 }

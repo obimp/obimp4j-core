@@ -18,37 +18,90 @@
 
 package io.github.obimp.listener
 
-import io.github.obimp.cl.ContactListItem
+import io.github.obimp.cl.*
+import java.util.*
 
 /**
  * Contact list listener
  * @author Alexander Krysin
  */
-interface ContactListListener {
+interface ContactListListener : EventListener {
     /**
-     * Auth request callback
-     * @param accountName Account name
-     * @param reason Reason
+     * Contact list parameters callback
+     * @param contactListParameters Contact list parameters
      */
-    fun onAuthRequest(accountName: String, reason: String)
-
-    /**
-     * Auth reply callback
-     * @param accountName Account name
-     * @param replyCode Reply code
-     */
-    fun onAuthReply(accountName: String, replyCode: Int)
-
-    /**
-     * Auth revoke callback
-     * @param accountName Account name
-     * @param reason Reason
-     */
-    fun onAuthRevoke(accountName: String, reason: String)
+    fun onContactListParameters(contactListParameters: ContactListParameters)
 
     /**
      * Contact list loaded callback
-     * @param contactList Contact list
+     * @param items Contact list items
      */
-    fun onContactListLoad(contactList: List<ContactListItem>)
+    fun onContactListLoaded(items: List<ContactListItem>)
+
+    /**
+     * Contact list verify callback
+     * @param contactListMD5Hash Contact list MD5 hash
+     */
+    fun onContactListVerify(contactListMD5Hash: ByteArray)
+
+    /**
+     * Add contact list item callback
+     * @param contactListItemAddingResult Contact list item adding result
+     */
+    fun onAddContactListItem(contactListItemAddingResult: AddingResult)
+
+    /**
+     * Delete contact list item callback
+     * @param contactListItemDeletionResult Contact list item deletion result
+     */
+    fun onDeleteContactListItem(contactListItemDeletionResult: DeletionResult)
+
+    /**
+     * Update contact list item callback
+     * @param contactListItemUpdateOperationResult Contact list item update operation result
+     */
+    fun onUpdateContactListItem(contactListItemUpdateOperationResult: UpdateOperationResult)
+
+    /**
+     * Authorization request callback
+     * @param accountName Account name
+     * @param reason Reason
+     */
+    fun onAuthorizationRequest(accountName: String, reason: String)
+
+    /**
+     * Authorization reply callback
+     * @param accountName Account name
+     * @param authorizationReply Authorization reply
+     */
+    fun onAuthorizationReply(accountName: String, authorizationReply: AuthorizationReply)
+
+    /**
+     * Authorization revoke callback
+     * @param accountName Account name
+     * @param reason Reason
+     */
+    fun onAuthorizationRevoke(accountName: String, reason: String)
+
+    /**
+     * Offline authorization requests/replies/revokes done callback
+     */
+    fun onOffauthDone()
+
+    /**
+     * Contact list item operation callback
+     * @param contactListItem Contact list item
+     * @param operation Contact list item operation
+     */
+    fun onContactListItemOperation(contactListItem: ContactListItem, operation: Operation)
+
+    /**
+     * Begin server-side contact list item operations callback
+     */
+    fun onBeginUpdate()
+
+    /**
+     * End of server-side contact list item operations callback
+     */
+    fun onEndUpdate()
 }

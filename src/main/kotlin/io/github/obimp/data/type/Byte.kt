@@ -18,17 +18,20 @@
 
 package io.github.obimp.data.type
 
-import io.github.obimp.data.DataType
+import java.nio.ByteBuffer
 import kotlin.Byte
 
 /**
  * Byte - unsigned 1 byte
  * @author Alexander Krysin
  */
-class Byte(val value: Byte) : DataType(byteArrayOf(value)) {
-    constructor(bytes: ByteArray) : this(bytes[0])
+class Byte(override var value: Byte) : DataType<Byte> {
+    override var length: Int = Byte.SIZE_BYTES
 
-    companion object {
-        const val LENGTH = 1
+    override fun toBytes(): ByteBuffer {
+        val buffer = ByteBuffer.allocate(length)
+        buffer.put(value)
+        buffer.rewind()
+        return buffer
     }
 }

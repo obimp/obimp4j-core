@@ -18,14 +18,17 @@
 
 package io.github.obimp.data.type
 
-import io.github.obimp.data.DataType
+import java.nio.ByteBuffer
 
 /**
  * OctaWord - unsigned 16 bytes
  * @author Alexander Krysin
  */
-class OctaWord(bytes: ByteArray) : DataType(bytes) {
-    companion object {
-        const val LENGTH = 16
+class OctaWord(override var value: ByteBuffer) : DataType<ByteBuffer> {
+    override var length = 16
+
+    override fun toBytes(): ByteBuffer {
+        value.rewind()
+        return value
     }
 }

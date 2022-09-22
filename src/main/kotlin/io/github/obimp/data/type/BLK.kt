@@ -18,10 +18,17 @@
 
 package io.github.obimp.data.type
 
-import io.github.obimp.data.DataType
+import java.nio.ByteBuffer
 
 /**
  * BLK - bytes array, variable length
  * @author Alexander Krysin
  */
-class BLK(bytes: ByteArray) : DataType(bytes)
+class BLK(override var value: ByteBuffer) : DataType<ByteBuffer> {
+    override var length = value.capacity()
+
+    override fun toBytes(): ByteBuffer {
+        value.rewind()
+        return value
+    }
+}

@@ -18,19 +18,31 @@
 
 package io.github.obimp.listener
 
+import io.github.obimp.ua.AvatarResult
+import io.github.obimp.ua.AvatarSetResult
+import io.github.obimp.ua.UserAvatarsParameters
+import java.util.*
+
 /**
+ * User avatars listener
  * @author Alexander Krysin
  */
-interface UserAvatarsListener {
+interface UserAvatarsListener : EventListener {
     /**
-     * Avatar loaded callback
-     * @param avatarMD5 Avatar MD5 hash
-     * @param avatarFile Avatar binary data
+     * User avatars parameters callback
+     * @param userAvatarsParameters User avatars parameters
      */
-    fun onAvatarLoaded(avatarMD5: String, avatarFile: ByteArray)
+    fun userAvatarsParameters(userAvatarsParameters: UserAvatarsParameters)
 
     /**
-     * Avatar updated callback
+     * Avatar callback
+     * @param avatarResult Avatar result
      */
-    fun onAvatarUpdated()
+    fun onAvatar(avatarResult: AvatarResult)
+
+    /**
+     * Set avatar callback
+     * @param avatarSetResult Avatar set result
+     */
+    fun onSetAvatar(avatarSetResult: AvatarSetResult)
 }

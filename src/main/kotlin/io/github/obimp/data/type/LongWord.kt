@@ -18,17 +18,19 @@
 
 package io.github.obimp.data.type
 
-import io.github.obimp.data.DataType
-import io.github.obimp.toBytes
-import io.github.obimp.toInt
+import java.nio.ByteBuffer
 
 /**
  * LongWord - unsigned 4 bytes
  * @author Alexander Krysin
  */
-class LongWord(val value: Int) : DataType(value.toBytes()) {
-    constructor(bytes: ByteArray) : this(bytes.toInt())
-    companion object {
-        const val LENGTH = 4
+class LongWord(override var value: Int) : DataType<Int> {
+    override var length = Int.SIZE_BYTES
+
+    override fun toBytes(): ByteBuffer{
+        val buffer = ByteBuffer.allocate(length)
+        buffer.putInt(value)
+        buffer.rewind()
+        return buffer
     }
 }

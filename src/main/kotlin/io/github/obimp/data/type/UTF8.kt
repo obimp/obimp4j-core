@@ -18,12 +18,14 @@
 
 package io.github.obimp.data.type
 
-import io.github.obimp.data.DataType
+import java.nio.ByteBuffer
 
 /**
  * UTF8 - UTF-8 encoded string, variable length
  * @author Alexander Krysin
  */
-class UTF8(val value: String) : DataType(value.encodeToByteArray()) {
-    constructor(bytes: ByteArray) : this(bytes.decodeToString())
+class UTF8(override var value: String) : DataType<String> {
+    override var length = value.encodeToByteArray().size
+
+    override fun toBytes(): ByteBuffer = ByteBuffer.wrap(value.encodeToByteArray())
 }

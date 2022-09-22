@@ -18,9 +18,7 @@
 
 package io.github.obimp.data.type
 
-import io.github.obimp.data.DataType
-import io.github.obimp.toBytes
-import io.github.obimp.toLong
+import java.nio.ByteBuffer
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
@@ -29,14 +27,13 @@ import java.time.ZoneOffset
  * DateTime - signed 8 bytes, 64-bit unix date time
  * @author Alexander Krysin
  */
-class DateTime(private val dateTime: Long) : DataType(dateTime.toBytes()) {
-    constructor(bytes: ByteArray) : this(bytes.toLong())
+class DateTime(override var value: LocalDateTime) : DataType<LocalDateTime> {
+    override var length = 8
 
-    fun getDateTime(zoneOffset: ZoneOffset = ZoneOffset.UTC): LocalDateTime {
-        return LocalDateTime.ofEpochSecond(dateTime, 0, zoneOffset)
-    }
-
-    companion object {
-        const val LENGTH = 8
+    override fun toBytes(): ByteBuffer {
+        val buffer = ByteBuffer.allocate(8)
+        buffer.putLong(value.toEpochSecond(ZoneOffset.UTC))
+        buffer.rewind()
+        return buffer
     }
 }

@@ -23,12 +23,14 @@ package io.github.obimp.cl
  * @author Alexander Krysin
  */
 class Contact(
-    itemId: Int,
-    groupId: Int,
+    override val id: Int,
+    override val groupID: Int,
     val accountName: String,
     val contactName: String,
-    val privacyType: Byte,
+    val privacyType: PrivacyType,
     val authorizationFlag: Boolean,
     val generalItemFlag: Boolean,
     val transportItemId: Int?
-) : ContactListItem(CL_ITEM_TYPE_CONTACT, itemId, groupId)
+) : ContactListItem {
+    override val type = ContactListItemType.CONTACT
+}

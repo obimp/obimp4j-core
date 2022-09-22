@@ -21,12 +21,15 @@ package io.github.obimp.ud
 /**
  * @author Alexander Krysin
  */
-data class SearchResult(
-    var accountName: String = "",
-    var nickname: String = "",
-    var firstName: String = "",
-    var lastName: String = "",
-    var gender: Byte = 0x00,
-    var age: Byte = 0x00,
-    var isOnline: Boolean = false
-)
+enum class SearchResult(val code: Short) {
+    SUCCESS(0x0000),
+    NOT_FOUND(0x0001),
+    BAD_REQUEST(0x0002),
+    TOO_MANY_REQUESTS(0x0003),
+    SERVICE_TEMP_UNAVAILABLE(0x0004);
+
+    companion object {
+        @JvmStatic
+        fun byCode(code: Short) = values().first { it.code == code }
+    }
+}

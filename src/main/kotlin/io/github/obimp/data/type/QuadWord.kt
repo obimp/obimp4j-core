@@ -18,18 +18,19 @@
 
 package io.github.obimp.data.type
 
-import io.github.obimp.data.DataType
-import io.github.obimp.toBytes
-import io.github.obimp.toLong
+import java.nio.ByteBuffer
 
 /**
  * QuadWord - unsigned 8 bytes
  * @author Alexander Krysin
  */
-class QuadWord(value: Long) : DataType(value.toBytes()) {
-    constructor(bytes: ByteArray) : this(bytes.toLong())
+class QuadWord(override var value: Long) : DataType<Long> {
+    override var length = Long.SIZE_BYTES
 
-    companion object {
-        const val LENGTH = 8
+    override fun toBytes(): ByteBuffer {
+        val buffer = ByteBuffer.allocate(length)
+        buffer.putLong(value)
+        buffer.rewind()
+        return buffer
     }
 }

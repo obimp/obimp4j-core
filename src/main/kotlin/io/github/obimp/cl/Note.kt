@@ -21,14 +21,17 @@ package io.github.obimp.cl
 import java.time.LocalDateTime
 
 /**
+ * Note
  * @author Alexander Krysin
  */
 class Note(
-    itemId: Int,
-    groupId: Int,
+    override val id: Int,
+    override val groupID: Int,
     val noteName: String,
-    val noteType: Byte,
+    val noteType: NoteType,
     val noteText: String?,
     val noteDate: LocalDateTime?,
-    val notePicture: String?
-) : ContactListItem(CL_ITEM_TYPE_NOTE, itemId, groupId)
+    val notePictureMD5Hash: ByteArray?
+) : ContactListItem {
+    override val type = ContactListItemType.NOTE
+}
