@@ -23,9 +23,9 @@ package io.github.obimp.packet.header
  * @author Alexander Krysin
  */
 class ObimpHeader(
-    override var sequence: Int,
+    override var sequence: Int = 0,
     override var type: Short,
     override var subtype: Short,
-    override var requestID: Int,
-    override var contentLength: Int
+    override var requestID: Int = 0,
+    override var contentLength: Int = 0
 ) : Header

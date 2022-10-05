@@ -1,15 +1,11 @@
 plugins {
-    id 'java'
     id 'maven-publish'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.20'
 }
 
 group 'io.github.obimp'
-version '0.1.5'
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+version '0.1.6'
 
 repositories {
     mavenCentral()
@@ -33,12 +29,7 @@ java {
 }
 
 dependencies {
-    implementation 'org.bouncycastle:bctls-jdk18on:1.71.1'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.10'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }
 
 test {
@@ -59,7 +50,7 @@ publishing {
         }
         maven {
             name = 'GithubPackages'
-            url = 'https://maven.pkg.github.com/obimp/obimp4j'
+            url = 'https://maven.pkg.github.com/obimp/obimp4j-core'
             credentials {
                 username = project.findProperty('gpr.user') ?: System.getenv('GPR_USERNAME')
                 password = project.findProperty('gpr.key') ?: System.getenv('GPR_TOKEN')
@@ -68,7 +59,7 @@ publishing {
     }
     publications {
         mavenJava(MavenPublication) {
-            artifactId = 'obimp4j'
+            artifactId = 'obimp4j-core'
             from(components.java)
             versionMapping {
                 usage('java-api') {
@@ -82,7 +73,7 @@ publishing {
             pom {
                 name = 'OBIMP4J'
                 description = 'Java OBIMP (Open Binary Instant Messaging Protocol) implementation.'
-                url = 'https://github.com/obimp/obimp4j'
+                url = 'https://github.com/obimp/obimp4j-core'
                 licenses {
                     license {
                         name = 'The GNU General Public License v3.0'
@@ -97,8 +88,8 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/obimp/obimp4j.git'
-                    developerConnection = 'scm:git:ssh://github.com/obimp/obimp4j.git'
+                    connection = 'scm:git:git://github.com/obimp/obimp4j-core.git'
+                    developerConnection = 'scm:git:ssh://github.com/obimp/obimp4j-core.git'
                     url = 'https://github.com/obimp/obimp4j'
                 }
             }

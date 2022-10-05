@@ -33,6 +33,10 @@ class WTLD(override val type: LongWord) : DataStructure<LongWord> {
     override var data = mutableListOf<Data>()
     override lateinit var buffer: ByteBuffer
 
+    constructor(type: LongWord, vararg data: Data) : this(type) {
+        this.data.addAll(data)
+    }
+
     override fun size() = Int.SIZE_BYTES * 2 + length.value
 
     override fun toBytes(): ByteBuffer {

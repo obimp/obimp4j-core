@@ -32,6 +32,10 @@ class STLD(override val type: Word) : DataStructure<Word> {
     override var data = mutableListOf<Data>()
     override lateinit var buffer: ByteBuffer
 
+    constructor(type: Word, vararg data: Data) : this(type) {
+        this.data.addAll(data)
+    }
+
     override fun size() = Short.SIZE_BYTES * 2 + length.value.toInt()
 
     override fun toBytes(): ByteBuffer {

@@ -22,12 +22,13 @@ import io.github.obimp.data.structure.WTLD
 import io.github.obimp.packet.body.Body
 import io.github.obimp.packet.body.ObimpBody
 import io.github.obimp.packet.header.Header
+import io.github.obimp.packet.header.ObimpHeader
 
 /**
  * OBIMP Packet
  * @author Alexander Krysin
  */
-class ObimpPacket : Packet<WTLD> {
-    override lateinit var header: Header
+class ObimpPacket(type: Short, subtype: Short) : Packet<WTLD> {
+    override var header: Header = ObimpHeader(type = type, subtype = subtype)
     override var body: Body<WTLD> = ObimpBody()
 }

@@ -37,6 +37,8 @@ sealed interface Packet<T: DataStructure<*>> : BytesSerializable {
 
     fun hasItems() = body.content.isNotEmpty()
 
+    fun addItem(item: T) = body.content.add(item)
+
     fun nextItem() = body.content.removeFirst()
 
     override fun toBytes(): ByteBuffer {
