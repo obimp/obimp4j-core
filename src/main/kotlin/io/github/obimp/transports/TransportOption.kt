@@ -18,13 +18,25 @@
 
 package io.github.obimp.transports
 
+/**
+ * Transport option item
+ * @author Alexander Krysin
+ */
 class TransportOption(
+    /** Option item length */
     val length: Short,
+    /** Option ID (transport defined unique ID) */
     val id: Short,
+    /** Option type */
     val type: TransportOptionType,
+    /** Option flags */
     val flag: TransportOptionFlag,
+    /** Option name length */
     val nameLength: Short,
+    /** Option name */
     val name: String,
+    /** Option value length */
     val valueLength: Short,
+    /** Option value */
     val value: String
 )

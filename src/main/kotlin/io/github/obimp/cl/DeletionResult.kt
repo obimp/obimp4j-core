@@ -19,6 +19,7 @@
 package io.github.obimp.cl
 
 /**
+ * Deletion result code
  * @author Alexander Krysin
  */
 enum class DeletionResult(val code: Short) {

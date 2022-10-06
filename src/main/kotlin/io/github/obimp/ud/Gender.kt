@@ -19,6 +19,7 @@
 package io.github.obimp.ud
 
 /**
+ * Gender
  * @author Alexander Krysin
  */
 enum class Gender(val value: Byte) {

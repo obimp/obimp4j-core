@@ -22,6 +22,7 @@ import java.nio.ByteBuffer
 import java.time.LocalDateTime
 
 /**
+ * Incoming message
  * @author Alexander Krysin
  */
 class IncomingMessage(
@@ -29,12 +30,17 @@ class IncomingMessage(
     override val uniqueMessageID: Int,
     override val messageType: MessageType,
     override val messageData: ByteBuffer,
-    override val requestDeliveryReport: Boolean,
-    override val encryptionType: EncryptionType,
+    override val requestDeliveryReport: Boolean? = null,
+    override val encryptionType: EncryptionType? = null,
+    /** Offline message flag (optional) */
     val offlineMessage: Boolean,
+    /** Offline message time (optional) */
     val offlineMessageTime: LocalDateTime?,
+    /** System message flag (optional) */
     val systemMessage: Boolean,
+    /** System message popup position (optional) */
     val systemMessagePopupPosition: SystemMessagePopupPosition?,
+    /** Multiple message flag (optional) */
     val multipleMessage: Boolean,
-    override val transportItemID: Int?
+    override val transportItemID: Int? = null
 ) : Message

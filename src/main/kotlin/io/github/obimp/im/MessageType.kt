@@ -19,6 +19,7 @@
 package io.github.obimp.im
 
 /**
+ * Message type
  * @author Alexander Krysin
  */
 enum class MessageType(val type: Int) {

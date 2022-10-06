@@ -19,11 +19,16 @@
 package io.github.obimp.im
 
 /**
+ * Instant messaging parameters
  * @author Alexander Krysin
  */
 class InstantMessagingParameters(
+    /** Maximal UTF-8 encoded account name length */
     val maxAccountNameLength: Int,
+    /** Maximal message data length */
     val maxMessageDatLength: Int,
+    /** Offline messages count waiting for client request */
     val waitingOfflineMessagesCount: Int,
+    /** Client can send multiple message */
     val multipleMessageAllowed: Boolean
 )

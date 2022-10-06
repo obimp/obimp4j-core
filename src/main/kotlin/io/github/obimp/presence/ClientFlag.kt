@@ -19,6 +19,7 @@
 package io.github.obimp.presence
 
 /**
+ * Client flag for presence information
  * @author Alexander Krysin
  */
 enum class ClientFlag(val flag: Int) {

@@ -19,16 +19,26 @@
 package io.github.obimp.presence
 
 /**
+ * Mail notification
  * @author Alexander Krysin
  */
 class MailNotification(
+    /** Total unread mail count */
     val totalUnreadMailCount: Int,
+    /** New mail received flag */
     val newMailReceivedFlag: Boolean,
+    /** Receiver email address */
     val receiverEmailAddress: String,
+    /** Sender name */
     val senderName: String,
+    /** Sender email address */
     val senderEmailAddress: String,
+    /** Mail subject */
     val mailSubject: String,
+    /** Mail text */
     val mailText: String,
+    /** Mailbox URL (to open in browser if user click on mail notification) */
     val mailboxURL: String,
+    /** Transport Item ID (optional) */
     val transportItemId: Int?
 )

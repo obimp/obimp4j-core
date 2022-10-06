@@ -19,6 +19,7 @@
 package io.github.obimp.cl
 
 /**
+ * Adding result code
  * @author Alexander Krysin
  */
 enum class AddingResult(val code: Short) {

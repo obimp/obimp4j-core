@@ -19,6 +19,7 @@
 package io.github.obimp.ud
 
 /**
+ * Secure email or password update result code
  * @author Alexander Krysin
  */
 enum class SecureUpdateResult(val code: Short) {

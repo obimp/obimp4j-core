@@ -24,6 +24,7 @@ import io.github.obimp.util.BytesSerializable
 import java.nio.ByteBuffer
 
 /**
+ * Body
  * @author Alexander Krysin
  */
 sealed interface Body<T: DataStructure<*>> : BytesSerializable {

@@ -19,6 +19,7 @@
 package io.github.obimp.presence
 
 /**
+ * Client type
  * @author Alexander Krysin
  */
 enum class ClientType(val value: Short) {

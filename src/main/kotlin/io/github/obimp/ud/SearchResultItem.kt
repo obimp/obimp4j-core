@@ -19,19 +19,30 @@
 package io.github.obimp.ud
 
 /**
+ * Search result item
  * @author Alexander Krysin
  */
 class SearchResultItem(
-    val searchRequestResult: SearchResult,
+    /** Account name (optional) */
     var accountName: String? = null,
+    /** Nickname (optional) */
     var nickname: String? = null,
+    /** First name (optional) */
     var firstName: String? = null,
+    /** Last name (optional) */
     var lastName: String? = null,
+    /** Gender (optional) */
     var gender: Gender? = null,
+    /** Age (optional) */
     var age: Int? = null,
+    /** User is online (optional) */
     var userIsOnline: Boolean? = null,
+    /** Is last search result (optional) */
     var isLastSearchResult: Boolean? = null,
+    /** Total count of results in DB (optional) */
     var totalCountOfResultsInDB: Int? = null,
+    /** Status picture flags and index starting from 1 (optional) */
     var statusPictureFlags: Int? = null,
+    /** Transport Item ID (optional) */
     var transportItemID: Int? = null
 )

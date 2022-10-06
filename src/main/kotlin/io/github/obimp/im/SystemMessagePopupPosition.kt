@@ -19,6 +19,7 @@
 package io.github.obimp.im
 
 /**
+ * System message popup position
  * @author Alexander Krysin
  */
 enum class SystemMessagePopupPosition(val value: Byte) {

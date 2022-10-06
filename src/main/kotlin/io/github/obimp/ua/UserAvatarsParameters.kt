@@ -19,9 +19,12 @@
 package io.github.obimp.ua
 
 /**
+ * User avatars parameters
  * @author Alexander Krysin
  */
 class UserAvatarsParameters(
+    /** Maximal avatar file size */
     val maxAvatarFileSize: Int,
-    val clientAvatarMD5Hash: String
+    /** Current client avatar file MD5 hash (optional) */
+    val clientAvatarMD5Hash: ByteArray? = null
 )

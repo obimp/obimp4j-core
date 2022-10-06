@@ -19,16 +19,26 @@
 package io.github.obimp.ft
 
 /**
+ * Send file request
  * @author Alexander Krysin
  */
 class SendFileRequest(
+    /** Account name of file(s) receiver / sender */
     val accountName: String,
+    /** Unique file transfer ID */
     val uniqueFileTransferID: Long,
+    /** Files count */
     val filesCount: Int,
+    /** File size or total size of the all files if more than one */
     val totalSize: Long,
+    /** File name or file name of the first file if more than one */
     val firstFileName: String,
-    val senderClientIP: String?,
-    val senderClientPortNumber: Int?,
-    val proxyServerHostOrIP: String?,
-    val proxyServerPortNumber: Int?
+    /** Client's IP address of sender (for direct file transfer connection) */
+    val senderClientIP: String? = null,
+    /** Client's port number of sender that is listening (for direct file transfer connection) */
+    val senderClientPortNumber: Int? = null,
+    /** File proxy server host / IP (for proxied file transfer connection) */
+    val proxyServerHostOrIP: String? = null,
+    /** File proxy server port number (for proxied file transfer connection) */
+    val proxyServerPortNumber: Int? = null
 )

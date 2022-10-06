@@ -19,6 +19,7 @@
 package io.github.obimp.cl
 
 /**
+ * Server operation code
  * @author Alexander Krysin
  */
 enum class Operation(val code: Short) {

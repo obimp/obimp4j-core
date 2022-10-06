@@ -19,6 +19,7 @@
 package io.github.obimp.cl
 
 /**
+ * Note type
  * @author Alexander Krysin
  */
 enum class NoteType(val value: Byte) {

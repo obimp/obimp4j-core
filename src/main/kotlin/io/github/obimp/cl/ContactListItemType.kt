@@ -19,6 +19,7 @@
 package io.github.obimp.cl
 
 /**
+ * Contact list item type
  * @author Alexander Krysin
  */
 enum class ContactListItemType(val type: Short) {

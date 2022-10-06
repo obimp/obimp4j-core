@@ -19,6 +19,12 @@
 package io.github.obimp.ud
 
 /**
+ * Search reply
  * @author Alexander Krysin
  */
-class SearchReply(val searchResult: SearchResult, val searchResultItem: SearchResultItem? = null)
+class SearchReply(
+    /** Search result */
+    val searchResult: SearchResult,
+    /** Search result item (optional) */
+    val searchResultItem: SearchResultItem? = null
+)

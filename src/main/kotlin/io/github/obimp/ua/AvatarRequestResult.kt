@@ -19,6 +19,7 @@
 package io.github.obimp.ua
 
 /**
+ * Avatar request result
  * @author Alexander Krysin
  */
 enum class AvatarRequestResult(val value: Short) {

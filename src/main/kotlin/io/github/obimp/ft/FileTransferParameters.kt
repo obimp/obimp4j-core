@@ -19,15 +19,24 @@
 package io.github.obimp.ft
 
 /**
+ * File transfer parameters
  * @author Alexander Krysin
  */
 class FileTransferParameters(
+    /** Maximal UTF-8 encoded account name length */
     val maxAccountNameLength: Int,
+    /** Maximal UTF-8 encoded host / IP length */
     val maxHostOrIPLength: Int,
+    /** Maximal UTF-8 encoded file name length */
     val maxFileNameLength: Int,
+    /** Maximal UTF-8 encoded file path length */
     val maxFilePathLength: Int,
+    /** File transfer support is enabled */
     val fileTransferSupportEnabled: Boolean,
-    val proxiedFileTransferSupportEnabled: Boolean?,
-    val fileProxyServerHostOrIP: String?,
-    val fileProxyServerPortNumber: Int?
+    /** Proxied file transfer support is enabled (optional) */
+    val proxiedFileTransferSupportEnabled: Boolean? = null,
+    /** File proxy server host / IP (optional) */
+    val fileProxyServerHostOrIP: String? = null,
+    /** File proxy server port number (optional) */
+    val fileProxyServerPortNumber: Int? = null
 )

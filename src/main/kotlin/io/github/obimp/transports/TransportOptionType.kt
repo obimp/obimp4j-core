@@ -19,6 +19,7 @@
 package io.github.obimp.transports
 
 /**
+ * Transport option type
  * @author Alexander Krysin
  */
 enum class TransportOptionType(val value: Byte) {

@@ -21,6 +21,7 @@ package io.github.obimp.util
 import java.nio.ByteBuffer
 
 /**
+ * Deserializable from bytes
  * @author Alexander Krysin
  */
 interface BytesDeserializable {

@@ -19,6 +19,7 @@
 package io.github.obimp.ud
 
 /**
+ * Update details result code
  * @author Alexander Krysin
  */
 enum class UpdateDetailsResult(val code: Short) {

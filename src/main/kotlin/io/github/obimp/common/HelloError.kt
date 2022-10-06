@@ -19,6 +19,7 @@
 package io.github.obimp.common
 
 /**
+ * Hello error code
  * @author Alexander Krysin
  */
 enum class HelloError(val code: Short) {

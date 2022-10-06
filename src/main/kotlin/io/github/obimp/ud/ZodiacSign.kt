@@ -19,6 +19,7 @@
 package io.github.obimp.ud
 
 /**
+ * Zodiac sign
  * @author Alexander Krysin
  */
 enum class ZodiacSign(val value: Byte) {

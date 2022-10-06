@@ -19,12 +19,18 @@
 package io.github.obimp.transports
 
 /**
+ * Transport notification
  * @author Alexander Krysin
  */
 class TransportNotification(
+    /** Transport Item ID */
     val transportItemID: Int,
+    /** Auto close notification after some seconds */
     val autoClose: Boolean,
+    /** Error / warning notification style */
     val errorWarningStyle: Boolean,
+    /** Notification title text */
     val titleText: String,
+    /** Notification content text */
     val contentText: String
 )

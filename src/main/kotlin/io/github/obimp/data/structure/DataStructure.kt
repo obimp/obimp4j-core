@@ -23,6 +23,7 @@ import io.github.obimp.data.type.DataType
 import java.nio.ByteBuffer
 
 /**
+ * Data structure
  * @author Alexander Krysin
  */
 sealed interface DataStructure<T: DataType<out Number>> : Data {

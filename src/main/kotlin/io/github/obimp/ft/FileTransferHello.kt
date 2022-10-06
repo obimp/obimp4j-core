@@ -19,9 +19,12 @@
 package io.github.obimp.ft
 
 /**
+ * File transfer hello
  * @author Alexander Krysin
  */
 class FileTransferHello(
+    /** Account name of file(s) receiver / sender */
     val accountName: String,
+    /** Unique file transfer ID */
     val uniqueFileTransferID: Long
 )

@@ -19,6 +19,7 @@
 package io.github.obimp.im
 
 /**
+ * Notification value
  * @author Alexander Krysin
  */
 enum class NotificationValue(val value: Int) {

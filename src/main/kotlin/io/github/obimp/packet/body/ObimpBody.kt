@@ -21,6 +21,7 @@ package io.github.obimp.packet.body
 import io.github.obimp.data.structure.WTLD
 
 /**
+ * Body of OBIMP packet
  * @author Alexander Krysin
  */
 class ObimpBody : Body<WTLD> {

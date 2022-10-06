@@ -19,12 +19,18 @@
 package io.github.obimp.ft
 
 /**
+ * Send file reply
  * @author Alexander Krysin
  */
 class SendFileReply(
+    /** Account name of file(s) receiver / sender */
     val accountName: String,
+    /** Unique file transfer ID */
     val uniqueFileTransferID: Long,
+    /** File transfer reply */
     val fileTransferReply: FileTransferReply,
-    val receiverClientIP: String?,
-    val receiverClientPortNumber: Int?
+    /** Client's IP address of receiver (for direct file transfer connection) */
+    val receiverClientIP: String? = null,
+    /** Client's port number of receiver that is listening (for direct file transfer connection) */
+    val receiverClientPortNumber: Int? = null
 )

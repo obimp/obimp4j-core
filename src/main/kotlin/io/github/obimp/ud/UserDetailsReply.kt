@@ -21,4 +21,9 @@ package io.github.obimp.ud
 /**
  * @author Alexander Krysin
  */
-class UserDetailsReply(val requestDetailsResult: RequestDetailsResult, val userDetails: UserDetails? = null)
+class UserDetailsReply(
+    /** Request details result */
+    val requestDetailsResult: RequestDetailsResult,
+    /** User details */
+    val userDetails: UserDetails? = null
+)

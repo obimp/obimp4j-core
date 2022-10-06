@@ -19,6 +19,7 @@
 package io.github.obimp.common
 
 /**
+ * Registration result code
  * @author Alexander Krysin
  */
 enum class RegistrationResult(val code: Short) {

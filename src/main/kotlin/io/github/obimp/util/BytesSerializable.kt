@@ -21,6 +21,7 @@ package io.github.obimp.util
 import java.nio.ByteBuffer
 
 /**
+ * Serializable to bytes
  * @author Alexander Krysin
  */
 interface BytesSerializable {

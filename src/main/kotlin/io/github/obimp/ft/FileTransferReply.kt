@@ -19,6 +19,7 @@
 package io.github.obimp.ft
 
 /**
+ * File transfer reply code
  * @author Alexander Krysin
  */
 enum class FileTransferReply(val code: Short) {

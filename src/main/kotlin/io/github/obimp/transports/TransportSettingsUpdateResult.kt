@@ -19,6 +19,7 @@
 package io.github.obimp.transports
 
 /**
+ * Transport settings update result code
  * @author Alexander Krysin
  */
 enum class TransportSettingsUpdateResult(val code: Short) {

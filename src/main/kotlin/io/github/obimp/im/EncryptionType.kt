@@ -19,6 +19,7 @@
 package io.github.obimp.im
 
 /**
+ * Encryption type
  * @author Alexander Krysin
  */
 enum class EncryptionType(val type: Int) {

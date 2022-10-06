@@ -19,6 +19,7 @@
 package io.github.obimp.ud
 
 /**
+ * Request details result code
  * @author Alexander Krysin
  */
 enum class RequestDetailsResult(val code: Short) {

@@ -19,6 +19,7 @@
 package io.github.obimp.common
 
 /**
+ * Bye reason code
  * @author Alexander Krysin
  */
 enum class ByeReason(val code: Short) {

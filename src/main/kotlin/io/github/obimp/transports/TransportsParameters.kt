@@ -19,6 +19,12 @@
 package io.github.obimp.transports
 
 /**
+ * Transports parameters
  * @author Alexander Krysin
  */
-class TransportsParameters(val maxTransportsCount: Int, val availableTransports: TransportsData?)
+class TransportsParameters(
+    /** Maximal transports count per account (0 = transports disabled) */
+    val maxTransportsCount: Int,
+    /** Available transports items data (will be added if maximal transports count per account is larger than zero) */
+    val availableTransports: TransportsData? = null
+)

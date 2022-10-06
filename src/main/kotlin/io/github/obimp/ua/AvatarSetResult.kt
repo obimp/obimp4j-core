@@ -19,6 +19,7 @@
 package io.github.obimp.ua
 
 /**
+ * Avatar set result
  * @author Alexander Krysin
  */
 enum class AvatarSetResult(val value: Short) {

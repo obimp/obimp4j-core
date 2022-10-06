@@ -21,6 +21,7 @@ package io.github.obimp.data
 import io.github.obimp.util.BytesSerializable
 
 /**
+ * Data
  * @author Alexander Krysin
  */
 interface Data : BytesSerializable {

@@ -19,6 +19,7 @@
 package io.github.obimp.presence
 
 /**
+ * Language code
  * @author Alexander Krysin
  */
 enum class Language(val code: Short) {

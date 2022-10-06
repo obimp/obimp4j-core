@@ -19,12 +19,18 @@
 package io.github.obimp.presence
 
 /**
+ * Presence info parameters
  * @author Alexander Krysin
  */
 class PresenceInfoParameters(
-    val maxStatusLength: Int,
+    /** Maximal UTF-8 encoded status name length */
+    val maxStatusNameLength: Int,
+    /** Maximal UTF-8 encoded additional status picture length */
     val maxXStatusLength: Int,
+    /** Maximal UTF-8 encoded client name length */
     val maxClientNameLength: Int,
+    /** Maximal capabilities count */
     val maxCapabilitiesCount: Int,
+    /** Required optional client information flags */
     val requiredOptionalClientInformationFlags: Int
 )

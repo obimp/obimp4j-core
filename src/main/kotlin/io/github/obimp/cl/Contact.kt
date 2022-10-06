@@ -25,11 +25,17 @@ package io.github.obimp.cl
 class Contact(
     override val id: Int,
     override val groupID: Int,
+    /** Account name */
     val accountName: String,
+    /** Contact name */
     val contactName: String,
+    /** Privacy type */
     val privacyType: PrivacyType,
+    /** Authorization flag */
     val authorizationFlag: Boolean,
+    /** General item flag */
     val generalItemFlag: Boolean,
+    /** Transport Item ID (optional) */
     val transportItemId: Int?
 ) : ContactListItem {
     override val type = ContactListItemType.CONTACT

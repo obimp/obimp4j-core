@@ -21,6 +21,7 @@ package io.github.obimp.data.type
 import io.github.obimp.data.Data
 
 /**
+ * Data type
  * @author Alexander Krysin
  */
 sealed interface DataType<T> : Data {

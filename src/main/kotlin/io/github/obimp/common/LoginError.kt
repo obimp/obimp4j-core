@@ -19,6 +19,7 @@
 package io.github.obimp.common
 
 /**
+ * Login error code
  * @author Alexander Krysin
  */
 enum class LoginError(val code: Short) {

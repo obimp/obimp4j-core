@@ -21,6 +21,7 @@ package io.github.obimp.im
 import java.nio.ByteBuffer
 
 /**
+ * Outgoing message
  * @author Alexander Krysin
  */
 class OutgoingMessage(

@@ -21,14 +21,22 @@ package io.github.obimp.im
 import java.nio.ByteBuffer
 
 /**
+ * Message
  * @author Alexander Krysin
  */
 sealed interface Message {
+    /** Account name */
     val accountName: String
+    /** Unique message ID */
     val uniqueMessageID: Int
+    /** Message type */
     val messageType: MessageType
+    /** Message data */
     val messageData: ByteBuffer
+    /** Request message acknowledge / delivery report from remote client (optional) */
     val requestDeliveryReport: Boolean?
+    /** Encryption type (optional) */
     val encryptionType: EncryptionType?
+    /** Transport Item ID (optional) */
     val transportItemID: Int?
 }

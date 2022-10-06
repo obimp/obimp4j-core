@@ -19,11 +19,14 @@
 package io.github.obimp.cl
 
 /**
- * Abstract contact list item
+ * Contact list item
  * @author Alexander Krysin
  */
 sealed interface ContactListItem {
+    /** Item type */
     val type: ContactListItemType
+    /** Item ID */
     val id: Int
+    /** Group ID */
     val groupID: Int
 }

@@ -21,17 +21,28 @@ package io.github.obimp.presence
 import java.time.LocalDateTime
 
 /**
+ * Current presence information of client's account
  * @author Alexander Krysin
  */
 class CurrentPresenceInfo(
+    /** Account name */
     val accountName: String,
+    /** Registration date */
     val registrationDate: LocalDateTime,
+    /** Current session client connected time */
     val currentSessionClientConnectedTime: LocalDateTime,
+    /** Previous session client connected time */
     val previousSessionClientConnectedTime: LocalDateTime,
+    /** Current session client IP address (as it seen by server) */
     val currentSessionClientIP: String,
+    /** Previous session client IP address (as it seen by server) */
     val previousSessionClientIP: String,
+    /** Currently signed on instances count */
     val currentlySignedOnInstancesCount: Short,
+    /** Additional server added description */
     val additionServerAddedDescription: String,
+    /** Presence information (will be added only for OBIMP client presence info) */
     val presenceInfo: PresenceInfo?,
+    /** Transport Item ID (optional) */
     val transportItemID: Int?
 )

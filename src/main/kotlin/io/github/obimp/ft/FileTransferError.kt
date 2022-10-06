@@ -19,10 +19,14 @@
 package io.github.obimp.ft
 
 /**
+ * File transfer error
  * @author Alexander Krysin
  */
 class FileTransferError(
+    /** Account name of file(s) receiver / sender */
     val accountName: String,
+    /** Unique file transfer ID */
     val uniqueFileTransferID: Long,
+    /** File transfer error code */
     val fileTransferErrorType: FileTransferErrorType
 )

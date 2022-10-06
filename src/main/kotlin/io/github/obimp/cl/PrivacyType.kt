@@ -19,6 +19,7 @@
 package io.github.obimp.cl
 
 /**
+ * Privacy type
  * @author Alexander Krysin
  */
 enum class PrivacyType(val value: Byte) {

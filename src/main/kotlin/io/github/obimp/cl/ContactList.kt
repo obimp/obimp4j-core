@@ -19,6 +19,12 @@
 package io.github.obimp.cl
 
 /**
+ * Contact list
  * @author Alexander Krysin
  */
-data class ContactList(val itemsCount: Int, val items: List<ContactListItem>)
+data class ContactList(
+    /** Items count */
+    val itemsCount: Int,
+    /** Items */
+    val items: List<ContactListItem>
+)

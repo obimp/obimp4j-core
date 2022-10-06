@@ -19,6 +19,7 @@
 package io.github.obimp.cl
 
 /**
+ * Authorization reply code
  * @author Alexander Krysin
  */
 enum class AuthorizationReply(val code: Short) {

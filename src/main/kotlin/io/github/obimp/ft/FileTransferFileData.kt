@@ -21,12 +21,18 @@ package io.github.obimp.ft
 import java.nio.ByteBuffer
 
 /**
+ * File transfer file data
  * @author Alexander Krysin
  */
 class FileTransferFileData(
+    /** Account name of file(s) receiver / sender */
     val accountName: String,
+    /** Unique file transfer ID */
     val uniqueFileTransferID: Long,
+    /** This is the last file */
     val lastFile: Boolean,
+    /** This is the last part of file */
     val lastPartOfFile: Boolean,
+    /** File data */
     val fileData: ByteBuffer
 )

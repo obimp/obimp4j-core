@@ -19,13 +19,20 @@
 package io.github.obimp.ud
 
 /**
+ * Users directory parameters
  * @author Alexander Krysin
  */
 class UsersDirectoryParameters(
+    /** Maximal UTF-8 encoded account name length */
     val maxAccountNameLength: Int,
+    /** Maximal UTF-8 encoded details field length */
     val maxDetailsFieldLength: Int,
+    /** Maximal UTF-8 encoded about field length */
     val maxAboutFieldLength: Int,
+    /** Client can change account's secure email */
     val canChangeAccountsSecureEmail: Boolean,
+    /** Client can change account's password */
     val canChangeAccountsPassword: Boolean,
+    /** Secure email / password changing URL if available */
     val secureEmailPasswordChangingURL: String
 )

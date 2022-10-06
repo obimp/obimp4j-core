@@ -19,6 +19,7 @@
 package io.github.obimp.cl
 
 /**
+ * Update operation result code
  * @author Alexander Krysin
  */
 enum class UpdateOperationResult(val code: Short) {

@@ -19,10 +19,14 @@
 package io.github.obimp.ft
 
 /**
+ * File transfer control message
  * @author Alexander Krysin
  */
 class FileTransferControlMessage(
+    /** Account name of file(s) receiver / sender */
     val accountName: String,
+    /** Unique file transfer ID */
     val uniqueFileTransferID: Long,
+    /** File transfer control */
     val fileTransferControl: FileTransferControl
 )

@@ -19,11 +19,16 @@
 package io.github.obimp.im
 
 /**
+ * Notification
  * @author Alexander Krysin
  */
 class Notification(
+    /** Account name */
     val accountName: String,
+    /** Notification type */
     val notificationType: NotificationType,
+    /** Notification value */
     val notificationValue: NotificationValue,
+    /** Transport Item ID (optional) */
     val transportItemID: Int?
 )

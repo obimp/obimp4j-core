@@ -19,6 +19,7 @@
 package io.github.obimp.ft
 
 /**
+ * File transfer control code
  * @author Alexander Krysin
  */
 enum class FileTransferControl(val code: Short) {

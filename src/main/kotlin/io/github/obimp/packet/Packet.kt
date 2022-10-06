@@ -25,6 +25,7 @@ import io.github.obimp.util.BytesSerializable
 import java.nio.ByteBuffer
 
 /**
+ * Packet
  * @author Alexander Krysin
  */
 sealed interface Packet<T: DataStructure<*>> : BytesSerializable {

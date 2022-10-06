@@ -19,6 +19,7 @@
 package io.github.obimp.im
 
 /**
+ * Notification type
  * @author Alexander Krysin
  */
 enum class NotificationType(val type: Int) {

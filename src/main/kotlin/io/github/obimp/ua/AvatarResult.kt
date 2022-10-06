@@ -24,7 +24,12 @@ import java.nio.ByteBuffer
  * @author Alexander Krysin
  */
 class AvatarResult(
+    /** Avatar request result */
     val avatarRequestResult: AvatarRequestResult,
-    val avatarMD5Hash: ByteArray,
-    val avatar: ByteBuffer? = null
+    /** Avatar file MD5 hash (optional) */
+    val avatarMD5Hash: ByteArray? = null,
+    /** Avatar file (optional) */
+    val avatar: ByteBuffer? = null,
+    /** Transport Item ID (optional)*/
+    val transportItemId: Int? = null
 )

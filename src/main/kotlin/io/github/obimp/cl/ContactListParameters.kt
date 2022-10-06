@@ -19,20 +19,34 @@
 package io.github.obimp.cl
 
 /**
+ * Contact list parameters and limits
  * @author Alexander Krysin
  */
 class ContactListParameters(
+    /** Maximal groups count */
     val maxGroupsCount: Int,
+    /** Maximal UTF-8 encoded group name length */
     val maxGroupNameLength: Int,
+    /** Maximal contacts count all over contact list */
     val maxContactsCount: Int,
+    /** Maximal UTF-8 encoded account name length */
     val maxAccountNameLength: Int,
+    /** Maximal UTF-8 encoded contact name / transport friendly name length */
     val maxContactOrTransportNameLength: Int,
+    /** Maximal UTF-8 encoded authorization reason / revoke length */
     val maxAuthReasonOrRevokeLength: Int,
+    /** Maximal user / developer sTLDs count in one item */
     val maxUserDevSTLDsCount: Int,
+    /** Maximal user / developer sTLD length */
     val maxUserDevSTLDLength: Int,
-    val maxWaitingOfflineAuthMessagesCount: Int,
+    /** Offline authorization messages (requests, replies, revokes) count waiting for client request */
+    val waitingOfflineAuthMessagesCount: Int,
+    /** Automatically remove authorization flag after adding contact */
     val autoRemoveAuthFlagAfterAddingContact: Boolean,
+    /** Maximal notes count */
     val maxNotesCount: Int,
+    /** Maximal UTF-8 encoded note name length */
     val maxNoteNameLength: Int,
+    /** Maximal UTF-8 encoded note text length */
     val maxNoteTextLength: Int
 )

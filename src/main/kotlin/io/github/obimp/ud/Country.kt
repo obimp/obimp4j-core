@@ -19,6 +19,7 @@
 package io.github.obimp.ud
 
 /**
+ * Country code
  * @author Alexander Krysin
  */
 enum class Country(val code: Short) {

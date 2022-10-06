@@ -19,10 +19,14 @@
 package io.github.obimp.ft
 
 /**
+ * File transfer file reply
  * @author Alexander Krysin
  */
 class FileTransferFileReply(
+    /** Account name of file(s) receiver / sender */
     val accountName: String,
+    /** Unique file transfer ID */
     val uniqueFileTransferID: Long,
+    /** Resume position where from start sending file data */
     val resumePosition: Long
 )

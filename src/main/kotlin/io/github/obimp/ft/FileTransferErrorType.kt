@@ -19,6 +19,7 @@
 package io.github.obimp.ft
 
 /**
+ * File transfer error code
  * @author Alexander Krysin
  */
 enum class FileTransferErrorType(val code: Short) {

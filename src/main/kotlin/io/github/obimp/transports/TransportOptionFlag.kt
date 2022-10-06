@@ -19,6 +19,7 @@
 package io.github.obimp.transports
 
 /**
+ * Transport option flag
  * @author Alexander Krysin
  */
 enum class TransportOptionFlag(val value: Int) {

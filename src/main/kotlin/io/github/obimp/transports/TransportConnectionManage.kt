@@ -19,6 +19,7 @@
 package io.github.obimp.transports
 
 /**
+ * Transport connection managing code
  * @author Alexander Krysin
  */
 enum class TransportConnectionManage(val code: Short) {

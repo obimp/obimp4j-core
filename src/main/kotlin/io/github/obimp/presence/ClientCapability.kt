@@ -19,6 +19,7 @@
 package io.github.obimp.presence
 
 /**
+ * Client capability
  * @author Alexander Krysin
  */
 enum class ClientCapability(val capability: Short) {

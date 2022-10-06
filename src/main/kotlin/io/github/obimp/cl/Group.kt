@@ -22,6 +22,11 @@ package io.github.obimp.cl
  * Group
  * @author Alexander Krysin
  */
-class Group(override val id: Int, override val groupID: Int, val name: String) : ContactListItem {
+class Group(
+    override val id: Int,
+    override val groupID: Int,
+    /** Group name */
+    val name: String
+) : ContactListItem {
     override val type = ContactListItemType.GROUP
 }

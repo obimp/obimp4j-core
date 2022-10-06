@@ -19,12 +19,18 @@
 package io.github.obimp.ft
 
 /**
+ * File transfer file
  * @author Alexander Krysin
  */
 class FileTransferFileInfo(
+    /** Account name of file(s) receiver / sender */
     val accountName: String,
+    /** Unique file transfer ID */
     val uniqueFileTransferID: Long,
+    /** File size */
     val fileSize: Long,
+    /** File name */
     val fileName: String,
-    val relativeFilePath: String?
+    /** Relative file path (if sending folders with files) (optional) */
+    val relativeFilePath: String? = null
 )

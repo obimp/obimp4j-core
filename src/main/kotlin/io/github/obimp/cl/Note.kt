@@ -27,10 +27,15 @@ import java.time.LocalDateTime
 class Note(
     override val id: Int,
     override val groupID: Int,
+    /** Note name */
     val noteName: String,
+    /** Note type */
     val noteType: NoteType,
+    /** Note text (optional) */
     val noteText: String?,
+    /** Note date (UTC) (optional) */
     val noteDate: LocalDateTime?,
+    /** Note picture MD5 hash (optional) */
     val notePictureMD5Hash: ByteArray?
 ) : ContactListItem {
     override val type = ContactListItemType.NOTE

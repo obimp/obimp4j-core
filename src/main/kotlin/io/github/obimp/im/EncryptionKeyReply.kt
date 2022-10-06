@@ -19,6 +19,12 @@
 package io.github.obimp.im
 
 /**
+ * Encryption key reply
  * @author Alexander Krysin
  */
-class EncryptionKeyReply(val encryptionType: EncryptionType, val publicKey: ByteArray? = null)
+class EncryptionKeyReply(
+    /** Encryption type */
+    val encryptionType: EncryptionType,
+    /** Public key (optional) */
+    val publicKey: ByteArray? = null
+)

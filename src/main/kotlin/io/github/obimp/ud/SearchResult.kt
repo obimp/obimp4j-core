@@ -19,6 +19,7 @@
 package io.github.obimp.ud
 
 /**
+ * Search request result code
  * @author Alexander Krysin
  */
 enum class SearchResult(val code: Short) {

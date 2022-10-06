@@ -18,4 +18,13 @@
 
 package io.github.obimp.transports
 
-class TransportsData(val transportsCount: Int, val transports: List<TransportInfo>)
+/**
+ * Transports data
+ * @author Alexander Krysin
+ */
+class TransportsData(
+    /** Available transports items count */
+    val transportsCount: Int,
+    /** Transports items */
+    val transports: List<TransportItem>
+)

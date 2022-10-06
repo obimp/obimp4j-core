@@ -21,16 +21,26 @@ package io.github.obimp.presence
 import io.github.obimp.util.Version
 
 /**
+ * Presence info
  * @author Alexander Krysin
  */
 class PresenceInfo(
+    /** Client capabilities */
     val clientCapabilities: List<ClientCapability>,
+    /** Client type */
     val clientType: ClientType,
+    /** Client name */
     val clientName: String,
+    /** Client version */
     val clientVersion: Version,
+    /** Client language */
     val clientLanguage: Language,
+    /** Client operating system name (optional) (maximal UTF08 encoded length is 128) */
     val clientOperatingSystemName: String?,
+    /** Client description (optional) (maximal UTF08 encoded length is 512) */
     val clientDescription: String?,
+    /** Client flags for presence information (optional) */
     val clientFlag: ClientFlag?,
+    /** Client host name (optional) (maximal UTF-8 encoded length is 255) */
     val clientHostName: String?
 )

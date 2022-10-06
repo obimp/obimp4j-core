@@ -23,6 +23,7 @@ import io.github.obimp.util.BytesSerializable
 import java.nio.ByteBuffer
 
 /**
+ * Header
  * @author Alexander Krysin
  */
 sealed interface Header : BytesSerializable, BytesDeserializable {

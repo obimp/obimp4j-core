@@ -19,10 +19,14 @@
 package io.github.obimp.transports
 
 /**
+ * Transport options
  * @author Alexander Krysin
  */
 class TransportOptions(
+    /** Settings flags */
     val settingsFlags: Short,
+    /** Options items count */
     val optionsItemCount: Short,
+    /** Options items */
     val optionsItems: List<TransportOption>
 )

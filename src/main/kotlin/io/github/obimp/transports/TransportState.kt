@@ -19,6 +19,7 @@
 package io.github.obimp.transports
 
 /**
+ * Transport state
  * @author Alexander Krysin
  */
 enum class TransportState(val code: Short) {
