@@ -16,16 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.obimp.packet.header
+package io.github.obimp.packet
+
+import io.github.obimp.data.structure.WTLD
+import io.github.obimp.packet.body.Body
+import io.github.obimp.packet.body.OBIMPBody
+import io.github.obimp.packet.header.Header
+import io.github.obimp.packet.header.OBIMPHeader
 
 /**
- * Header of OBIMP packet
+ * OBIMP Packet
  * @author Alexander Krysin
  */
-class ObimpHeader(
-    override var sequence: Int = 0,
-    override var type: Short,
-    override var subtype: Short,
-    override var requestID: Int = 0,
-    override var contentLength: Int = 0
-) : Header
+class OBIMPPacket(type: Short, subtype: Short) : Packet<WTLD> {
+    override var header: Header = OBIMPHeader(type = type, subtype = subtype)
+    override var body: Body<WTLD> = OBIMPBody()
+}

@@ -24,6 +24,6 @@ import io.github.obimp.data.structure.WTLD
  * Body of OBIMP packet
  * @author Alexander Krysin
  */
-class ObimpBody : Body<WTLD> {
+class OBIMPBody : Body<WTLD> {
     override var content = mutableListOf<WTLD>()
 }

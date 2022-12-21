@@ -28,7 +28,7 @@ import java.nio.ByteBuffer
  * Packet
  * @author Alexander Krysin
  */
-sealed interface Packet<T: DataStructure<*>> : BytesSerializable {
+interface Packet<T: DataStructure<*>> : BytesSerializable {
     var header: Header
     var body: Body<T>
 

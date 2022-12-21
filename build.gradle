@@ -1,11 +1,11 @@
 plugins {
     id 'maven-publish'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.20'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.21'
 }
 
 group 'io.github.obimp'
-version '0.1.7'
+version '0.1.8'
 
 repositories {
     mavenCentral()
@@ -72,7 +72,7 @@ publishing {
             }
             pom {
                 name = 'OBIMP4J'
-                description = 'Java OBIMP (Open Binary Instant Messaging Protocol) implementation.'
+                description = 'Java OBIMP (Open Binary Instant Messaging Protocol) implementation, core library.'
                 url = 'https://github.com/obimp/obimp4j-core'
                 licenses {
                     license {
@@ -90,7 +90,7 @@ publishing {
                 scm {
                     connection = 'scm:git:git://github.com/obimp/obimp4j-core.git'
                     developerConnection = 'scm:git:ssh://github.com/obimp/obimp4j-core.git'
-                    url = 'https://github.com/obimp/obimp4j'
+                    url = 'https://github.com/obimp/obimp4j-core'
                 }
             }
         }
