@@ -37,6 +37,10 @@ class WTLD(override val type: LongWord) : DataStructure<LongWord> {
         this.data.addAll(data)
     }
 
+    constructor(type: LongWord, buffer: ByteBuffer) : this(type) {
+        this.buffer = buffer
+    }
+
     override fun size() = Int.SIZE_BYTES * 2 + length.value
 
     override fun toBytes(): ByteBuffer {

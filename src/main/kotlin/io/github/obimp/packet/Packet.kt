@@ -19,33 +19,17 @@
 package io.github.obimp.packet
 
 import io.github.obimp.data.structure.DataStructure
-import io.github.obimp.packet.body.Body
-import io.github.obimp.packet.header.Header
-import io.github.obimp.util.BytesSerializable
 import java.nio.ByteBuffer
 
 /**
  * Packet
  * @author Alexander Krysin
  */
-interface Packet<T: DataStructure<*>> : BytesSerializable {
-    var header: Header
-    var body: Body<T>
-
-    fun getType() = header.type
-
-    fun getSubtype() = header.subtype
-
-    fun hasItems() = body.content.isNotEmpty()
-
-    fun addItem(item: T) = body.content.add(item)
-
-    fun nextItem() = body.content.removeFirst()
-
-    override fun toBytes(): ByteBuffer {
-        val headerBytes = header.toBytes()
-        val bodyBytes = body.toBytes()
-        val capacity = headerBytes.capacity() + bodyBytes.capacity()
-        return ByteBuffer.allocate(capacity).put(headerBytes.array()).put(bodyBytes.array()).rewind() as ByteBuffer
-    }
+sealed interface Packet<T : DataStructure<*>> {
+    fun getType(): Short
+    fun getSubtype(): Short
+    fun hasItems(): Boolean
+    fun addItem(item: T)
+    fun nextItem(): T
+    fun toBytes(): ByteBuffer
 }

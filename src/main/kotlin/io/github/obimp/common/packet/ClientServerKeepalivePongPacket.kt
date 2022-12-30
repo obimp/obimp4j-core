@@ -16,14 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.obimp.util
+package io.github.obimp.common.packet
 
-import java.nio.ByteBuffer
+import io.github.obimp.packet.OBIMPPacket
+import io.github.obimp.packet.header.OBIMPHeader
 
 /**
- * Deserializable from bytes
  * @author Alexander Krysin
  */
-interface BytesDeserializable {
-    fun fromBytes(buffer: ByteBuffer)
-}
+class ClientServerKeepalivePongPacket :
+    OBIMPPacket(OBIMPHeader(type = OBIMP_BEX_COM, subtype = OBIMP_BEX_COM_CLI_SRV_KEEPALIVE_PONG))

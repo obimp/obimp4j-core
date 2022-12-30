@@ -16,34 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.obimp.packet.header
+package io.github.obimp.common.packet
 
-import java.nio.ByteBuffer
+import io.github.obimp.packet.OBIMPPacket
+import io.github.obimp.packet.header.OBIMPHeader
 
 /**
- * Header of OBIMP packet
  * @author Alexander Krysin
  */
-class OBIMPHeader(
-    override var sequence: Int = 0,
-    override val type: Short,
-    override val subtype: Short,
-    override var requestID: Int = 0,
-    override var contentLength: Int = 0
-) : Header {
-    override fun toBytes(): ByteBuffer {
-        val buffer = ByteBuffer.allocate(HEADER_LENGTH)
-        buffer.put(CHECK)
-        buffer.putInt(sequence)
-        buffer.putShort(type)
-        buffer.putShort(subtype)
-        buffer.putInt(requestID)
-        buffer.putInt(contentLength)
-        return buffer
-    }
-
-    companion object {
-        private const val HEADER_LENGTH = 17
-        private const val CHECK: Byte = 0x23
-    }
-}
+class ClientServerKeepalivePingPacket :
+    OBIMPPacket(OBIMPHeader(type = OBIMP_BEX_COM, subtype = OBIMP_BEX_COM_CLI_SRV_KEEPALIVE_PING))

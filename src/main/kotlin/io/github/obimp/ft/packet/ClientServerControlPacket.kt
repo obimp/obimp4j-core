@@ -16,33 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.obimp.packet.body
+package io.github.obimp.ft.packet
 
-import io.github.obimp.data.Data
 import io.github.obimp.data.structure.WTLD
-import java.nio.ByteBuffer
+import io.github.obimp.data.type.LongWord
+import io.github.obimp.data.type.QuadWord
+import io.github.obimp.data.type.UTF8
+import io.github.obimp.data.type.Word
+import io.github.obimp.ft.FileTransferControlMessage
+import io.github.obimp.packet.OBIMPPacket
+import io.github.obimp.packet.header.OBIMPHeader
 
 /**
- * Body of OBIMP packet
  * @author Alexander Krysin
  */
-class OBIMPBody : Body<WTLD> {
-    private val content = mutableListOf<WTLD>()
-
-    override fun getLength() = content.sumOf(Data::size)
-
-    override fun hasItems() = content.isNotEmpty()
-
-    override fun addItem(item: WTLD) {
-        content.add(item)
+class ClientServerControlPacket(
+    controlMessage: FileTransferControlMessage
+) : OBIMPPacket(OBIMPHeader(type = OBIMP_BEX_FT, subtype = OBIMP_BEX_FT_CLI_SRV_CONTROL)) {
+    init {
+        addItem(WTLD(LongWord(0x0001), UTF8(controlMessage.accountName)))
+        addItem(WTLD(LongWord(0x0002), QuadWord(controlMessage.uniqueFileTransferID)))
+        addItem(WTLD(LongWord(0x0003), Word(controlMessage.fileTransferControl.code)))
     }
-
-    override fun nextItem() = content.removeFirst()
-
-    override fun toBytes(): ByteBuffer {
-        val buffer = ByteBuffer.allocate(getLength())
-        content.forEach { data -> buffer.put(data.toBytes().array()) }
-        return buffer
-    }
-
 }

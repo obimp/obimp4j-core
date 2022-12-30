@@ -16,14 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.obimp.util
+package io.github.obimp.im.packet
 
-import java.nio.ByteBuffer
+import io.github.obimp.data.structure.WTLD
+import io.github.obimp.data.type.LongWord
+import io.github.obimp.data.type.UTF8
+import io.github.obimp.packet.OBIMPPacket
+import io.github.obimp.packet.header.OBIMPHeader
 
 /**
- * Serializable to bytes
  * @author Alexander Krysin
  */
-interface BytesSerializable {
-    fun toBytes(): ByteBuffer
+class ClientServerEncryptionKeyRequestPacket(
+    accountName: String
+) : OBIMPPacket(OBIMPHeader(type = OBIMP_BEX_IM, subtype = OBIMP_BEX_IM_CLI_SRV_ENCRYPT_KEY_REQ)) {
+    init {
+        addItem(WTLD(LongWord(0x0001), UTF8(accountName)))
+    }
 }

@@ -16,34 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.obimp.packet.header
+package io.github.obimp.packet.parse
 
+import io.github.obimp.data.structure.DataStructure
+import io.github.obimp.packet.Packet
 import java.nio.ByteBuffer
 
 /**
- * Header of OBIMP packet
+ * Parser of packets
  * @author Alexander Krysin
  */
-class OBIMPHeader(
-    override var sequence: Int = 0,
-    override val type: Short,
-    override val subtype: Short,
-    override var requestID: Int = 0,
-    override var contentLength: Int = 0
-) : Header {
-    override fun toBytes(): ByteBuffer {
-        val buffer = ByteBuffer.allocate(HEADER_LENGTH)
-        buffer.put(CHECK)
-        buffer.putInt(sequence)
-        buffer.putShort(type)
-        buffer.putShort(subtype)
-        buffer.putInt(requestID)
-        buffer.putInt(contentLength)
-        return buffer
-    }
-
-    companion object {
-        private const val HEADER_LENGTH = 17
-        private const val CHECK: Byte = 0x23
-    }
+internal sealed interface PacketParser<T : DataStructure<*>> {
+    /**
+     * Parse of packets
+     * @param buffer packets bytes
+     * @return List of packet
+     */
+    fun parsePackets(buffer: ByteBuffer): List<Packet<T>>
 }

@@ -27,7 +27,7 @@ import java.nio.ByteBuffer
 class LongWord(override var value: Int) : DataType<Int> {
     override var length = Int.SIZE_BYTES
 
-    override fun toBytes(): ByteBuffer{
+    override fun toBytes(): ByteBuffer {
         val buffer = ByteBuffer.allocate(length)
         buffer.putInt(value)
         buffer.rewind()

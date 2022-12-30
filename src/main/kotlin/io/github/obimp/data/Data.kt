@@ -18,12 +18,13 @@
 
 package io.github.obimp.data
 
-import io.github.obimp.util.BytesSerializable
+import java.nio.ByteBuffer
 
 /**
  * Data
  * @author Alexander Krysin
  */
-interface Data : BytesSerializable {
+interface Data {
     fun size(): Int
+    fun toBytes(): ByteBuffer
 }

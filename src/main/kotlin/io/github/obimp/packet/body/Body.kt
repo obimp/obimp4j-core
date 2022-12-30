@@ -18,23 +18,17 @@
 
 package io.github.obimp.packet.body
 
-import io.github.obimp.data.Data
 import io.github.obimp.data.structure.DataStructure
-import io.github.obimp.util.BytesSerializable
 import java.nio.ByteBuffer
 
 /**
  * Body
  * @author Alexander Krysin
  */
-sealed interface Body<T: DataStructure<*>> : BytesSerializable {
-    var content: MutableList<T>
-
-    override fun toBytes(): ByteBuffer {
-        val buffer = ByteBuffer.allocate(getLength())
-        content.forEach { data -> buffer.put(data.toBytes().array()) }
-        return buffer
-    }
-
-    fun getLength() = content.sumOf(Data::size)
+internal sealed interface Body<T: DataStructure<*>> {
+    fun getLength(): Int
+    fun hasItems(): Boolean
+    fun addItem(item: T)
+    fun nextItem(): T
+    fun toBytes(): ByteBuffer
 }

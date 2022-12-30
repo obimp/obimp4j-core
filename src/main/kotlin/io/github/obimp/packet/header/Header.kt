@@ -18,45 +18,18 @@
 
 package io.github.obimp.packet.header
 
-import io.github.obimp.util.BytesDeserializable
-import io.github.obimp.util.BytesSerializable
 import java.nio.ByteBuffer
 
 /**
  * Header
  * @author Alexander Krysin
  */
-sealed interface Header : BytesSerializable, BytesDeserializable {
+internal sealed interface Header {
     var sequence: Int
-    var type: Short
-    var subtype: Short
+    val type: Short
+    val subtype: Short
     var requestID: Int
     var contentLength: Int
 
-    override fun toBytes(): ByteBuffer {
-        val buffer = ByteBuffer.allocate(HEADER_LENGTH)
-        buffer.put(CHECK)
-        buffer.putInt(sequence)
-        buffer.putShort(type)
-        buffer.putShort(subtype)
-        buffer.putInt(requestID)
-        buffer.putInt(contentLength)
-        return buffer
-    }
-
-    override fun fromBytes(buffer: ByteBuffer) {
-        assert(buffer.get() == CHECK) {
-            "OBIMP command must starts from byte 0x23 - \"#\"."
-        }
-        sequence = buffer.int
-        type = buffer.short
-        subtype = buffer.short
-        requestID = buffer.int
-        contentLength = buffer.int
-    }
-
-    companion object {
-        private const val HEADER_LENGTH = 17
-        private const val CHECK: Byte = 0x23 // Every server/client command starts from byte 0x23 - "#"
-    }
+    fun toBytes(): ByteBuffer
 }
