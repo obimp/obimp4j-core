@@ -42,6 +42,7 @@ class OBIMPBody : Body<WTLD> {
     override fun toBytes(): ByteBuffer {
         val buffer = ByteBuffer.allocate(getLength())
         content.forEach { data -> buffer.put(data.toBytes().array()) }
+        buffer.rewind()
         return buffer
     }
 

@@ -27,7 +27,7 @@ import java.nio.ByteBuffer
  * OBIMP Packet
  * @author Alexander Krysin
  */
-open class OBIMPPacket(private val header: OBIMPHeader, private val body: OBIMPBody = OBIMPBody()) : Packet<WTLD> {
+open class OBIMPPacket(val header: OBIMPHeader, val body: OBIMPBody = OBIMPBody()) : Packet<WTLD> {
     override fun getType() = header.type
 
     override fun getSubtype() = header.subtype
