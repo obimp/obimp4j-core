@@ -77,16 +77,15 @@ object OBIMPPacketParser : PacketParser<WTLD> {
         val body = OBIMPBody()
         val targetRemaining = buffer.remaining() - contentLength
         if (buffer.remaining() > targetRemaining) {
-            val content = mutableListOf<WTLD>()
             while (buffer.hasRemaining()) {
                 val type = buffer.int
                 val length = buffer.int
                 if (length > 0) {
                     val data = ByteArray(length)
                     buffer[data]
-                    content.add(WTLD(LongWord(type), ByteBuffer.wrap(data)))
+                    body.addItem(WTLD(LongWord(type), ByteBuffer.wrap(data)))
                 } else {
-                    content.add(WTLD(LongWord(type)))
+                    body.addItem(WTLD(LongWord(type)))
                 }
             }
         }
