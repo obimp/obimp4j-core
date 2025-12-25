@@ -1,22 +1,18 @@
 plugins {
+    id 'org.jetbrains.kotlin.jvm' version '2.3.0'
     id 'maven-publish'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version '1.8.0'
 }
 
-group 'io.github.obimp'
-version '0.1.11'
+group = 'io.github.obimp'
+version = '0.1.11'
 
 repositories {
     mavenCentral()
 }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
-}
-
-compileTestKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+kotlin {
+    jvmToolchain(25)
 }
 
 java {
@@ -35,10 +31,8 @@ test {
 publishing {
     repositories {
         maven {
-            name = 'OSSRH'
-            def releaseRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
-            def snapshotRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-            url = version.endsWith('SNAPSHOT') ? snapshotRepoUrl : releaseRepoUrl
+            name = 'ossrh-staging-api'
+            url = 'https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/'
             credentials {
                 username = project.findProperty('ossrh.user') ?: System.getenv('OSSRH_USERNAME')
                 password = project.findProperty('ossrh.key') ?: System.getenv('OSSRH_PASSWORD')
@@ -56,16 +50,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             artifactId = 'obimp4j-core'
-            from(components.java)
-            versionMapping {
-                usage('java-api') {
-                    fromResolutionOf('runtimeClasspath')
-                }
-                usage('java-runtime') {
-                    //noinspection GroovyImplicitNullArgumentCall
-                    fromResolutionResult()
-                }
-            }
+            from components.java
             pom {
                 name = 'OBIMP4J'
                 description = 'Java OBIMP (Open Binary Instant Messaging Protocol) implementation, core library.'
