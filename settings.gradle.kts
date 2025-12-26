@@ -1,0 +1,1 @@
+rootProject.name = "obimp4j-core"
